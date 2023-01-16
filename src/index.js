@@ -6,7 +6,7 @@ const route = require('./routes');
 const db = require('./app/config/db');
 const app = express();
 
-
+app.use(express.static(path.join(__dirname, 'public')));
 //handle bar(template engine)
 const hbs  = require('express-handlebars');
 const { extname } = require('path');
