@@ -6,11 +6,17 @@ const route = require('./routes');
 const db = require('./app/config/db');
 const app = express();
 
+//dotenv
+require('dotenv').config();
 
+app.use(express.static(path.join(__dirname, 'public')))
 //handle bar(template engine)
 const hbs  = require('express-handlebars');
 const { extname } = require('path');
+
+//port
 const port = 3000
+
 //debug logger
 app.use(morgan('combined'));
 //db conect
