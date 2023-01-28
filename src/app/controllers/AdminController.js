@@ -8,5 +8,9 @@ class AdminController {
     async index(request, response, next) {
         response.render('admin')
     }
+    //[GET] home
+    async projectManager(request, response, next) {
+        response.render('project-manager')
+    }
 }
 module.exports = new AdminController;
