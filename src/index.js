@@ -9,7 +9,7 @@ const app = express();
 //dotenv
 require('dotenv').config();
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, '/public/')))
 //handle bar(template engine)
 const hbs  = require('express-handlebars');
 const { extname } = require('path');
