@@ -12,5 +12,13 @@ class AdminController {
     async projectManager(request, response, next) {
         response.render('project-manager')
     }
+    //[GET] home
+    async projectPersonnelManager(request, response, next) {
+        response.render('project-personnel-manager')
+    }
+    //[GET] home
+    async projectPhotoManager(request, response, next) {
+        response.render('project-photo-manager')
+    }
 }
 module.exports = new AdminController;
