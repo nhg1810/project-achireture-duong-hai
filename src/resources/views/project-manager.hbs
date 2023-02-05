@@ -1,3 +1,106 @@
+{{!-- js for this page --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{!-- sweet alert --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+  $(document).ready(function () {
+    // When we begin, assume no images are loaded.
+    var imagesLoaded = 0;
+    // Count the total number of images on the page when the page has loaded.
+    var totalImages = $("img").length;
+
+    // After an image is loaded, add to the count, and if that count equals the
+    // total number of images, fire the allImagesLoaded() function.
+    $("img").on("load", function (event) {
+      imagesLoaded++;
+      if (imagesLoaded == totalImages) {
+        allImagesLoaded();
+      }
+    });
+
+    function allImagesLoaded() {
+      console.log("ALL IMAGES LOADED");
+    }
+    //all image choose in drvier
+    var arr_choose_image = [];
+    $(".side-choose-image").hide();
+    $(".choose-image-from-gallery").click(function () {
+      $(".side-choose-image").slideDown(300);
+    })
+    $(".cancel-choose-image-gallery").click(function () {
+      $(".side-choose-image").slideUp(300);
+    })
+    $(".btn-cancel-choose-image").hide();
+    $(".btn-choose-image").click(function () {
+      $(this).hide();
+      let idImage = $(this).attr('data-id-image');
+      $(".image-from-driver[data-id-image=" + idImage + "]").css({ 'border': "solid 5px green" })
+      $(".btn-cancel-choose-image[data-id-image=" + idImage + "]").show();
+      let urlImage = $(this).attr('data-url-image');
+      arr_choose_image.push({ idImage, urlImage })
+      $(".contain-image-choosen").append('<img class="image-choosen" data-id-image= ' + idImage + ' src=' + urlImage + '>')
+      console.log(arr_choose_image)
+
+    })
+    $(".btn-cancel-choose-image").click(function () {
+      $(this).hide();
+      let idImage = $(this).attr('data-id-image');
+      $(".btn-choose-image[data-id-image=" + idImage + "]").show();
+
+      $(".image-from-driver[data-id-image=" + idImage + "]").css({ 'border': "solid 0px green" })
+      $(".image-choosen[data-id-image=" + idImage + "]").remove();
+      for (let i = 0; i < arr_choose_image.length; i++) {
+        if (arr_choose_image[i].idImage === idImage) {
+          arr_choose_image.splice(i, 1);
+        }
+      }
+      console.log(arr_choose_image)
+    })
+
+    //call ajax to add new project
+    $(".btn-add-project").click(function () {
+      let nameProject = $(".name-project").val()
+      let description_project = $(".description-project").val();
+      let cate_project = {'idCateProject': $(".cate-project").val(), 'nameCateProject': $(".cate-project option:selected").text() };
+      if (nameProject == "" || description_project == "" || cate_project == "" || arr_choose_image.length == 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Đang điền thiếu thông tin cần thiết của một dự án!',
+          footer: '<a href="">Thử lại và nếu không được liên hệ 0868617603?</a>'
+        })
+      } else {
+        var form_project = new FormData();
+        form_project = {
+          'nameProject': nameProject,
+          'imageProject': arr_choose_image,
+          'descriptionProject': description_project,
+          'cateProject': cate_project,
+        };
+        $.ajax({
+          url: '/admin/store-project',
+          type: 'POST',
+          data: form_project,
+          dataType: "json",
+          encode: true,
+        }).done(function (data) {
+          if (data == 'success') {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Thêm dự án ' + nameProject + ' thành công',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          }
+        });
+
+      }
+    })
+  });
+</script>
 <div class="content-wrapper">
   <div class="row">
     <div class="col-md-8 grid-margin stretch-card">
@@ -20,11 +123,10 @@
                           ID
                         </th>
                         <th>
-                          Tên Loại Dự Án
+                          Tên Dự Án
                         </th>
-
                         <th>
-                          Số Lượng
+                          Tên Loại Dự Án
                         </th>
                         <th>
                           Ngày tạo
@@ -38,38 +140,35 @@
                       </tr>
                     </thead>
                     <tbody>
+                      {{#all_prod}}
                       <tr>
                         <td class="py-1">
-                          <img src="../../images/faces/face1.jpg" alt="image" />
+                          {{this._id}}
                         </td>
                         <td>
-                          Herman Beck
+                          {{this.nameProject}}
                         </td>
 
                         <td>
-                          $ 77.99
+                          {{this.cateProject.nameCateProject}}
                         </td>
                         <td>
-                          May 15, 2015
+                          {{this.createdAt}}
                         </td>
                         <td>
-                          May 15, 2015
+                          {{this.updatedAt}}
                         </td>
                         <td>
-                          <button
-                            type="button"
-                            class="btn btn-danger btn-sm btn-icon-text"
-                          ><i class="mdi mdi-delete"></i></button>
-                          <button
-                            type="button"
-                            class="btn btn-success btn-sm btn-icon-text"
-                          ><i class="mdi mdi-lead-pencil"></i></button>
-                          <button
-                            type="button"
-                            class="btn btn-warning btn-sm btn-icon-text"
-                          ><i class="mdi mdi-eye"></i></button>
+                          <button type="button" class="btn btn-danger btn-sm btn-icon-text"><i
+                              class="mdi mdi-delete"></i></button>
+                          <button type="button" class="btn btn-success btn-sm btn-icon-text"><i
+                              class="mdi mdi-lead-pencil"></i></button>
+                          <button type="button" class="btn btn-warning btn-sm btn-icon-text"><i
+                              class="mdi mdi-eye"></i></button>
                         </td>
                       </tr>
+                      {{/all_prod}}
+
 
                     </tbody>
                   </table>
@@ -87,41 +186,31 @@
             <h4 class="card-title">Thêm Dự Án</h4>
             <div class="form-group">
               <label>Tên Dự Án</label>
-              <input type="text" class="form-control" placeholder="Tên dự án" />
+              <input type="text" class="form-control name-project" placeholder="Tên dự án" />
             </div>
             <div class="form-group">
               <label>Chọn Loại Dự Án</label>
-              <select class="js-example-basic-single w-100">
-                <option value="AL">Alabama</option>
-                <option value="WY">Wyoming</option>
-                <option value="AM">America</option>
-                <option value="CA">Canada</option>
-                <option value="RU">Russia</option>
+              <select class="js-example-basic-single w-100 cate-project">
+                {{#all_cate_prod}}
+                <option value={{this._id}} str-value={{this.nameProject}}>{{this.nameProject}}</option>
+                {{/all_cate_prod}}
               </select>
             </div>
             <div class="form-group">
-              <label>Chọn Ảnh</label>
-              <select
-                class="js-example-basic-multiple w-90"
-                multiple="multiple"
-              >
-                <option value="AL">Alabama</option>
-                <option value="WY">Wyoming</option>
-                <option value="AM">America</option>
-                <option value="CA">Canada</option>
-                <option value="RU">Russia</option>
-              </select>
+              <label>Chọn Ảnh Từ Driver</label>
+              <button type="button" class="btn btn-outline-danger btn-icon-text choose-image-from-gallery">
+                <i class="ti-upload btn-icon-prepend"></i>
+                Thư viện driver
+              </button>
+              <div class="contain-image-choosen">
+              </div>
             </div>
             <div class="form-group">
               <label for="exampleTextarea1">Mô Tả Dự Án</label>
-              <textarea
-                class="form-control"
-                id="exampleTextarea1"
-                rows="44"
-                style="height: 100px;"
-              ></textarea>
+              <textarea class="form-control description-project" id="exampleTextarea1" rows="44"
+                style="height: 100px;"></textarea>
             </div>
-            <button type="button" class="btn btn-success btn-icon-text">
+            <button type="button" class="btn btn-success btn-add-project btn-icon-text">
               <i class="ti-upload btn-icon-prepend"></i>
               Đăng
             </button>
@@ -132,24 +221,20 @@
 
     <div class="col-md-4 grid-margin stretch-card">
       <div class="card">
-        <form action="">
+        <form method="post" action="/admin/store-category-project">
           <div class="card-body">
             <h4 class="card-title">Thêm Loại Dự Án</h4>
             <div class="form-group">
               <label>Tên Loại Dự Án</label>
-              <input type="text" class="form-control" placeholder="Tên dự án" />
+              <input type="text" name="nameProject" class="form-control" placeholder="Tên dự án" />
             </div>
             <div class="form-group">
               <label for="exampleTextarea1">Mô Tả Loại Dự Án</label>
-              <textarea
-                class="form-control"
-                id="exampleTextarea1"
-                rows="44"
-                style="height: 100px;"
-              ></textarea>
+              <textarea class="form-control" name="descriptionProject" id="exampleTextarea1" rows="44"
+                style="height: 100px;"></textarea>
             </div>
-            <button type="button" class="btn btn-success btn-icon-text">
-              <i class="ti-upload btn-icon-prepend"></i>
+            <button type="submit" class="btn btn-success btn-icon-text">
+              <i class="ti-upload btn-icon-prepend "></i>
               Đăng
             </button>
           </div>
@@ -193,38 +278,34 @@
                       </tr>
                     </thead>
                     <tbody>
+                      {{#all_cate_prod}}
                       <tr>
                         <td class="py-1">
-                          <img src="../../images/faces/face1.jpg" alt="image" />
+                          {{this._id}}
                         </td>
                         <td>
-                          Herman Beck
+                          {{this.nameProject}}
                         </td>
 
                         <td>
                           $ 77.99
                         </td>
                         <td>
-                          May 15, 2015
+                          {{this.createdAt}}
                         </td>
                         <td>
-                          May 15, 2015
+                          {{this.updatedAt}}
                         </td>
                         <td>
-                          <button
-                            type="button"
-                            class="btn btn-danger btn-sm btn-icon-text"
-                          ><i class="mdi mdi-delete"></i></button>
-                          <button
-                            type="button"
-                            class="btn btn-success btn-sm btn-icon-text"
-                          ><i class="mdi mdi-lead-pencil"></i></button>
-                          <button
-                            type="button"
-                            class="btn btn-warning btn-sm btn-icon-text"
-                          ><i class="mdi mdi-eye"></i></button>
+                          <button type="button" class="btn btn-danger btn-sm btn-icon-text"><i
+                              class="mdi mdi-delete"></i></button>
+                          <button type="button" class="btn btn-success btn-sm btn-icon-text"><i
+                              class="mdi mdi-lead-pencil"></i></button>
+                          <button type="button" class="btn btn-warning btn-sm btn-icon-text"><i
+                              class="mdi mdi-eye"></i></button>
                         </td>
                       </tr>
+                      {{/all_cate_prod}}
 
                     </tbody>
                   </table>
@@ -235,5 +316,115 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+<style>
+  .contain-image-choosen {
+    display: flex;
+    width: 250px;
+    height: auto;
+    flex-wrap: wrap;
+
+  }
+
+  .contain-image-choosen>img {
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+  }
+
+  .side-choose-image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.9);
+    position: fixed;
+  }
+
+  .side-choose-image>span {
+    padding: 20px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+
+  .side-choose-image>p {
+    padding: 20px;
+  }
+
+  .side-choose-image .contain-image-from-driver {
+    margin-top: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    width: 80%;
+    height: 400px;
+    overflow-y: scroll;
+  }
+
+  .side-choose-image .contain-image-from-driver>.item-image {
+    width: 200px;
+    height: 200px;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 20PX;
+    position: relative;
+  }
+
+  .side-choose-image .contain-image-from-driver>.item-image>img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    border: solid 2px white;
+  }
+
+  .side-choose-image .contain-image-from-driver>.item-image>.desription-image {
+    transition: 0.3s;
+    position: absolute;
+    width: 100%;
+    height: auto;
+    background-color: white;
+    bottom: -100%;
+    display: none;
+  }
+
+  .side-choose-image .contain-image-from-driver>.item-image>.desription-image>b {
+    font-size: 12px;
+  }
+
+  .side-choose-image .contain-image-from-driver>.item-image>.desription-image>a {
+    font-size: 12px;
+  }
+
+  .side-choose-image .contain-image-from-driver>.item-image:hover>.desription-image {
+    display: block;
+    bottom: 0;
+  }
+</style>
+<div class="side-choose-image">
+  <span>Chọn ảnh từ THƯ VIỆN DỰ ÁN</span>
+  <button type="button" class="btn btn-danger  btn-sm cancel-choose-image-gallery">
+    Đóng
+  </button>
+  <p>Tất cả các hình ảnh này được liên hết với tài khoản google driver đã được cấp</p>
+
+  <div class="contain-image-from-driver">
+    {{#imageDesign}}
+    <div class="item-image">
+      <img class="image-from-driver" data-id-image={{this.id}} src={{this.thumbnailLink}} alt="">
+      <div class="desription-image">
+        <b>{{this.name}}</b>
+        <p>Dung lượng : {{this.size}} kb</p>
+        <button type="button" class="btn btn-primary btn-sm btn-choose-image" data-id-image={{this.id}}
+          data-url-image={{this.thumbnailLink}}>Chọn ảnh này vào dự án</button>
+        <button type="button" class="btn btn-warning btn-sm btn-cancel-choose-image" data-id-image={{this.id}}
+          data-url-image={{this.thumbnailLink}}>Huỷ chọn ảnh này</button>
+      </div>
+    </div>
+    {{/imageDesign}}
+
   </div>
 </div>

@@ -5,6 +5,7 @@ class HomeController {
     async index(request, response, next) {
 
         let res = await projectManagerService.test(request);
+        console.log(res);
         if (res == 'error') {
             response.send("error");
         } else {
@@ -14,7 +15,6 @@ class HomeController {
         }
 
     }
-
     home(req, res) {
         res.render('page');
     }

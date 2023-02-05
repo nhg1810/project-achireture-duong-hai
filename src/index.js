@@ -31,6 +31,9 @@ app.engine('.hbs', hbs.engine({
 app.set('view engine', 'hbs');
 app.set('views', './src/resources/views')
 
+app.use(express.json());
+app.use(express.urlencoded());
+
 //route
 route(app)
 
