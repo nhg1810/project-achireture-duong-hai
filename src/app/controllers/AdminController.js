@@ -35,7 +35,8 @@ class AdminController {
     }
 
     async createCategoryProject(request, response, next) {
-        let res = await projectManagerService.addCateProduct(request);
+        // response.json(request.body);
+        let res = await projectManagerService.addCateject(request);
         if (res == "success") {
             response.redirect('/admin/project-manager')
 
