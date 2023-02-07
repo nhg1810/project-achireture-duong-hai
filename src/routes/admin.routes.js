@@ -8,6 +8,9 @@ router.get('/project-photo-manager', AdminController.projectPhotoManager);
 
 router.post('/store-category-project' , AdminController.createCategoryProject)
 router.post('/store-project', AdminController.createProdject);
+router.post('/delete-category-project', AdminController.deleteCategoryProject);
+router.post('/delete-project', AdminController.deleteProject);
+router.post('/edit-cate-project', AdminController.editCateProject)
 router.get('/', AdminController.index);
 
 

@@ -63,7 +63,7 @@
     $(".btn-add-project").click(function () {
       let nameProject = $(".name-project").val()
       let description_project = $(".description-project").val();
-      let cate_project = {'idCateProject': $(".cate-project").val(), 'nameCateProject': $(".cate-project option:selected").text() };
+      let cate_project = { 'idCateProject': $(".cate-project").val(), 'nameCateProject': $(".cate-project option:selected").text() };
       if (nameProject == "" || description_project == "" || cate_project == "" || arr_choose_image.length == 0) {
         Swal.fire({
           icon: 'error',
@@ -99,6 +99,198 @@
 
       }
     })
+    //ajax delete cate project
+    $(".btn-del-cate-project").click(function () {
+      Swal.fire({
+        title: 'Bạn có chắc chắn muốn xóa loại doanh mục này?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Chắc chắn',
+        denyButtonText: `Hủy bỏ`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          let id_cate_project = new FormData();
+          let var_cate_project = $(this).attr('data-id-cate');
+          id_cate_project = { '_id': $(this).attr('data-id-cate') };
+          $.ajax({
+            url: '/admin/delete-category-project',
+            type: 'POST',
+            data: id_cate_project,
+            dataType: "json",
+            encode: true,
+          }).done(function (data) {
+            if (data == 'success') {
+              $(".tr-cate-gory-project[data-id-cate =" + var_cate_project + "]").remove();
+              Swal.fire('Xóa thành công!', '', 'success')
+            } else {
+              console.log(data)
+            }
+          });
+        } else if (result.isDenied) {
+          Swal.fire('Chưa thực hiện thao tác', '', 'info')
+        }
+      })
+
+    })
+    //ajax add new cate project 
+    $(".btn-add-new-cate-project").click(function () {
+      let nameCateProject = $(".nameCateProject").val()
+      let descriptionCate = $(".descriptionProject").val();
+      if (nameCateProject == "" || descriptionCate == "") {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Tên danh mục hoặc mô tả danh mục đang thiếu, vui lòng kiếm tra lại!',
+          footer: '<a href="">Nếu thử lại mà không được vui lòng liên hệ 0868617603?</a>'
+        })
+      } else {
+        let formDataCateProject = new FormData();
+        formDataCateProject = { 'nameProject': nameCateProject, 'descriptionProject': descriptionCate }
+        $.ajax({
+          url: '/admin/store-category-project',
+          type: 'POST',
+          data: formDataCateProject,
+          dataType: "json",
+          encode: true,
+        }).done(function (data) {
+          if (data == 'success') {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Tạo danh mục dự án thành công !',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          } else {
+            console.log(data)
+          }
+        });
+      }
+    })
+    //ajax delete project
+    $(".btn-delete-project").click(function () {
+      Swal.fire({
+        title: 'Bạn có chắc là muốn xoá loại dự án này không?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Chắc chắn',
+        denyButtonText: `Huỷ bỏ`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          let idProject = new FormData();
+          idProject = { '_id': $(this).attr('data-id-project') }
+          $.ajax({
+            url: '/admin/delete-project',
+            type: 'POST',
+            data: idProject,
+            dataType: "json",
+            encode: true,
+          }).done(function (data) {
+            if (data == 'success') {
+              Swal.fire('Xóa thành công!', '', 'success')
+            } else {
+              console.log(data)
+            }
+          });
+        } else if (result.isDenied) {
+          Swal.fire('Thao tác chưa được thực hiện', '', 'info')
+        }
+      })
+
+    })
+    //ajax edit cate project
+    $(".btn-edit-cate-project").click(function () {
+      let formUpdateCateProject = new FormData();
+      let idCateProject = $(this).attr('data-id-cate');
+      let vlNameCate = $(".vl-name-project[data-id-cate=" + idCateProject + "]").text()
+      let vlDescriptionCate = $(".vl-description-cate-project[data-id-cate=" + idCateProject + "]").text()
+      Swal.fire({
+        title: 'Chi tiết dự án',
+        html: `  <div class="form-group">
+              <label>Tên Loại Dự Án</label>
+              <input type="text" name="nameCateProject" class="form-control editNameCateProject" value="`+ vlNameCate + `" placeholder="Tên dự án" />
+            </div>
+            <div class="form-group">
+              <label for="exampleTextarea1">Mô Tả Loại Dự Án</label>
+              <textarea class="form-control editDescriptionProject" name="descriptionProject" id="exampleTextarea1"
+                rows="44" style="height: 100px; width: 300px">`+ vlDescriptionCate + `</textarea>
+            </div>`,
+        confirmButtonText: 'Cập nhật',
+        focusConfirm: false,
+        preConfirm: () => {
+          const editNameCateProject = Swal.getPopup().querySelector('.editNameCateProject').value
+          const editDescriptionProject = Swal.getPopup().querySelector('.editDescriptionProject').value
+          if (!editNameCateProject || !editDescriptionProject) {
+            Swal.showValidationMessage(`Vui lòng nhập 2 trường này !!!`)
+          } else {
+            formUpdateCateProject = {
+              '_id': idCateProject,
+              'obj': {
+                'nameProject': editNameCateProject,
+                'descriptionProject': editDescriptionProject
+              },
+            }
+            $.ajax({
+              url: '/admin/edit-cate-project',
+              type: 'POST',
+              data: formUpdateCateProject,
+              dataType: "json",
+              encode: true,
+            }).done(function (data) {
+              if (data == "success") {
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: 'Cập nhật danh mục thành công',
+                  showConfirmButton: false,
+                  timer: 1500
+                })
+                return "success"
+              } else {
+                return data;
+              }
+            });
+          }
+        }
+      }).then((result) => {
+        //cập nhật thành công
+        if (result == "success") {
+
+        } else {
+          console.log(result);
+        }
+      })
+
+      /*formUpdateCateProject = {
+        _id: $(this).attr('data-id-cate'),
+        nameProject: ,
+        descriptionProject:,
+      }
+      $.ajax({
+        url: '/admin/edit-cate-project',
+        type: 'POST',
+        data: formUpdateCateProject,
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+        if (data == 'success') {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Chỉnh sửa danh mục dự án thành công !',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        } else {
+          console.log(data)
+        }
+      });
+      */
+    })
+    //ajax edit project
+    
   });
 </script>
 <div class="content-wrapper">
@@ -159,7 +351,8 @@
                           {{this.updatedAt}}
                         </td>
                         <td>
-                          <button type="button" class="btn btn-danger btn-sm btn-icon-text"><i
+                          <button type="button" data-id-project={{this._id}}
+                            class="btn btn-delete-project btn-danger btn-sm btn-icon-text"><i
                               class="mdi mdi-delete"></i></button>
                           <button type="button" class="btn btn-success btn-sm btn-icon-text"><i
                               class="mdi mdi-lead-pencil"></i></button>
@@ -221,19 +414,19 @@
 
     <div class="col-md-4 grid-margin stretch-card">
       <div class="card">
-        <form method="POST" action="/admin/store-category-project">
+        <form method="POST" action="">
           <div class="card-body">
             <h4 class="card-title">Thêm Loại Dự Án</h4>
             <div class="form-group">
               <label>Tên Loại Dự Án</label>
-              <input type="text" name="nameProject" class="form-control" placeholder="Tên dự án" />
+              <input type="text" name="nameCateProject" class="form-control nameCateProject" placeholder="Tên dự án" />
             </div>
             <div class="form-group">
               <label for="exampleTextarea1">Mô Tả Loại Dự Án</label>
-              <textarea class="form-control" name="descriptionProject" id="exampleTextarea1" rows="44"
-                style="height: 100px;"></textarea>
+              <textarea class="form-control descriptionProject" name="descriptionProject" id="exampleTextarea1"
+                rows="44" style="height: 100px;"></textarea>
             </div>
-            <button type="submit" class="btn btn-success btn-icon-text">
+            <button type="button" class="btn btn-success btn-add-new-cate-project btn-icon-text">
               <i class="ti-upload btn-icon-prepend "></i>
               Đăng
             </button>
@@ -277,15 +470,20 @@
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="tbl-all-cate-project">
                       {{#all_cate_prod}}
-                      <tr>
+                      <tr class="tr-cate-gory-project" data-id-cate={{this._id}}>
                         <td class="py-1">
                           {{this._id}}
                         </td>
                         <td>
                           {{this.nameProject}}
                         </td>
+                        <td style="display: none;" class="vl-name-project" data-id-cate={{this._id}}>
+                          {{this.nameProject}}</td>
+
+                        <td style="display: none;" class="vl-description-cate-project" data-id-cate={{this._id}}>
+                          {{this.descriptionProject}}</td>
 
                         <td>
                           $ 77.99
@@ -298,8 +496,9 @@
                         </td>
                         <td>
                           <button type="button" class="btn btn-danger btn-sm btn-icon-text"><i
-                              class="mdi mdi-delete"></i></button>
-                          <button type="button" class="btn btn-success btn-sm btn-icon-text"><i
+                              class="mdi mdi-delete btn-del-cate-project" data-id-cate={{this._id}}></i></button>
+                          <button type=" button" data-id-cate={{this._id}}
+                            class="btn btn-edit-cate-project btn-success btn-sm btn-icon-text"><i
                               class="mdi mdi-lead-pencil"></i></button>
                           <button type="button" class="btn btn-warning btn-sm btn-icon-text"><i
                               class="mdi mdi-eye"></i></button>

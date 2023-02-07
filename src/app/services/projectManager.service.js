@@ -89,5 +89,18 @@ class ProjectManagerService {
             return 'error';
         }
     }
+    // service update cateproject
+    async updateCateProject(request, response, next) {
+        try {
+            let data = await curdHelper.update({
+                model: 'cateProject',
+                id: request.body._id,
+                obj: request.body.obj
+            });
+            return data;
+        } catch (error) {
+            return 'error';
+        }
+    }
 }
 module.exports = new ProjectManagerService();
