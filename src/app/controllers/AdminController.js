@@ -24,7 +24,8 @@ class AdminController {
         let all_prod = await projectManagerService.getAllProject(request);
 
         if (res == 'error') {
-            return await response.send("error");
+            console.log(res);
+            return await response.send("error123");
         } else {
             // console.log(res);
             // response.send(res)
