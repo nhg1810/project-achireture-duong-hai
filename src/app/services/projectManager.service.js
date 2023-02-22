@@ -1,6 +1,7 @@
 const curdHelper = require('../helpers/crud');
 const googleDriverHelper = require('../helpers/google');
 const process = require('process');
+const e = require('express');
 
 const ID_FOLDER_DESIGN = process.env.ID_FOLDER_DESIGN;
 
@@ -24,10 +25,9 @@ class ProjectManagerService {
             if (request) {
                 let data = await googleDriverHelper.listFiles(ID_FOLDER_DESIGN);
                 return data;
-            } else {
-                return 'error'
             }
         } catch (error) {
+            console.log(error)
             return 'error'
         }
     }
@@ -57,6 +57,7 @@ class ProjectManagerService {
             data = data.map(data => data.toObject());
             return data;
         } catch (error) {
+            console.log(error)
             return 'error';
         }
     }
@@ -81,8 +82,9 @@ class ProjectManagerService {
         try {
             let data = await curdHelper.getAll({
                 model: 'project',
-                query: request.query
-            });
+                query: request.query,
+                populate: [{ path: 'cateProject', strictPopulate: false }],
+            })
             data = data.map(data => data.toObject());
             return data;
         } catch (error) {
@@ -94,6 +96,46 @@ class ProjectManagerService {
         try {
             let data = await curdHelper.update({
                 model: 'cateProject',
+                id: request.body._id,
+                obj: request.body.obj
+            });
+            return data;
+        } catch (error) {
+            return 'error';
+        }
+    }
+    //service get one cateproject
+    async getOneCateProject(idCateProject) {
+        try {
+            let data = await curdHelper.getSingle({
+                model: 'cateProject',
+                id: idCateProject,
+            });
+            return data;
+        } catch (error) {
+            return 'error';
+        }
+    }
+
+    //service get one project
+    async getOneProject(idProject) {
+        try {
+            let data = await curdHelper.getSingle({
+                model: 'project',
+                id: idProject,
+                populate: [{ path: 'cateProject', strictPopulate: false }],
+            });
+            return data;
+        } catch (error) {
+            return 'error';
+        }
+    }
+
+    //service updatte project
+    async updateProject(request, response, next) {
+        try {
+            let data = await curdHelper.update({
+                model: 'project',
                 id: request.body._id,
                 obj: request.body.obj
             });

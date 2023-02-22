@@ -63,7 +63,7 @@
     $(".btn-add-project").click(function () {
       let nameProject = $(".name-project").val()
       let description_project = $(".description-project").val();
-      let cate_project = { 'idCateProject': $(".cate-project").val(), 'nameCateProject': $(".cate-project option:selected").text() };
+      let cate_project = $(".cate-project").val();
       if (nameProject == "" || description_project == "" || cate_project == "" || arr_choose_image.length == 0) {
         Swal.fire({
           icon: 'error',
@@ -262,35 +262,151 @@
           console.log(result);
         }
       })
-
-      /*formUpdateCateProject = {
-        _id: $(this).attr('data-id-cate'),
-        nameProject: ,
-        descriptionProject:,
-      }
+    })
+    //ajax edit project
+    $(".btn-edit-project").click(function () {
+      let idProject = $(this).attr('data-id-project');
+      var arr_edit_img_project = [];
+      //get detail information project
       $.ajax({
-        url: '/admin/edit-cate-project',
+        url: '/admin/detail-project',
         type: 'POST',
-        data: formUpdateCateProject,
+        data: { '_id': idProject },
         dataType: "json",
         encode: true,
       }).done(function (data) {
-        if (data == 'success') {
-          Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Chỉnh sửa danh mục dự án thành công !',
-            showConfirmButton: false,
-            timer: 1500
+        if (data != 'error' || data != "") {
+          let nameProject = data.nameProject;
+          let descriptionProject = data.descriptionProject;
+          let idCateProject = data.cateProject._id;
+          let nameCateProject = data.cateProject.nameProject;
+          arr_edit_img_project = data.imageProject;
+          $(".side-edit-project").css('display', 'block');
+          $(".vl-detail-name-project").val(nameProject)
+          $('.vl-detail-cate-project option[value=' + idCateProject + ']').attr('selected', 'selected');
+          $(".vl-detail-descript-project").val(descriptionProject);
+          console.log(arr_edit_img_project)
+          let html_arr_img_project = ""
+          for (let i = 0; i < arr_edit_img_project.length; i++) {
+            console.log(arr_edit_img_project[i].urlImage)
+            html_arr_img_project += (`<div class="item-img update-desige-item" data-id-design=`+ arr_edit_img_project[i].idImage + `>
+                  <img
+                    src="https://drive.google.com/uc?id=`+ arr_edit_img_project[i].idImage + `"
+                    alt="`+ arr_edit_img_project[i] + `">
+                  <button type="button" class="btn btn-danger btn-rounded btn-sm btn-icon btn-del-update-design" data-id-design=`+ arr_edit_img_project[i].idImage + `>
+                    <i class="mdi mdi-delete"></i>
+                  </button>
+                </div>`
+            );
+          }
+          $(".contain-selected-image").html(html_arr_img_project);
+          //delete update image design 
+          $(".btn-del-update-design").click(function () {
+            let idUpdateImage = $(this).attr('data-id-design');
+            for (let i = 0; i < arr_edit_img_project.length; i++) {
+              if (arr_edit_img_project[i].idImage === idUpdateImage) {
+                arr_edit_img_project.splice(i, 1);
+              }
+            }
+            $(".btn-edit-arr-image-project").click();
+            $(".update-desige-item[data-id-design=" + idUpdateImage + "]").remove();
+
           })
-        } else {
-          console.log(data)
+
         }
       });
-      */
+      //update arr image project
+      $(".btn-edit-arr-image-project").click(function () {
+        $.ajax({
+          url: '/admin/all-image-project',
+          type: 'GET',
+          dataType: "json",
+          encode: true,
+        }).done(function (data) {
+          let html = ``;
+          for (let i = 0; i < data.length; i++) {
+            let same = false;
+            for (let j = 0; j < arr_edit_img_project.length; j++) {
+              if (arr_edit_img_project[j].idImage === data[i].id) {
+                same = true
+              }
+            };
+            if (same == true) {
+              html += ` <div class="item-design n-choose-design design-active" data-id-design= ` + data[i].id + `>
+                  <img src="https://drive.google.com/uc?id=`+ data[i].id + `" alt="">
+                </div>`;
+            } else {
+              html += ` <div class="item-design n-choose-design" data-id-design= ` + data[i].id + `>
+                  <img src="https://drive.google.com/uc?id=`+ data[i].id + `" alt="">
+                </div>`;
+            }
+
+          }
+          $(".contain-all-design").html(html)
+          $(".n-choose-design").click(function () {
+            let idDesign = $(this).attr('data-id-design');
+            for (let j = 0; j < arr_edit_img_project.length; j++) {
+              if (arr_edit_img_project[j].idImage === idDesign) {
+                Swal.fire('Ảnh này đã được chọn từ lúc trước !!!')
+              } else {
+                //handle add new design
+              }
+            };
+          })
+        })
+      })
+      //get new value next to update
+      $(".btn-save-update-project").click(function () {
+        let formUpdateProject = new FormData();
+
+
+        let n_name_project = $(".vl-detail-name-project").val();
+        let n_id_cate_project = $(".vl-detail-cate-project").val();
+        let n_detail_project = $(".vl-detail-descript-project").val();
+
+        formUpdateProject = {
+          '_id': idProject,
+          'obj': {
+            'nameProject': n_name_project,
+            'descriptionProject': n_detail_project,
+            'cateProject': n_id_cate_project,
+            'imageProject': arr_edit_img_project
+          }
+        }
+        Swal.fire({
+          title: 'Bạn có chắc muốn cập nhật sản phẩm này?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Chắc chắn',
+          denyButtonText: `Huỷ bỏ`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            $.ajax({
+              url: '/admin/edit-project',
+              type: 'POST',
+              data: formUpdateProject,
+              dataType: "json",
+              encode: true,
+            }).done(function (data) {
+              if (data == 'success') {
+                Swal.fire('Cập nhật thành công!', '', 'success');
+                $(".side-edit-project").css('display', 'none');
+              } else {
+                Swal.fire('Lỗi!', '', 'info');
+              }
+            })
+          } else if (result.isDenied) {
+            Swal.fire('Thao tác chưa được thực hiện', '', 'info')
+          }
+        })
+      })
     })
-    //ajax edit project
-    
+
+    $(".btn-close-side-eidt-project").click(function () {
+      $(".side-edit-project").hide();
+    })
+
   });
 </script>
 <div class="content-wrapper">
@@ -310,10 +426,6 @@
                   <table class="table table-striped">
                     <thead>
                       <tr>
-
-                        <th>
-                          ID
-                        </th>
                         <th>
                           Tên Dự Án
                         </th>
@@ -334,28 +446,28 @@
                     <tbody>
                       {{#all_prod}}
                       <tr>
-                        <td class="py-1">
-                          {{this._id}}
-                        </td>
-                        <td>
+                        <td class="ed-name-project" value={{this.nameProject}}>
                           {{this.nameProject}}
                         </td>
 
-                        <td>
-                          {{this.cateProject.nameCateProject}}
+                        <td class="ed-cate-project" value={{this.cateProject._id}}>
+                          {{this.cateProject.nameProject}}
                         </td>
                         <td>
-                          {{this.createdAt}}
+                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
+                            {{this.createdAt}}
+                          </p>
                         </td>
                         <td>
-                          {{this.updatedAt}}
+                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
+                            {{this.updatedAt}}</p>
                         </td>
                         <td>
                           <button type="button" data-id-project={{this._id}}
                             class="btn btn-delete-project btn-danger btn-sm btn-icon-text"><i
                               class="mdi mdi-delete"></i></button>
-                          <button type="button" class="btn btn-success btn-sm btn-icon-text"><i
-                              class="mdi mdi-lead-pencil"></i></button>
+                          <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
+                            data-id-project={{this._id}}><i class="mdi mdi-lead-pencil"></i></button>
                           <button type="button" class="btn btn-warning btn-sm btn-icon-text"><i
                               class="mdi mdi-eye"></i></button>
                         </td>
@@ -518,6 +630,85 @@
   </div>
 </div>
 <style>
+  .contain-all-design {
+    margin-top: 10px;
+    width: 100%;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    margin-bottom: 50px;
+    cursor: pointer;
+  }
+
+  .contain-all-design>.item-design {
+    margin-top: 5px;
+    width: 100px;
+    min-height: 100px;
+    position: relative;
+    margin-left: 5px;
+  }
+
+  .design-active {
+    border: solid 5px #68ff2c;
+    border-radius: 5px;
+  }
+
+  .contain-all-design>.item-design:hover {
+    border: solid 5px #68ff2c;
+    border-radius: 5px;
+  }
+
+  .contain-all-design>.item-design>img {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  .contain-selected-image {
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .contain-selected-image>.item-img {
+    margin-left: 10px;
+    width: 100px;
+    min-height: 100px;
+    margin-left: 10px;
+    position: relative;
+    border: solid 5px #764141;
+    border-radius: 4px;
+    padding-bottom: 10%;
+    overflow: hidden;
+
+  }
+
+  .contain-selected-image>.item-img>button {
+    position: absolute;
+    z-index: 2;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .contain-selected-image>.item-img>img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+
   .contain-image-choosen {
     display: flex;
     width: 250px;
@@ -538,6 +729,7 @@
     position: absolute;
     background-color: rgba(255, 255, 255, 0.9);
     position: fixed;
+
   }
 
   .side-choose-image>span {
@@ -602,6 +794,17 @@
     display: block;
     bottom: 0;
   }
+
+
+  .side-edit-project {
+    overflow-y: scroll;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.9);
+    position: fixed;
+    display: none;
+  }
 </style>
 <div class="side-choose-image">
   <span>Chọn ảnh từ THƯ VIỆN DỰ ÁN</span>
@@ -625,5 +828,67 @@
     </div>
     {{/imageDesign}}
 
+  </div>
+</div>
+<div class="side-edit-project">
+  <button type="button" class="btn btn-danger btn-close-side-eidt-project">Đóng</button>
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Chỉnh sửa thông tin dự án</h4>
+              <p class="card-description">
+                Chỉ có người <code>Quản trị viên mới có thể </code> sử dụng được chức năng này<code></code>.
+              </p>
+              <div class="form-group">
+                <label>Tên dự án</label>
+                <input type="text" class="form-control form-control-lg vl-detail-name-project" placeholder="Tên dự án">
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlSelect3">Loại Dự Án</label>
+                <select class="form-control form-control-sm vl-detail-cate-project" id="exampleFormControlSelect3">
+                  {{#all_cate_prod}}
+                  <option value={{this._id}} str-value={{this.nameProject}}>{{this.nameProject}}</option>
+                  {{/all_cate_prod}}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Mô tả</label>
+                <textarea class="form-control vl-detail-descript-project" id="exampleTextarea1" rows="4"
+                  style="height: 50px"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <p class="card-description">
+                Ảnh đã chọn
+              </p>
+              <button type="button" class="btn btn-outline-danger btn-edit-arr-image-project btn-icon-text">
+                <i class="ti-upload btn-icon-prepend"></i>
+                Thêm ảnh khác
+              </button>
+              <button type="button" class="btn btn-primary btn-fw btn-save-update-project">Lưu thay đổi</button>
+              <p>Tất cả các ảnh đã chọn lúc trước</p>
+              <div class="contain-selected-image">
+
+
+
+              </div>
+              <p>Tất cả các ảnh đang có trong drive</p>
+
+              <div class="contain-all-design">
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

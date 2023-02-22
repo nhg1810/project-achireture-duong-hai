@@ -8,7 +8,10 @@ router.post('/store-category-project', AdminController.createCategoryProject)
 router.post('/store-project', AdminController.createProdject);
 router.post('/delete-category-project', AdminController.deleteCategoryProject);
 router.post('/delete-project', AdminController.deleteProject);
-router.post('/edit-cate-project', AdminController.editCateProject)
+router.post('/edit-cate-project', AdminController.editCateProject);
+router.post('/edit-project', AdminController.editProject);
+router.post('/detail-project', AdminController.detailProject);
+router.get('/all-image-project', AdminController.allDesignProject);
 router.get('/', AdminController.index);
 
 module.exports = router;

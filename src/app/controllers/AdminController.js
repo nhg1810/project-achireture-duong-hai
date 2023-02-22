@@ -19,21 +19,23 @@ class AdminController {
     }
 
     async projectManager(request, response, next) {
-        let res = await projectManagerService.getAllFileInFolder(request);
-        let all_cate_prod = await projectManagerService.allCateProject(request);
-        let all_prod = await projectManagerService.getAllProject(request);
-
-        if (res == 'error') {
-            console.log(res);
+        const res = await projectManagerService.getAllFileInFolder(request);
+        const all_cate_prod = await projectManagerService.allCateProject(request);
+        const all_prod = await projectManagerService.getAllProject(request);
+        if (all_prod == 'error' || all_cate_prod == 'error') {
+            // console.log(all_prod);
+            console.log(all_cate_prod);
             return await response.send("error123");
         } else {
-            // console.log(res);
-            // response.send(res)
             return await response.render('project-manager', {
                 imageDesign: res,
                 all_cate_prod: all_cate_prod,
                 all_prod: all_prod
             });
+            // const result = await all_cate_prod.find((item) => item._id === "63e202e2ed66b1f4c2f57d5b");
+            // response.send(all_cate_prod);
+            // response.send(all_prod)
+
         }
     }
 
@@ -48,7 +50,7 @@ class AdminController {
     }
 
     async createProdject(request, response, next) {
-        // console.log(request.body)
+        console.log(request.body)
         let res = await projectManagerService.addProject(request);
         // console.log(res);
 
@@ -61,14 +63,15 @@ class AdminController {
             response.send("thất bại")
         }
     }
-    //[GET] home
+
     async projectPersonnelManager(request, response, next) {
         response.render('project-personnel-manager')
     }
-    //[GET] home
+
     async projectPhotoManager(request, response, next) {
         response.render('project-photo-manager')
     }
+
     async deleteCategoryProject(request, response, next) {
         CateProject.deleteOne(request.body).then(() => {
             response.setHeader("Content-Type", "text/json");
@@ -78,6 +81,7 @@ class AdminController {
 
         })
     }
+
     async deleteProject(request, response, next) {
         Project.deleteOne(request.body).then(() => {
             response.setHeader("Content-Type", "text/json");
@@ -95,7 +99,36 @@ class AdminController {
             response.json('success')
         } else {
             // console.log(res)
-           console.log(res)
+            console.log(res)
+        }
+    }
+    async detailProject(request, response, next) {
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        let res = await projectManagerService.getOneProject(request.body._id);
+        response.json(res);
+    }
+    async editProject(request, response, next) {
+        let res = await projectManagerService.updateProject(request);
+        console.log(res);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        if (res == "success") {
+            response.json('success')
+        } else {
+            // console.log(res)
+            console.log(res)
+        }
+    }
+    async allDesignProject(request, response, next) {
+        const res = await projectManagerService.getAllFileInFolder(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        if (res != 'error') {
+            response.json(res)
+        } else {
+            // console.log(res)
+            console.log(res)
         }
     }
 }

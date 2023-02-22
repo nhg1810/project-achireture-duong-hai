@@ -30,7 +30,6 @@ class GoogleHelper {
                 q: `'${googleFolderId}' in parents`,
             });
         if (response.data) {
-            console.log("response", response)
             response.data.files.map((file) => {
                 arr.push(file);
             })

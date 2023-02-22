@@ -1,14 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
 
 const Project = new Schema({
     _id: Schema.Types.ObjectId,
     nameProject: { type: String },
     descriptionProject: { type: String },
     cateProject: {
-        idCateProject: String,
-        nameCateProject: String
+        type: Schema.Types.ObjectId,
+        ref: 'CateProject'
     },
     imageProject: [{
         urlImage: String,

@@ -4,19 +4,45 @@ const models = ['course', 'cateProject', 'project'];
 
 class CurdHelper {
 
-     async getAll({ model = '', query = {} }) {
+     async getAll({ model = '', query = {}, populate = [{path: ' ', strictPopulate: false }] }) {
           try {
                if (!model) { return null }
-               return await setupModel(model).find(query);
+               return setupModel(model).find(query).populate(populate) ;
           } catch (error) {
                console.log(error);
           }
      }
+     // getAll(params) {
+     //      params = Object.assign(
+     //           {
+     //                where: null,
+     //                limit: null,
+     //                page: 1,
+     //                sort: { _id: -1 },
+     //                select: null,
+     //                isLean: true,
+     //                populate: ''
+     //           },
+     //           params
+     //      );
+     //      const limit = parseInt(params.limit) || null;
+     //      const page = parseInt(params.page || 1);
+     //      const skip = limit && page ? (limit * page) - limit : 0;
+     //      return this
+     //           .find(params.where)
+     //           .limit(limit)
+     //           .skip(skip)
 
-     async getSingle({ model = '', id = '' }) {
+     //           .sort(params.sort)
+     //           .select(params.select)
+     //           .lean(params.isLean)
+     //           .populate(params.populate)
+     // }
+
+     async getSingle({ model = '', id = '',  populate = [{path: ' ', strictPopulate: false }]}) {
           try {
                if (!model || !id) { return null }
-               return await setupModel(model).findById(id);
+               return await setupModel(model).findById(id).populate(populate);
           } catch (error) {
                console.log(error);
           }
