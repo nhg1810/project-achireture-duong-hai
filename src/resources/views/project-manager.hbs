@@ -264,11 +264,14 @@
       })
     })
     //ajax edit project
+    var arr_edit_img_project = [];
+    var idProject;
     $(".btn-edit-project").click(function () {
-      let idProject = $(this).attr('data-id-project');
-      var arr_edit_img_project = [];
+      idProject = $(this).attr('data-id-project');
+      let loader = true;
       //get detail information project
       $.ajax({
+        async: false,
         url: '/admin/detail-project',
         type: 'POST',
         data: { '_id': idProject },
@@ -285,11 +288,10 @@
           $(".vl-detail-name-project").val(nameProject)
           $('.vl-detail-cate-project option[value=' + idCateProject + ']').attr('selected', 'selected');
           $(".vl-detail-descript-project").val(descriptionProject);
-          console.log(arr_edit_img_project)
           let html_arr_img_project = ""
           for (let i = 0; i < arr_edit_img_project.length; i++) {
             console.log(arr_edit_img_project[i].urlImage)
-            html_arr_img_project += (`<div class="item-img update-desige-item" data-id-design=`+ arr_edit_img_project[i].idImage + `>
+            html_arr_img_project += (`<div class="item-img update-desige-item" data-id-design=` + arr_edit_img_project[i].idImage + `>
                   <img
                     src="https://drive.google.com/uc?id=`+ arr_edit_img_project[i].idImage + `"
                     alt="`+ arr_edit_img_project[i] + `">
@@ -301,78 +303,149 @@
           }
           $(".contain-selected-image").html(html_arr_img_project);
           //delete update image design 
-          $(".btn-del-update-design").click(function () {
-            let idUpdateImage = $(this).attr('data-id-design');
-            for (let i = 0; i < arr_edit_img_project.length; i++) {
-              if (arr_edit_img_project[i].idImage === idUpdateImage) {
-                arr_edit_img_project.splice(i, 1);
-              }
-            }
-            $(".btn-edit-arr-image-project").click();
-            $(".update-desige-item[data-id-design=" + idUpdateImage + "]").remove();
-
-          })
-
+          updateDelDesign()
         }
       });
-      //update arr image project
-      $(".btn-edit-arr-image-project").click(function () {
-        $.ajax({
-          url: '/admin/all-image-project',
-          type: 'GET',
-          dataType: "json",
-          encode: true,
-        }).done(function (data) {
-          let html = ``;
-          for (let i = 0; i < data.length; i++) {
-            let same = false;
-            for (let j = 0; j < arr_edit_img_project.length; j++) {
-              if (arr_edit_img_project[j].idImage === data[i].id) {
-                same = true
-              }
-            };
-            if (same == true) {
-              html += ` <div class="item-design n-choose-design design-active" data-id-design= ` + data[i].id + `>
-                  <img src="https://drive.google.com/uc?id=`+ data[i].id + `" alt="">
-                </div>`;
-            } else {
-              html += ` <div class="item-design n-choose-design" data-id-design= ` + data[i].id + `>
-                  <img src="https://drive.google.com/uc?id=`+ data[i].id + `" alt="">
-                </div>`;
-            }
 
-          }
-          $(".contain-all-design").html(html)
-          $(".n-choose-design").click(function () {
-            let idDesign = $(this).attr('data-id-design');
-            for (let j = 0; j < arr_edit_img_project.length; j++) {
-              if (arr_edit_img_project[j].idImage === idDesign) {
-                Swal.fire('Ảnh này đã được chọn từ lúc trước !!!')
-              } else {
-                //handle add new design
-              }
-            };
-          })
-        })
-      })
-      //get new value next to update
-      $(".btn-save-update-project").click(function () {
-        let formUpdateProject = new FormData();
+    })
+    //function click to del choose image
+    function updateDelDesign() {
+      $(".btn-del-update-design").click(function () {
+        console.log(12334);
+        let html = ` <div class="pre-loading"><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+   width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+  <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+    s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+    c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+  <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+    C22.32,8.481,24.301,9.057,26.013,10.047z">
+    <animateTransform attributeType="xml"
+      attributeName="transform"
+      type="rotate"
+      from="0 20 20"
+      to="360 20 20"
+      dur="0.5s"
+      repeatCount="indefinite"/>
+    </path>
+  </svg></div>`;
+        let idUpdateImage = $(this).attr('data-id-design');
+        $(".title-image-choos-before").html(html);
+        $(".btn-save-update-project").removeClass('btn-primary').addClass('btn-outline-secondary');
+        for (let i = 0; i < arr_edit_img_project.length; i++) {
+          if (arr_edit_img_project[i].idImage === idUpdateImage) {
+            arr_edit_img_project.splice(i, 1);
+            $(".btn-edit-arr-image-project").click();
+            console.log(1234)
 
+            $(".update-desige-item[data-id-design=" + idUpdateImage + "]").remove();
+            setTimeout(function () {
+              $(".title-image-choos-before").html('Tất cả các ảnh đã chọn');
+              $(".btn-save-update-project").removeClass('btn-outline-secondary').addClass('btn-primary');
 
-        let n_name_project = $(".vl-detail-name-project").val();
-        let n_id_cate_project = $(".vl-detail-cate-project").val();
-        let n_detail_project = $(".vl-detail-descript-project").val();
-
-        formUpdateProject = {
-          '_id': idProject,
-          'obj': {
-            'nameProject': n_name_project,
-            'descriptionProject': n_detail_project,
-            'cateProject': n_id_cate_project,
-            'imageProject': arr_edit_img_project
+            }, 2000)
+            console.log(123);
           }
         }
+        console.log(arr_edit_img_project);
+      })
+    }
+
+    //update arr image project
+    $(".btn-edit-arr-image-project").click(function () {
+      $.ajax({
+        async: false,
+        url: '/admin/all-image-project',
+        type: 'GET',
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+        let html = ``;
+        for (let i = 0; i < data.length; i++) {
+          let same = false;
+          for (let j = 0; j < arr_edit_img_project.length; j++) {
+            if (arr_edit_img_project[j].idImage == data[i].id) {
+              same = true
+            }
+          };
+          if (same == true) {
+            html += ` <div class="item-design n-choose-design design-active" data-id-design= ` + data[i].id + `>
+                  <img src="https://drive.google.com/uc?id=`+ data[i].id + `" alt="">
+                </div>`;
+          } else {
+            html += ` <div class="item-design n-choose-design" data-id-design= ` + data[i].id + `>
+                  <img src="https://drive.google.com/uc?id=`+ data[i].id + `" alt="">
+                </div>`;
+          }
+
+        }
+        $(".contain-all-design").html(html)
+        $(".n-choose-design").click(function () {
+          let idDesign = $(this).attr('data-id-design');
+          let appear = false;
+          for (let j = 0; j < arr_edit_img_project.length; j++) {
+            if (arr_edit_img_project[j].idImage == idDesign) {
+              appear = true
+            }
+          };
+          if (appear == true) {
+            Swal.fire('Ảnh này đã được chọn từ lúc trước !!!');
+
+          } else {
+            $(this).addClass('design-active');
+            let html_img_project = (`<div class="item-img update-desige-item" data-id-design=` + idDesign + `>
+                  <img
+                    src="https://drive.google.com/uc?id=`+ idDesign + `"
+                    alt="">
+                  <button type="button" class="btn btn-danger btn-rounded btn-sm btn-icon btn-del-update-design" data-id-design=`+ idDesign + `>
+                    <i class="mdi mdi-delete"></i>
+                  </button>
+                </div>`
+            );
+            $(".contain-selected-image").append(html_img_project);
+            arr_edit_img_project.push({
+              idImage: idDesign,
+              urlImage: `https://drive.google.com/uc?id=` + idDesign + ` `
+            })
+
+            console.log("12312", arr_edit_img_project);
+            updateDelDesign();
+
+          }
+        })
+
+      })
+    })
+
+    //get new value next to update
+    $(".btn-save-update-project").click(function () {
+      let formUpdateProject = new FormData();
+      let n_name_project = $(".vl-detail-name-project").val();
+      let n_id_cate_project = $(".vl-detail-cate-project").val();
+      let n_detail_project = $(".vl-detail-descript-project").val();
+
+      formUpdateProject = {
+        '_id': idProject,
+        'obj': {
+          'nameProject': n_name_project,
+          'descriptionProject': n_detail_project,
+          'cateProject': n_id_cate_project,
+          'imageProject': arr_edit_img_project
+        }
+      }
+      if (arr_edit_img_project.length == 0) {
+        Swal.fire({
+          icon: 'Lỗi',
+          title: 'Chưa có ảnh design',
+          text: 'Phải có ít nhất một ảnh trong 1 dự án!',
+        })
+      }
+      else if (n_name_project == "" || n_detail_project == "" || n_id_cate_project == "") {
+        Swal.fire({
+          icon: 'Lỗi',
+          title: 'Các thông tin chưa được điền đầy đủ',
+          text: 'Kiểm tra lại!',
+        })
+      } else {
         Swal.fire({
           title: 'Bạn có chắc muốn cập nhật sản phẩm này?',
           showDenyButton: true,
@@ -383,6 +456,7 @@
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
             $.ajax({
+              async: false,
               url: '/admin/edit-project',
               type: 'POST',
               data: formUpdateProject,
@@ -400,13 +474,31 @@
             Swal.fire('Thao tác chưa được thực hiện', '', 'info')
           }
         })
-      })
+      }
     })
 
     $(".btn-close-side-eidt-project").click(function () {
-      $(".side-edit-project").hide();
+      Swal.fire({
+        title: 'Khi thoát mọi thay đổi chưa lưu sẽ biến mất, bạn có chắc muốn thoát?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Chắc chắn',
+        denyButtonText: `Huỷ bỏ`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          $(".side-edit-project").hide();
+          $(".contain-all-design").html('')
+          Swal.fire('Chưa được cập nhật', '', 'info')
+        } else if (result.isDenied) {
+        }
+      })
     })
 
+    //function get by ajax
+    function getInformationAjax() {
+      
+    }
   });
 </script>
 <div class="content-wrapper">
@@ -873,13 +965,14 @@
                 Thêm ảnh khác
               </button>
               <button type="button" class="btn btn-primary btn-fw btn-save-update-project">Lưu thay đổi</button>
-              <p>Tất cả các ảnh đã chọn lúc trước</p>
+              <p class="title-image-choos-before">Tất cả các ảnh đã chọn lúc trước</p>
               <div class="contain-selected-image">
 
 
 
               </div>
               <p>Tất cả các ảnh đang có trong drive</p>
+              <i style="color: red">Click vào Thêm Ảnh Khác để thêm các ảnh khác trong kho Drive</i>
 
               <div class="contain-all-design">
 
