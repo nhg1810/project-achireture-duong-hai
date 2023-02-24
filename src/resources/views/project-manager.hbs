@@ -2,29 +2,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 {{!-- sweet alert --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<!-- jsDeliver -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
 
 <script>
   $(document).ready(function () {
-    // When we begin, assume no images are loaded.
-    var imagesLoaded = 0;
-    // Count the total number of images on the page when the page has loaded.
-    var totalImages = $("img").length;
-
-    // After an image is loaded, add to the count, and if that count equals the
-    // total number of images, fire the allImagesLoaded() function.
-    $("img").on("load", function (event) {
-      imagesLoaded++;
-      if (imagesLoaded == totalImages) {
-        allImagesLoaded();
-      }
-    });
-
-    function allImagesLoaded() {
-      console.log("ALL IMAGES LOADED");
-    }
-
-    
+    //lazy jquery
+    $('img').Lazy();
     //all image choose in drvier
     var arr_choose_image = [];
     $(".choose-image-from-gallery").click(function () {
@@ -42,7 +27,7 @@
       let urlImage = $(this).attr('data-url-image');
       arr_choose_image.push({ idImage, urlImage })
       $(".contain-image-choosen").append('<img class="image-choosen" data-id-image= ' + idImage + ' src=' + urlImage + '>')
-      console.log(arr_choose_image)
+      //console.log(arr_choose_image)
 
     })
     $(".btn-cancel-choose-image").click(function () {
@@ -57,7 +42,7 @@
           arr_choose_image.splice(i, 1);
         }
       }
-      console.log(arr_choose_image)
+      //console.log(arr_choose_image)
     })
 
     //call ajax to add new project
@@ -314,7 +299,7 @@
             $(".vl-detail-descript-project").val(descriptionProject);
             let html_arr_img_project = ""
             for (let i = 0; i < arr_edit_img_project.length; i++) {
-              console.log(arr_edit_img_project[i].urlImage)
+              //console.log(arr_edit_img_project[i].urlImage)
               html_arr_img_project += (`<div class="item-img update-desige-item" data-id-design=` + arr_edit_img_project[i].idImage + `>
                   <img
                     src="https://drive.google.com/uc?id=`+ arr_edit_img_project[i].idImage + `"
@@ -337,7 +322,6 @@
     //function click to del choose image
     function updateDelDesign() {
       $(".btn-del-update-design").click(function () {
-        console.log(12334);
         let html = ` <div class="pre-loading"><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
    width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
   <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
@@ -361,7 +345,6 @@
           if (arr_edit_img_project[i].idImage === idUpdateImage) {
             arr_edit_img_project.splice(i, 1);
             $(".btn-edit-arr-image-project").click();
-            console.log(1234)
 
             $(".update-desige-item[data-id-design=" + idUpdateImage + "]").remove();
             setTimeout(function () {
@@ -369,10 +352,8 @@
               $(".btn-save-update-project").removeClass('btn-outline-secondary').addClass('btn-primary');
 
             }, 2000)
-            console.log(123);
           }
         }
-        console.log(arr_edit_img_project);
       })
     }
 
@@ -434,7 +415,6 @@
                 urlImage: `https://drive.google.com/uc?id=` + idDesign + ` `
               })
 
-              console.log("12312", arr_edit_img_project);
               updateDelDesign();
 
             }
@@ -975,7 +955,7 @@
   <div class="contain-image-from-driver">
     {{#imageDesign}}
     <div class="item-image">
-      <img class="image-from-driver" data-id-image={{this.id}} src={{this.thumbnailLink}} alt="">
+      <img class="image-from-driver" data-id-image={{this.id}} data-src={{this.thumbnailLink}} alt="">
       <div class="desription-image">
         <b>{{this.name}}</b>
         <p>Dung lượng : {{this.size}} kb</p>
