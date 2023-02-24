@@ -131,5 +131,27 @@ class AdminController {
             console.log(res)
         }
     }
+    async getAllProject(request, response, next) {
+        const res = await projectManagerService.getAllProject(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        if (res != 'error') {
+            response.json(res)
+        } else {
+            // console.log(res)
+            console.log(res)
+        }
+    }
+    async getAllCateProject(request, response, next) {
+        const res = await projectManagerService.allCateProject(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        if (res != 'error') {
+            response.json(res)
+        } else {
+            // console.log(res)
+            console.log(res)
+        }
+    }
 }
 module.exports = new AdminController;

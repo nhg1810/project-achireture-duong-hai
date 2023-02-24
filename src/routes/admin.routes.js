@@ -12,6 +12,9 @@ router.post('/edit-cate-project', AdminController.editCateProject);
 router.post('/edit-project', AdminController.editProject);
 router.post('/detail-project', AdminController.detailProject);
 router.get('/all-image-project', AdminController.allDesignProject);
+router.get('/get-all-project', AdminController.getAllProject);
+router.get('/get-all-cate-project', AdminController.getAllCateProject);
+
 router.get('/', AdminController.index);
 
 module.exports = router;
