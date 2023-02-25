@@ -541,8 +541,6 @@
                               class="mdi mdi-delete"></i></button>
                           <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
                             data-id-project=`+ data[i]._id + `><i class="mdi mdi-lead-pencil"></i></button>
-                          <button type="button" class="btn btn-warning btn-sm btn-icon-text"><i
-                              class="mdi mdi-eye"></i></button>
                         </td>
                       </tr>
           `;
@@ -567,9 +565,6 @@
         let html = ``;
         for (let i = 0; i < data.length; i++) {
           html += `<tr class="tr-cate-gory-project" data-id-cate=` + data[i]._id + `>
-            <td class="py-1">
-              `+ data[i]._id + `
-            </td>
             <td>
               `+ data[i].nameProject + `
             </td>
@@ -583,10 +578,11 @@
               $ 77.99
             </td>
             <td>
-              `+ data[i].createdAt + `
+              <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;"> `+ data[i].createdAt + `</p>
+             
             </td>
             <td>
-              `+ data[i].updatedAt + `
+              <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;"> `+ data[i].updatedAt + `</p>
             </td>
             <td>
               <button type="button" class="btn btn-danger btn-sm btn-icon-text"><i
@@ -594,8 +590,6 @@
               <button type=" button" data-id-cate=`+ data[i]._id + `
                 class="btn btn-edit-cate-project btn-success btn-sm btn-icon-text"><i
                   class="mdi mdi-lead-pencil"></i></button>
-              <button type="button" class="btn btn-warning btn-sm btn-icon-text"><i
-                  class="mdi mdi-eye"></i></button>
             </td>
         </tr>`;
         }
@@ -608,6 +602,52 @@
     }
     //first data
     getInformationAjax()
+    $("#search-project-input").keyup(function () {
+      let search = $(this).val();
+      $.ajax({
+        async: false,
+        url: '/admin/get-project-by-name',
+        type: 'POST',
+        data: { 'vlSearch': search },
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+        let html = ``;
+        for (let i = 0; i < data.length; i++) {
+          html += `<tr>
+                        <td class="ed-name-project" value='`+ data[i].nameProject + `'>
+                          `+ data[i].nameProject + `
+                        </td>
+
+                        <td class="ed-cate-project" value=`+ data[i].cateProject._id + `>
+                          `+ data[i].cateProject.nameProject + `
+                        </td>
+                        <td>
+                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
+                            `+ data[i].createdAt + `
+                          </p>
+                        </td>
+                        <td>
+                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
+                            `+ data[i].updatedAt + `</p>
+                        </td>
+                        <td>
+                          <button type="button" data-id-project=`+ data[i]._id + `
+                            class="btn btn-delete-project btn-danger btn-sm btn-icon-text"><i
+                              class="mdi mdi-delete"></i></button>
+                          <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
+                            data-id-project=`+ data[i]._id + `><i class="mdi mdi-lead-pencil"></i></button>
+                        </td>
+                      </tr>`;
+        }
+        $(".tbl-all-project").html(html);
+        //delete project
+        deleteCateProject();
+        //edit cate project
+        editCateProject();
+        console.log(html)
+      })
+    })
   });
 </script>
 <div class="content-wrapper">
@@ -623,6 +663,12 @@
                   Đây là bảng:
                   <code>Thống kê các dự án của công ty.</code>
                 </p>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input type="text" id="search-project-input" class="form-control"
+                      placeholder='Tìm kiếm theo tên dự án' />
+                  </div>
+                </div>
                 <div class="table-responsive">
                   <table class="table table-striped">
                     <thead>
@@ -728,13 +774,21 @@
                   Đây là bảng:
                   <code>Thống kê các dự án của công ty.</code>
                 </p>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input type="text" id="search-cate-project-input" class="form-control"
+                      placeholder='Tìm kiếm loại dự án' />
+
+                    <div class="input-group-append">
+                      <button class="btn btn-sm btn-primary btn-cate-search-project" type="button">Tìm kiếm...</button>
+                    </div>
+                  </div>
+                </div>
                 <div class="table-responsive">
                   <table class="table table-striped">
                     <thead>
                       <tr>
-                        <th>
-                          ID
-                        </th>
+
                         <th>
                           Tên Loại Dự Án
                         </th>
@@ -955,7 +1009,7 @@
   <div class="contain-image-from-driver">
     {{#imageDesign}}
     <div class="item-image">
-      <img class="image-from-driver" data-id-image={{this.id}} data-src={{this.thumbnailLink}} alt="">
+      <img class="image-from-driver" data-id-image={{this.id}} src={{this.thumbnailLink}} alt="">
       <div class="desription-image">
         <b>{{this.name}}</b>
         <p>Dung lượng : {{this.size}} kb</p>

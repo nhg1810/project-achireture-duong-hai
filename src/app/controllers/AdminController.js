@@ -153,5 +153,12 @@ class AdminController {
             console.log(res)
         }
     }
+    async getProjectByName(request, response, next) {
+        const res = await projectManagerService.liveSearchProject(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res)
+        console.log(res);
+    }
 }
 module.exports = new AdminController;

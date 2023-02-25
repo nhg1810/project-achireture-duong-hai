@@ -14,7 +14,7 @@ router.post('/detail-project', AdminController.detailProject);
 router.get('/all-image-project', AdminController.allDesignProject);
 router.get('/get-all-project', AdminController.getAllProject);
 router.get('/get-all-cate-project', AdminController.getAllCateProject);
-
+router.post('/get-project-by-name', AdminController.getProjectByName);
 router.get('/', AdminController.index);
 
 module.exports = router;
