@@ -25,11 +25,11 @@ class GoogleHelper {
         let arr = [];
         const response = await
             drive.files.list({
-                pageSize: 10,
                 fields: 'nextPageToken, files(*)',
                 q: `'${googleFolderId}' in parents`,
             });
         if (response.data) {
+            console.log(response.data.files.length)
             response.data.files.map((file) => {
                 arr.push(file);
             })

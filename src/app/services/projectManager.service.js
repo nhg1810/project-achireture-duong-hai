@@ -3,6 +3,7 @@ const googleDriverHelper = require('../helpers/google');
 const process = require('process');
 const e = require('express');
 const ProjectModel = require('../model/ProjectModel');
+const CateProject = require('../model/CateProject');
 
 const ID_FOLDER_DESIGN = process.env.ID_FOLDER_DESIGN;
 
@@ -150,6 +151,18 @@ class ProjectManagerService {
         console.log(request.body.vlSearch)
         let rs = await ProjectModel.find({ nameProject: { $regex: new RegExp('^' + request.body.vlSearch + '.*', 'i') } }).populate([{ path: 'cateProject', strictPopulate: false }]).exec();
         rs = rs.slice(0, 10);
+        return rs;
+    }
+    // live search cate project
+    async liveSearchCateProject(request, response, next) {
+        console.log(request.body.vlSearch)
+        let rs = await CateProject.find({ nameProject: { $regex: new RegExp('^' + request.body.vlSearch + '.*', 'i') } }).exec();
+        rs = rs.slice(0, 10);
+        return rs;
+    }
+    // check valid cate in project
+    async checkProjectInCate(request, response, next) {
+        let rs = await ProjectModel.find({ cateProject: request.body.idCate }).exec();
         return rs;
     }
 }

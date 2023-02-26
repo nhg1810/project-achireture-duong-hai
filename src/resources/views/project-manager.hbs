@@ -10,6 +10,9 @@
   $(document).ready(function () {
     //lazy jquery
     $('img').Lazy();
+    $("img").onload = function () {
+      $(this).src = this.src
+    }
     //all image choose in drvier
     var arr_choose_image = [];
     $(".choose-image-from-gallery").click(function () {
@@ -94,38 +97,60 @@
     function deleteCateProject() {
       $(".btn-del-cate-project").click(function () {
         //check valid cateproject
-
-        Swal.fire({
-          title: 'Bạn có chắc chắn muốn xóa loại doanh mục này?',
-          showDenyButton: true,
-          showCancelButton: true,
-          confirmButtonText: 'Chắc chắn',
-          denyButtonText: `Hủy bỏ`,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            let id_cate_project = new FormData();
-            let var_cate_project = $(this).attr('data-id-cate');
-            id_cate_project = { '_id': $(this).attr('data-id-cate') };
-            $.ajax({
-              url: '/admin/delete-category-project',
-              type: 'POST',
-              data: id_cate_project,
-              dataType: "json",
-              encode: true,
-            }).done(function (data) {
-              if (data == 'success') {
-                $(".tr-cate-gory-project[data-id-cate =" + var_cate_project + "]").remove();
-                Swal.fire('Xóa thành công!', '', 'success')
-              } else {
-                console.log(data)
-              }
-            });
-          } else if (result.isDenied) {
-            Swal.fire('Chưa thực hiện thao tác', '', 'info')
+        let idCate = $(this).attr('data-id-cate');
+        {{!-- alert(idCate) --}}
+        $.ajax({
+          url: '/admin/get-project-by-id-cate',
+          type: 'POST',
+          async: false,
+          data: { 'idCate': idCate },
+          dataType: "json",
+          encode: true,
+        }).done(function (data) {
+          console.log(data.length);
+          if (data.length != 0) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Lỗi, không thể xoá danh mục này',
+              text: 'Danh mục này đang chứa các dự án, hãy kiểm tra các dự án rồi quay lại!',
+              footer: '<a href="">Vẫn đang gặp lỗi này, liên hệ 0866817603?</a>'
+            })
+            return;
           }
-        })
+          Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa loại doanh mục này?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Chắc chắn',
+            denyButtonText: `Hủy bỏ`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              let id_cate_project = new FormData();
+              let var_cate_project = $(this).attr('data-id-cate');
+              id_cate_project = { '_id': idCate };
+              $.ajax({
+                url: '/admin/delete-category-project',
+                type: 'POST',
+                async: false,
+                data: id_cate_project,
+                dataType: "json",
+                encode: true,
+              }).done(function (data) {
+                if (data == 'success') {
+                  $(".tr-cate-gory-project[data-id-cate =" + var_cate_project + "]").remove();
+                  Swal.fire('Xóa thành công!', '', 'success')
+                  getInformationAjax()
+                } else {
+                  console.log(data)
+                }
+              });
+            } else if (result.isDenied) {
+              Swal.fire('Chưa thực hiện thao tác', '', 'info')
+            }
+          })
 
+        })
       })
     }
 
@@ -160,7 +185,7 @@
             })
             $(".nameCateProject").val("")
             $(".descriptionProject").val("");
-            getInformationAjax();
+            location.reload(3000);
           } else {
             console.log(data)
           }
@@ -641,11 +666,59 @@
                       </tr>`;
         }
         $(".tbl-all-project").html(html);
+        deleteProject();
+        //edit project
+        editProject();
+        //edit image project
+        updateImageDesign();
+      })
+    })
+    $("#search-cate-project-input").keyup(function () {
+      let search = $(this).val();
+      $.ajax({
+        async: false,
+        url: '/admin/get-cate-project-by-name-cate',
+        type: 'POST',
+        data: { 'vlSearch': search },
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+        let html = ``;
+        for (let i = 0; i < data.length; i++) {
+          html += `<tr class="tr-cate-gory-project" data-id-cate=` + data[i]._id + `>
+            <td>
+              `+ data[i].nameProject + `
+            </td>
+            <td style="display: none;" class="vl-name-project" data-id-cate=`+ data[i]._id + `>
+              `+ data[i].nameProject + `</td>
+
+            <td style="display: none;" class="vl-description-cate-project" data-id-cate=`+ data[i]._id + `>
+              `+ data[i].descriptionProject + `</td>
+
+            <td>
+              $ 77.99
+            </td>
+            <td>
+              <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;"> `+ data[i].createdAt + `</p>
+             
+            </td>
+            <td>
+              <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;"> `+ data[i].updatedAt + `</p>
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm btn-icon-text"><i
+                  class="mdi mdi-delete btn-del-cate-project" data-id-cate=`+ data[i]._id + `></i></button>
+              <button type=" button" data-id-cate=`+ data[i]._id + `
+                class="btn btn-edit-cate-project btn-success btn-sm btn-icon-text"><i
+                  class="mdi mdi-lead-pencil"></i></button>
+            </td>
+        </tr>`;
+        }
+        $(".tbl-all-cate-project").html(html);
         //delete project
         deleteCateProject();
         //edit cate project
         editCateProject();
-        console.log(html)
       })
     })
   });
@@ -772,16 +845,12 @@
                 <h4 class="card-title">Loại Dự Án</h4>
                 <p class="card-description">
                   Đây là bảng:
-                  <code>Thống kê các dự án của công ty.</code>
+                  <code>Thống kê các loại dự án của công ty.</code>
                 </p>
                 <div class="form-group">
                   <div class="input-group">
                     <input type="text" id="search-cate-project-input" class="form-control"
                       placeholder='Tìm kiếm loại dự án' />
-
-                    <div class="input-group-append">
-                      <button class="btn btn-sm btn-primary btn-cate-search-project" type="button">Tìm kiếm...</button>
-                    </div>
                   </div>
                 </div>
                 <div class="table-responsive">
@@ -1009,7 +1078,7 @@
   <div class="contain-image-from-driver">
     {{#imageDesign}}
     <div class="item-image">
-      <img class="image-from-driver" data-id-image={{this.id}} src={{this.thumbnailLink}} alt="">
+      <img class="image-from-driver" data-id-image={{this.id}} data-src={{this.thumbnailLink}} alt="">
       <div class="desription-image">
         <b>{{this.name}}</b>
         <p>Dung lượng : {{this.size}} kb</p>
@@ -1086,3 +1155,52 @@
     </div>
   </div>
 </div>
+<script>
+  // create config object: rootMargin and threshold
+
+  // are two properties exposed by the interface
+
+  const config = {
+
+    rootMargin: ‘0px 0px 50px 0px’,
+
+    threshold: 0
+
+  };
+
+  // register the config object with an instance
+
+  // of intersectionObserver
+
+  let observer = new intersectionObserver(function (entries, self) {
+
+    // iterate over each entry
+
+    entries.forEach(entry => {
+
+      // process just the images that are intersecting.
+
+      // isIntersecting is a property exposed by the interface lazy load là gì
+
+      if (entry.isIntersecting) {
+
+        // custom function that copies the path to the img
+
+        // from data-src to src
+
+        preloadImage(entry.target);
+
+        // the image is now in place, stop watching
+
+        self.unobserve(entry.target);
+
+      }
+
+    });
+
+  }, config);
+  const imgs = document.querySelectorAll('[data-src]');
+  imgs.forEach(img => {
+    observer.observe(img);
+  });
+</script>

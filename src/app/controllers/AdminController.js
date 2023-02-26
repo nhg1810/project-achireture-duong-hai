@@ -158,6 +158,20 @@ class AdminController {
         response.setHeader("Content-Type", "text/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.json(res)
+    }
+    async getCateProjectByName(request, response, next) {
+        const res = await projectManagerService.liveSearchCateProject(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res)
+        console.log(res);
+    }
+    async getProjectByCate(request, response, next) {
+        console.log(request.body)
+        const res = await projectManagerService.checkProjectInCate(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res)
         console.log(res);
     }
 }
