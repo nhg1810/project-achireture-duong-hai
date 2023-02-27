@@ -4,6 +4,8 @@ const process = require('process');
 const e = require('express');
 const ProjectModel = require('../model/ProjectModel');
 const CateProject = require('../model/CateProject');
+const AccountModel = require('../model/AccountModel');
+const jwt = require('jsonwebtoken')
 
 const ID_FOLDER_DESIGN = process.env.ID_FOLDER_DESIGN;
 
@@ -163,6 +165,31 @@ class ProjectManagerService {
     // check valid cate in project
     async checkProjectInCate(request, response, next) {
         let rs = await ProjectModel.find({ cateProject: request.body.idCate }).exec();
+        return rs;
+    }
+    //check login
+    async checkLogin(request, response, next) {
+        if (request.body.userName == 'admin' && request.body.passWord == 'pw2722023') {
+            let informationAdmin = {
+                _id: 'jfjosjnciop@#djso321',
+                name: 'Tên giám đốc',
+                date: 'ngày sinh',
+                phone: 'ádasd',
+                avate: ''
+            }
+            //mk is secret key
+            let token = jwt.sign({_id: informationAdmin._id }, 'mk')
+            return {
+                message: 'succes',
+                token: token
+            };
+        }
+
+        let rs = await AccountModel.find({
+            userName: request.body.userName,
+            passWord: request.body.passWord,
+        },
+        ).populate([{ path: 'role', strictPopulate: false }]).exec();
         return rs;
     }
 }

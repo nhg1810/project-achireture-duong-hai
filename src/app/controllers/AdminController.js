@@ -14,7 +14,7 @@ class AdminController {
         if (res == 'error') {
             response.send("error");
         } else {
-            response.render('admin')
+            response.render('admin-login', { layout: 'layout-login.hbs' })
         }
     }
 
@@ -167,12 +167,19 @@ class AdminController {
         console.log(res);
     }
     async getProjectByCate(request, response, next) {
-        console.log(request.body)
         const res = await projectManagerService.checkProjectInCate(request);
         response.setHeader("Content-Type", "text/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.json(res)
-        console.log(res);
+    }
+    async login(request, response, next) {
+        response.render('admin-login', { layout: 'layout-login.hbs' })
+        // const res = await projectManagerService.checkLogin(request);
+        // response.setHeader("Content-Type", "text/json");
+        // response.setHeader("Access-Control-Allow-Origin", "*");
+        // console.log(res);
+
+        // response.json(res);
     }
 }
 module.exports = new AdminController;

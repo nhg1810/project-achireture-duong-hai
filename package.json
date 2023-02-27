@@ -19,11 +19,13 @@
   },
   "homepage": "https://github.com/nhg1810/project-duonghai#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
     "googleapis": "^110.0.0",
     "handlebars": "^4.7.7",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.3",
     "morgan": "^1.10.0",
     "node-sass": "^8.0.0",

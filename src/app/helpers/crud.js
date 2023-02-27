@@ -1,13 +1,13 @@
 // Model
 const mongoose = require('mongoose');
-const models = ['course', 'cateProject', 'project'];
+const models = ['course', 'cateProject', 'project', 'account'];
 
 class CurdHelper {
 
-     async getAll({ model = '', query = {}, populate = [{path: ' ', strictPopulate: false }] }) {
+     async getAll({ model = '', query = {}, populate = [{ path: ' ', strictPopulate: false }] }) {
           try {
                if (!model) { return null }
-               return setupModel(model).find(query).populate(populate) ;
+               return setupModel(model).find(query).populate(populate);
           } catch (error) {
                console.log(error);
           }
@@ -39,7 +39,7 @@ class CurdHelper {
      //           .populate(params.populate)
      // }
 
-     async getSingle({ model = '', id = '',  populate = [{path: ' ', strictPopulate: false }]}) {
+     async getSingle({ model = '', id = '', populate = [{ path: ' ', strictPopulate: false }] }) {
           try {
                if (!model || !id) { return null }
                return await setupModel(model).findById(id).populate(populate);
@@ -86,6 +86,8 @@ function setupModel(model) {
                     return require('../model/CateProject');
                case 'project':
                     return require('../model/ProjectModel');
+               case 'account':
+                    return require('../model/AccountModel');
                default:
                     return null;
           }

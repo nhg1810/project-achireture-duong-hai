@@ -2,6 +2,8 @@ const { google } = require('googleapis')
 const path = require("path");
 const fs = require("fs");
 const process = require('process');
+require('dotenv').config();
+
 
 //connected to gg 
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -22,6 +24,7 @@ const drive = google.drive({
 class GoogleHelper {
     //get all list file in folder ggdriver
     async listFiles(googleFolderId) {
+        console.log(oauth2Client)
         let arr = [];
         const response = await
             drive.files.list({

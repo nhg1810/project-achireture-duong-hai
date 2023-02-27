@@ -17,6 +17,6 @@ router.get('/get-all-cate-project', AdminController.getAllCateProject);
 router.post('/get-project-by-name', AdminController.getProjectByName);
 router.post('/get-cate-project-by-name-cate', AdminController.getCateProjectByName);
 router.post('/get-project-by-id-cate', AdminController.getProjectByCate);
-router.get('/', AdminController.index);
+router.get('/', AdminController.projectManager);
 
 module.exports = router;

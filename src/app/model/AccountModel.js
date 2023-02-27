@@ -8,9 +8,11 @@ const Account = new Schema(
         birth: { type: Date },
         email: { type: String },
         role: {
-            type: ObjectId,
+            type:  Schema.Types.ObjectId,
             ref: 'Role'
         },
+        userName: { type: String },
+        passWord: { type: String },
         address: { type: String },
         contact: { type: String },
         byMySelf: { type: String },
