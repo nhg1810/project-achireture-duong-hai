@@ -4,6 +4,9 @@ const AdminController = require("../app/controllers/AdminController");
 router.get('/project-manager', AdminController.projectManager);
 router.get('/project-personnel-manager', AdminController.projectPersonnelManager);
 router.get('/project-photo-manager', AdminController.projectPhotoManager);
+router.get('/mana-inf-home-user', AdminController.manaInfHomeUser);
+
+//api data
 router.post('/store-category-project', AdminController.createCategoryProject)
 router.post('/store-project', AdminController.createProdject);
 router.post('/delete-category-project', AdminController.deleteCategoryProject);
@@ -17,6 +20,15 @@ router.get('/get-all-cate-project', AdminController.getAllCateProject);
 router.post('/get-project-by-name', AdminController.getProjectByName);
 router.post('/get-cate-project-by-name-cate', AdminController.getCateProjectByName);
 router.post('/get-project-by-id-cate', AdminController.getProjectByCate);
+
+//get all information of user page
+router.get('/all-inf-user-page', AdminController.getAllInformationUserPage);
+//update inf home page use
+router.post('/update-inf-home-page', AdminController.updateInfHomePge);
+// router.get('/create-inf', AdminController.createInf);
+
 router.get('/', AdminController.projectManager);
+
+
 
 module.exports = router;

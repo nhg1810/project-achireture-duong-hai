@@ -178,7 +178,7 @@ class ProjectManagerService {
                 avate: ''
             }
             //mk is secret key
-            let token = jwt.sign({_id: informationAdmin._id }, 'mk')
+            let token = jwt.sign({ _id: informationAdmin._id }, 'mk')
             return {
                 message: 'succes',
                 token: token
@@ -191,6 +191,70 @@ class ProjectManagerService {
         },
         ).populate([{ path: 'role', strictPopulate: false }]).exec();
         return rs;
+    }
+    //get all information of home page
+    async getAllInformationUserPage(request, response, next) {
+        try {
+            let data = await curdHelper.getAll({
+                model: 'userPage',
+                query: request.query,
+            })
+            data = data.map(data => data.toObject());
+            return data;
+        } catch (error) {
+            return 'error';
+        }
+
+    }
+    //create new information of homepage
+    async createINFHomePage(request, response, next) {
+        try {
+            let obj = {
+                home: [{
+                    name: 'Home',
+                    blog: {
+                        title: 'con cac',
+                        content: 'cac con'
+                    },
+                    socialMedia: {
+                        facebook: 'con cac',
+                        instagram: 'con cac',
+                        youtube: 'con cac',
+                        email: 'con cac'
+                    },
+                    images: [
+                        {
+                            idImage: 'con cac',
+                            zIndex: '1',
+                        }
+                    ]
+                }]
+            }
+            if (request) {
+                let data = await curdHelper.create({
+                    model: 'userPage',
+                    obj: obj
+                });
+                return data;
+            } else {
+                return 'error'
+            }
+        } catch (error) {
+            return 'error'
+        }
+    }
+    //update inf home page
+    async updateInfHomePage(request, response, next) {
+        try {
+            let data = await curdHelper.update({
+                model: 'userPage',
+                id: request.body._id,
+                obj: request.body.obj
+            });
+            return data;
+        } catch (error) {
+            return 'error';
+        }
     }
 }
 module.exports = new ProjectManagerService();

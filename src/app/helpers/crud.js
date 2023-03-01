@@ -1,6 +1,6 @@
 // Model
 const mongoose = require('mongoose');
-const models = ['course', 'cateProject', 'project', 'account'];
+const models = ['course', 'cateProject', 'project', 'account','userPage'];
 
 class CurdHelper {
 
@@ -88,6 +88,8 @@ function setupModel(model) {
                     return require('../model/ProjectModel');
                case 'account':
                     return require('../model/AccountModel');
+               case 'userPage':
+                    return require('../model/UserPageModel');
                default:
                     return null;
           }

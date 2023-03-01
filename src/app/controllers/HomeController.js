@@ -9,9 +9,7 @@ class HomeController {
         if (res == 'error') {
             response.send("error");
         } else {
-            response.render('home', {
-                data: res
-            })
+            response.render('home', { layout: 'layout-user.hbs' })
         }
 
     }

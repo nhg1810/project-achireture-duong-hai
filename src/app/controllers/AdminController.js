@@ -181,5 +181,27 @@ class AdminController {
 
         // response.json(res);
     }
+    //manage inf home page use
+    async manaInfHomeUser(request, response, next) {
+        response.render('project-home-inf')
+    }
+
+    async getAllInformationUserPage(request, response, next) {
+        const res = await projectManagerService.getAllInformationUserPage(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res)
+    }
+    async createInf(request, response, next) {
+        const res = await projectManagerService.createINFHomePage(request);
+        console.log(res);
+    }
+
+    async updateInfHomePge(request, response, next) {
+        const res = await projectManagerService.updateInfHomePage(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
+    }
 }
 module.exports = new AdminController;

@@ -1,0 +1,367 @@
+{{!-- js for this page --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{!-- sweet alert --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        function chooseTarget(target) {
+            $(".target-drop").click(function () {
+                console.log('tgbf', target)
+                idImage = $(this).attr('data-id-image');
+                target = document.querySelector('.target-' + idImage + '');
+                $(".target target-" + idImage + "").attr('draggable', 'true');
+                $(".target-drop").css('border', 'solid 0px green')
+                if (idImage != 0) {
+                    $(this).css('border', 'solid 5px green')
+                    drag(target)
+                } else {
+                    target = "";
+                }
+
+            })
+
+            function drag() {
+                let boxes = document.querySelectorAll('.item-preview');
+                boxes.forEach((box) => {
+                    box.addEventListener('dragover', function (item) {
+                        item.preventDefault()
+                    })
+
+                    box.addEventListener("drop", function (event) {
+                        // prevent default action (open as link for some elements)
+                        event.preventDefault();
+                        $(".image-design[data-id-image = " + idImage + " ]").css('border', 'solid 0px green')
+
+                        // move dragged element to the selected drop target
+                        if (event.target.className === "item-preview drop-area") {
+                            console.log(target)
+                            if (target != null) {
+                                target.parentNode.removeChild(target);
+                                event.target.appendChild(target);
+                                $(".target").addClass('cancel-drop');
+                                Swal.fire('Vị trí này đã được thêm ảnh, nếu muốn thay đổi vui lòng xoá ảnh tại vị trí hiện tại !!! ');
+                                target = null;
+                                $(this).removeClass('drop-area')
+                                $(".image-design[data-id-image = " + idImage + " ]").html(` <img  class = 'target target-` + idImage + `'  src="https://drive.google.com/uc?id=` + idImage + `" style=" filter: grayscale(100%);" data-id-image="` + idImage + `"   alt=""> `)
+                                $(".image-design[data-id-image = " + idImage + " ]").removeClass('target-drop');
+                                $(".image-design[data-id-image = " + idImage + " ]").attr('data-id-image', '0')
+                                $(box).attr('data-id-image', idImage)
+                                let idIndex = $(this).attr('index-location');
+
+                                arr_index_design.push({
+                                    idImage: idImage,
+                                    zIndex: idIndex
+                                })
+                                console.log(arr_index_design);
+
+                            }
+                        }
+                    })
+                })
+
+            }
+        }
+
+        //load all inf of home page
+        var arr_index_design = [];
+        fetch("/admin/all-inf-user-page")
+            .then(res => { return res.json() })
+            .then((data) => {
+                let infHome = data[0].home[0];
+                $(".name-btn-home-page").val(infHome.name)
+                $(".title-blog-home").val(infHome.blog.title);
+                $(".content-blog-home").val(infHome.blog.content);
+                $(".link-face-book").val(infHome.socialMedia.facebook);
+                $(".link-ins").val(infHome.socialMedia.instagram);
+                $(".link-ytb").val(infHome.socialMedia.youtube);
+                $(".link-email").val(infHome.socialMedia.email);
+
+                arr_index_design = infHome.images;
+            })
+            .then(() => {
+                console.log(arr_index_design);
+                let html = '';
+                arr_index_design.map((item) => {
+                    $(".item-preview[index-location =  " + item.zIndex + "] ").html(`<img class="target target-` + item.idImage + ` cancel-drop" 
+                    src="https://drive.google.com/uc?id=`+ item.idImage + `"
+                     data-id-image="`+ item.idImage + `" alt="">`);
+                    $(".item-preview[index-location =  " + item.zIndex + "] ").removeClass('drop-area');
+                    $(".item-preview[index-location =  " + item.zIndex + "] ").attr('data-id-image', item.idImage);
+                    clickItemPreview();
+                })
+            }).then(() => {
+                //load all design from drive
+                fetch("/admin/all-image-project")
+                    .then(res => { return res.json() })
+                    .then((data) => {
+                        let html = "";
+                        data.map((item) => {
+                            let find = arr_index_design.find(({ idImage }) => idImage === item.id);
+                            if (find) {
+                                html += ` <div class="gallery-item" >
+                     <div class="content image-design image-design-`+ item.id + `" data-id-image='0' >
+                          <img  class = 'target target-` + item.id + `'  src="https://drive.google.com/uc?id=` + item.id + `" style=" filter: grayscale(100%);" data-id-image="` + item.id + `"   alt="">
+                         <div class ="inf-image"></div>
+                     </div>
+                 </div>`;
+                            } else {
+                                html += ` <div class="gallery-item" >
+                     <div class="content image-design target-drop image-design-`+ item.id + `" data-id-image=` + item.id + ` >
+                         <img  class = 'target target-`+ item.id + `'  src="https://drive.google.com/uc?id=` + item.id + `" data-id-image="` + item.id + `"   alt="">
+                         <div class ="inf-image"></div>
+                     </div>
+                 </div>`;
+                            }
+                        })
+
+                        $("#gallery").html(html);
+
+                    }).then(() => {
+                        let target = "";
+                        let idImage;
+                        chooseTarget(target)
+                    })
+            })
+
+        clickItemPreview();
+        function clickItemPreview() {
+
+            $(".item-preview").click(function () {
+                let idImage = $(this).attr('data-id-image')
+                if (idImage) {
+                    Swal.fire('Vị trí này đã được trống ')
+                    let target = "";
+                    $(this).html('');
+                    $(this).addClass('drop-area');
+                    $(".image-design-" + idImage + " ").attr('data-id-image', idImage)
+                    $(".image-design[data-id-image = " + idImage + " ]").addClass('target-drop');
+                    $(`.target-` + idImage + ``).css('filter', 'grayscale(0%)')
+                    chooseTarget(target)
+                }
+                for (let i = 0; i < arr_index_design.length; i++) {
+                    if (arr_index_design[i].idImage === idImage) {
+                        arr_index_design.splice(i, 1);
+                    }
+                }
+                console.log("123", arr_index_design);
+            })
+        }
+
+        $(".btn-update-inf-home").click(function () {
+
+            let vlUpdateBtnHome = $(".name-btn-home-page").val();
+            let vlUpdateTitleBlogHome = $(".title-blog-home").val();
+            let vlUpdateContentBlogHome = $(".content-blog-home").val();
+            let vlUpdateLinkFacebook = $(".link-face-book").val();
+            let vlUpdateLinkIns = $(".link-ins").val();
+            let vlUpdateLinkYtb = $(".link-ytb").val();
+            let vlUpdateMail = $(".link-email").val();
+
+            if (vlUpdateBtnHome == "" || vlUpdateTitleBlogHome == "" || vlUpdateContentBlogHome == "" ||
+                vlUpdateLinkFacebook == "" || vlUpdateLinkIns == "" || vlUpdateLinkYtb == "" | vlUpdateMail == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Chưa điền đủ thông tin khi cập nhật',
+                    text: 'Kiếm tra lại xem còn ô nào chưa điền thông tin!',
+                    footer: '<a href="">Nếu còn gặp tình trạng này, liên hệ: 0868617603</a>'
+                })
+            } else {
+                let formData = new FormData();
+                formData = {
+                    _id: '63fee9a39ddfe2c3942acb63',
+                    obj: {
+                        home: [{
+                            name: vlUpdateBtnHome,
+                            blog: {
+                                title: vlUpdateTitleBlogHome,
+                                content: vlUpdateContentBlogHome
+                            },
+                            socialMedia: {
+                                facebook: vlUpdateLinkFacebook,
+                                instagram: vlUpdateLinkIns,
+                                youtube: vlUpdateLinkYtb,
+                                email: vlUpdateMail
+                            },
+                            images: arr_index_design
+                        }]
+                    }
+
+                }
+                $.ajax({
+                    async: false,
+                    url: '/admin/update-inf-home-page',
+                    type: 'POST',
+                    data: formData,
+                    dataType: "json",
+                    encode: true,
+                }).done(function (data) {
+                    if (data == "success") {
+                        location.reload();
+                    }
+                })
+            }
+        })
+    })
+</script>
+<style>
+    .contain-preview {
+        padding: 10px;
+        width: 100%;
+        height: 700px;
+        overflow-y: scroll;
+        background-color: rgb(205, 211, 211);
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+    }
+
+    .contain-preview>.item-preview {
+        text-align: center;
+        width: 30%;
+        min-height: 200px;
+        border: solid 5px white;
+    }
+
+    .contain-preview>.item-preview>img {
+        width: 100%;
+    }
+
+    #gallery {
+        width: 100%;
+        height: 700px;
+        top: 50px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        align-items: center;
+        background-color: rgb(141, 160, 160, 0.5);
+        overflow-y: scroll;
+        padding: 10px;
+    }
+
+    .gallery-item {
+        width: 29.5%;
+    }
+
+    .gallery-item>div {
+        width: 100%;
+        height: 150px;
+        position: relative;
+        margin-left: 2px;
+        overflow: hidden;
+    }
+
+    .gallery-item>div:hover {
+        border: solid 5px red;
+    }
+
+
+    .gallery-item>div>img {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        object-fit: cover;
+        padding-bottom: 5%;
+    }
+
+    .inf-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: -100%;
+        background-color: rgb(227, 230, 233, 0.6);
+    }
+</style>
+</style>
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Thông tin trên TRANG CHỦ</h4>
+                    <p class="card-description">
+                        Các thông tin cơ bản trên trang người dùng, chỉ có admin mới có quyền chỉnh sửa
+                    </p>
+                    <button type="submit" class="btn btn-primary me-2 btn-update-inf-home"
+                        style="margin-bottom: 30px;">Lưu thay
+                        đổi</button>
+                    <form class="forms-sample">
+                        <div class="form-group">
+                            <label for="exampleInputName1">Tên nút(HOME)</label>
+                            <input type="text" class="form-control name-btn-home-page" id="exampleInputName1"
+                                placeholder="Home">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail3">Tiêu đề bài viết</label>
+                            <input type="text" class="form-control title-blog-home" id="exampleInputEmail3"
+                                placeholder="Tiêu đề...">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword4">Nội dung bài viết</label>
+                            <textarea class="form-control content-blog-home" id="exampleTextarea1"
+                                style="height: 100px;" rows="8"></textarea>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputCity1">Link Facebook</label>
+                            <input type="text" class="form-control link-face-book" id="exampleInputCity1"
+                                placeholder="link tới trang facebook">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputCity1">Link Instagram</label>
+                            <input type="text" class="form-control link-ins" id="exampleInputCity1"
+                                placeholder="link tới trang insta">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputCity1">Link Youtube</label>
+                            <input type="text" class="form-control link-ytb" id="exampleInputCity1"
+                                placeholder="link tới trang insta">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputCity1">Địa chỉ email</label>
+                            <input type="text" class="form-control link-email" id="exampleInputCity1"
+                                placeholder="Địa chỉ email liên hệ">
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <p>Bố cục sắp xếp ảnh trang chủ </p>
+        <p>Tất cả hình ảnh được lưu tại google drive đã được cấp</p>
+        <div class="col-md-8 grid-margin stretch-card">
+            <div class="contain-preview">
+                <div class="item-preview drop-area" index-location="1">1</div>
+                <div class="item-preview drop-area" index-location="2">2</div>
+                <div class="item-preview drop-area" index-location="3">3</div>
+                <div class="item-preview drop-area" index-location="4">4</div>
+                <div class="item-preview drop-area" index-location="5">5</div>
+                <div class="item-preview drop-area" index-location="6">6</div>
+                <div class="item-preview drop-area" index-location="7">7</div>
+                <div class="item-preview drop-area" index-location="8">8</div>
+                <div class="item-preview drop-area" index-location="9">9</div>
+                <div class="item-preview drop-area" index-location="10">10</div>
+                <div class="item-preview drop-area" index-location="11">11</div>
+                <div class="item-preview drop-area" index-location="12">12</div>
+                <div class="item-preview drop-area" index-location="13">13</div>
+                <div class="item-preview drop-area" index-location="14">14</div>
+                <div class="item-preview drop-area" index-location="15">15</div>
+                <div class="item-preview drop-area" index-location="16">16</div>
+                <div class="item-preview drop-area" index-location="17">17</div>
+                <div class="item-preview drop-area" index-location="18">18</div>
+                <div class="item-preview drop-area" index-location="19">19</div>
+                <div class="item-preview drop-area" index-location="20">20</div>
+                <div class="item-preview drop-area" index-location="21">21 </div>
+            </div>
+        </div>
+        <div class="col-md-4 grid-margin stretch-card">
+            <div class="gallery" id="gallery">
+
+            </div>
+        </div>
+    </div>
+</div>

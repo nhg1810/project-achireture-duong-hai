@@ -1,0 +1,92 @@
+{{!-- js for this page --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{!-- sweet alert --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- jsDeliver -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+<script>
+    $(document).ready(function () {
+        //check loader img
+        $('img').Lazy();
+        $("img").onload = function () {
+            $(this).src = this.src
+        }
+        function dataLoading() {
+            //load all design from drive
+            $.ajax({
+                url: '/admin/all-image-project',
+                type: 'GET',
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                console.log(data);
+                let html = "";
+                data.map((item) => {
+                    html += ` <div class="gallery-item" >
+                    <div class="content image-design">
+                        <img src="https://drive.google.com/uc?id=`+ item.id + `" data-id-image=` + item.id + ` alt="">
+                        <div class ="inf-image"></div>
+                    </div>
+                </div>`;
+                })
+                $("#gallery").html(html);
+            })
+        }
+
+        dataLoading()
+    })
+</script>
+<style>
+    #gallery {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .gallery-item {
+        width: 19.9%;
+    }
+
+    .gallery-item>div {
+        width: 100%;
+        height: 300px;
+        position: relative;
+        margin-left: 2px;
+        overflow: hidden;
+    }
+
+
+    .gallery-item>div>img {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        object-fit: cover;
+        padding-bottom: 5%;
+    }
+
+    .inf-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: -100%;
+        background-color: rgb(227, 230, 233, 0.6);
+    }
+</style>
+<div class="content-wrapper">
+    <div class="row">
+        <p>Kho lưu trữ hình ảnh </p>
+        <p>Tất cả hình ảnh được lưu tại google drive đã được cấp</p>
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="gallery" id="gallery">
+
+            </div>
+        </div>
+
+    </div>
+</div>
