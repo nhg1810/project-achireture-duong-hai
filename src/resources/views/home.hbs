@@ -10,7 +10,7 @@
 <script>
     $(document).ready(function () {
         console.log(1);
-        fetch("/admin/all-inf-user-page").then(res => { return res.json() })
+        fetch("/get-all-inf-user-page").then(res => { return res.json() })
             .then((data) => {
                 console.log(123);
                 let dataHome = data[0].home[0];
@@ -67,6 +67,8 @@
                         encode: true,
                     }).done(function (data) {
                         console.log(data);
+                        $(".inf-project").html('')
+                        $(".img-relative-project").html('')
                         let html = '';
                         let arr_img = '';
                         data.map((item) => {
