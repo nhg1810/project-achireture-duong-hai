@@ -18,7 +18,7 @@ class UserManager {
     async findProjectByIdImage(request, response, next) {
         try {
             let rs = await ProjectModel.find({
-                "imageProject.urlImage": "https://drive.google.com/uc?id="+request.body.idImage+"",
+                "imageProject.urlImage": "https://drive.google.com/uc?id=" + request.body.idImage + "",
                 'imageProject.idImage': request.body.idImage
             }).populate([{ path: 'cateProject', strictPopulate: false }])
             rs = rs.slice(0, 10);
@@ -27,6 +27,19 @@ class UserManager {
             return 'error';
         }
 
+    }
+    async detailProjectById(idProject) {
+        try {
+            let data = await curdHelper.getSingle({
+                model: 'project',
+                id: idProject,
+                populate: [{ path: 'cateProject', strictPopulate: false }],
+            });
+            return data;
+        } catch (error) {
+            console.log(error)
+            return 'error';
+        }
     }
 }
 module.exports = new UserManager();

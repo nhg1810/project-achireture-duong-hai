@@ -23,12 +23,21 @@ class HomeController {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.json(res);
     }
-    
-    async findProjectByIdImage(request, response, next){
+
+    async findProjectByIdImage(request, response, next) {
         let res = await userManagerService.findProjectByIdImage(request);
         response.setHeader("Content-Type", "text/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.json(res);
+    }
+
+    async detailProject(request, response, next) {
+        if (request.params.idProject) {
+            console.log(request.params.idProject);
+            let res = await userManagerService.detailProjectById(request.params.idProject);
+            console.log(res);
+            response.render('detail', { layout: 'layout-user.hbs', data: res })
+        }
     }
 }
 module.exports = new HomeController;
