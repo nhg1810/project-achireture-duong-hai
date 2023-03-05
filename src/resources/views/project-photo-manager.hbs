@@ -5,6 +5,8 @@
 <!-- jsDeliver -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.0/lazysizes.min.js" async=""></script>
+
 <script>
     $(document).ready(function () {
         //check loader img
@@ -27,7 +29,7 @@
 
                     html += ` <div class="gallery-item" >
                     <div class="content image-design">
-                        <img src="https://drive.google.com/uc?id=`+ item.id + `" data-id-image=` + item.id + ` alt="">
+                        <img class="lazyload" data-sizes="auto"  data-src="`+ item.thumbnailLink + `" data-id-image=` + item.id + ` alt="">
                         <div class ="inf-image"></div>
                     </div>
                 </div>`;
@@ -38,13 +40,30 @@
 
         dataLoading()
 
+        $(".btn-bulk-upload-design").click(function () {
+            $(this).html('Đăng tải...');
+            $(this).attr('type', 'button').addClass('btn-inverse-dark btn-fw');
+            if ($(".all-file-upload")[0].files[0]) {
+                alert($(".all-file-upload")[0].files[0]);
+                $("#form-upload-image").submit();
+            } else {
+                $(this).attr('type', 'submit').removeClass('btn-inverse-dark btn-fw');
+                Swal.fire('Chưa có file nào được chọn !!!')
+                $(this).html('Tải lên');
+                setTimeout(function () {
+                    location.reload();
+                }, 2000)
+            }
+
+        })
+
     })
 </script>
 <style>
     /* MAIN STYLE */
 
     .card {
-        width: 400px;
+        width: 100%;
         height: auto;
         padding: 15px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
@@ -212,33 +231,122 @@
         background-color: rgb(227, 230, 233, 0.6);
     }
 </style>
+
 <div class="content-wrapper">
-    <button style="position: relative;" type="button" class="btn btn-danger  btn-icon-text">
-        <i class="ti-upload btn-icon-prepend"></i>
-        <input type="file" name="" id="" style="position: absolute; width: 100%; height: 100%; opacity: 0;"
-            onchange="document.getElementById('show-img-upload').src = window.URL.createObjectURL(this.files[0])">
-        Thêm design vào drive của bạn
-    </button>
-    <form action="/admin/bulk-upload-design" enctype="multipart/form-data" method="POST">
+    <div class="row">
+        <div class="col-md-5 grid-margin stretch-card">
+            <form action="/admin/bulk-upload-design" enctype="multipart/form-data" id="form-upload-image" method="POST"
+                style="width: 100%;">
 
-        <div class="card">
-            <div class="top">
-                <p>Drag & drop image uploading</p>
-                <button type="submit" class="btn-bulk-upload-design">Upload</button>
-            </div>
-            <div class="drag-area">
-                <span class="visible">
-                    Drag & drop image here or
-                    <span class="select" role="button">Browse</span>
-                </span>
-                <span class="on-drop">Drop images here</span>
-                <input name="file" type="file" class="file" multiple />
-            </div>
+                <div class="card">
+                    <div class="top">
+                        <p>Kéo & thả ảnh muốn tải lên</p>
+                        <button type="button" class="btn-bulk-upload-design">Đăng lên</button>
+                    </div>
+                    <div class="drag-area">
+                        <span class="visible">
+                            Kéo & thả ảnh muốn tải lên
+                            <span class="select" role="button">Ảnh từ máy...</span>
+                        </span>
+                        <span class="on-drop">Thả tại đây</span>
+                        <input name="file" type="file" class="file all-file-upload" multiple />
+                    </div>
 
-            <!-- IMAGE PREVIEW CONTAINER -->
-            <div class="container"></div>
+                    <!-- IMAGE PREVIEW CONTAINER -->
+                    <div class="container"></div>
+                </div>
+            </form>
         </div>
-    </form>
+        <div class="col-md-7 grid-margin stretch-card">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Google Drive là nơi để lưu trữ hình ảnh</h4>
+                        <div class="media">
+                            <i class="ti-world icon-md text-info d-flex align-self-start me-3"></i>
+                            <div class="media-body">
+                                <p class="card-text">Ảnh sẽ phải được nén giảm kích thức dưới 5mb trước khi được lưu vào
+                                    drive, lưu dưới dạng webp để cải thiện hiệu năng website.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Thông tin về Google Drive</h4>
+                    <p class="card-description">
+                        nguyenarchitecturehd@gmail.com <code>&lt;Email&gt;</code> !
+                    </p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <address>
+                                <p class="fw-bold">Sử dụng google Drive API.</p>
+                                <p>
+                                    Thư viện của Google chỉ cho phép miễn phí 15GB !
+                                </p>
+                                <p>
+                                    ---
+                                </p>
+                                <p>
+                                    Mua gói update đến khi cần thiết !
+                                </p>
+                            </address>
+                        </div>
+                        <div class="col-md-6">
+                            <address class="text-primary">
+                                <p class="fw-bold">
+                                    Thông tin về E-mail
+                                </p>
+                                <p class="mb-2">
+                                    Chỉ có người cầm Admin mới biết thông tin cụ thể !
+                                </p>
+                                <p class="fw-bold">
+                                    Liên lạc hỗ trợ
+                                </p>
+                                <p>
+                                    0868616703
+                                </p>
+                            </address>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Các quyền được phép khi sử dụng google API</h4>
+                    <p class="card-description">
+                        Bảo mật <code>Token</code> để tránh bị mất thông tin !
+                    </p>
+                    <p class="lead">
+                        Thêm || Sửa || Xoá
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Một số lưu ý khi sử dụng tool !!!</h4>
+                    <ul>
+                        <li>Khi upload nhiều ảnh có thể xảy ra trường hợp tắc nghẽn băng thông, cho nên chưa ảnh có thể
+                            load lên chậm.</li>
+                        <li>Khuyến cáo nén ảnh dưới 5MB để cải thiện hiệu năng của website.</li>
+                        <li>Định dạng khi đăng lên sẽ luôn luôn là định dạng .webp.</li>
+                        <li>Không nên truy cập trực tiếp vào Google Drive để đăng tải trực tiếp.</li>
+                        <li>Thông qua tool này thì hiệu suất website sẽ được cải thiện hơn.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     <img src="" alt="" id="show-img-upload" style="width: 150px; height: auto;">
     <div class="row">
         <p>Kho lưu trữ hình ảnh </p>

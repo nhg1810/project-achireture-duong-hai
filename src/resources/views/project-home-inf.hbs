@@ -2,6 +2,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 {{!-- sweet alert --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.0/lazysizes.min.js" async=""></script>
+
 <script>
     $(document).ready(function () {
         function chooseTarget(target) {
@@ -42,7 +44,9 @@
                                 Swal.fire('Vị trí này đã được thêm ảnh, nếu muốn thay đổi vui lòng xoá ảnh tại vị trí hiện tại !!! ');
                                 target = null;
                                 $(this).removeClass('drop-area')
-                                $(".image-design[data-id-image = " + idImage + " ]").html(` <img  class = 'target target-` + idImage + `'  src="https://drive.google.com/uc?id=` + idImage + `" style=" filter: grayscale(100%);" data-id-image="` + idImage + `"   alt=""> `)
+                                $(".image-design[data-id-image = " + idImage + " ]").html(` <img  class = ' lazyload target target-` + idImage + `'  
+                                data-src="https://drive.google.com/uc?id=` + idImage + `" 
+                                style=" filter: grayscale(100%);" data-id-image="` + idImage + `"   alt=""> `)
                                 $(".image-design[data-id-image = " + idImage + " ]").removeClass('target-drop');
                                 $(".image-design[data-id-image = " + idImage + " ]").attr('data-id-image', '0')
                                 $(box).attr('data-id-image', idImage)
@@ -82,8 +86,8 @@
                 console.log(arr_index_design);
                 let html = '';
                 arr_index_design.map((item) => {
-                    $(".item-preview[index-location =  " + item.zIndex + "] ").html(`<img class="target target-` + item.idImage + ` cancel-drop" 
-                    src="https://drive.google.com/uc?id=`+ item.idImage + `"
+                    $(".item-preview[index-location =  " + item.zIndex + "] ").html(`<img class="lazyload target target-` + item.idImage + ` cancel-drop" 
+                    data-src="https://drive.google.com/uc?id=`+ item.idImage + `"
                      data-id-image="`+ item.idImage + `" alt="">`);
                     $(".item-preview[index-location =  " + item.zIndex + "] ").removeClass('drop-area');
                     $(".item-preview[index-location =  " + item.zIndex + "] ").attr('data-id-image', item.idImage);
@@ -100,14 +104,18 @@
                             if (find) {
                                 html += ` <div class="gallery-item" >
                      <div class="content image-design image-design-`+ item.id + `" data-id-image='0' >
-                          <img  class = 'target target-` + item.id + `'  src="https://drive.google.com/uc?id=` + item.id + `" style=" filter: grayscale(100%);" data-id-image="` + item.id + `"   alt="">
+                          <img data-sizes="auto" class = 'lazyload target target-` + item.id + `'  
+                          data-src="`+item.thumbnailLink+`" 
+                          style=" filter: grayscale(100%);" data-id-image="` + item.id + `"   alt="">
                          <div class ="inf-image"></div>
                      </div>
                  </div>`;
                             } else {
                                 html += ` <div class="gallery-item" >
                      <div class="content image-design target-drop image-design-`+ item.id + `" data-id-image=` + item.id + ` >
-                         <img  class = 'target target-`+ item.id + `'  src="https://drive.google.com/uc?id=` + item.id + `" data-id-image="` + item.id + `"   alt="">
+                         <img data-sizes="auto" class = 'lazyload target target-`+ item.id + `'  
+                         data-src="`+item.thumbnailLink+`"
+                          data-id-image="` + item.id + `"   alt="">
                          <div class ="inf-image"></div>
                      </div>
                  </div>`;

@@ -207,42 +207,43 @@ class ProjectManagerService {
 
     }
     //create new information of homepage
-    async createINFHomePage(request, response, next) {
-        try {
-            let obj = {
-                home: [{
-                    name: 'Home',
-                    blog: {
-                        title: 'con cac',
-                        content: 'cac con'
-                    },
-                    socialMedia: {
-                        facebook: 'con cac',
-                        instagram: 'con cac',
-                        youtube: 'con cac',
-                        email: 'con cac'
-                    },
-                    images: [
-                        {
-                            idImage: 'con cac',
-                            zIndex: '1',
-                        }
-                    ]
-                }]
-            }
-            if (request) {
-                let data = await curdHelper.create({
-                    model: 'userPage',
-                    obj: obj
-                });
-                return data;
-            } else {
-                return 'error'
-            }
-        } catch (error) {
-            return 'error'
-        }
-    }
+    // async createINFHomePage(request, response, next) {
+    //     try {
+    //         let obj = {
+    //             home: [{
+    //                 name: 'Home',
+    //                 blog: {
+    //                     title: 'con cac',
+    //                     content: 'cac con'
+    //                 },
+    //                 socialMedia: {
+    //                     facebook: 'con cac',
+    //                     instagram: 'con cac',
+    //                     youtube: 'con cac',
+    //                     email: 'con cac'
+    //                 },
+    //                 images: [
+    //                     {
+    //                         idImage: 'con cac',
+    //                         zIndex: '1',
+    //                     }
+    //                 ]
+    //             }]
+    //         }
+    //         if (request) {
+    //             let data = await curdHelper.create({
+    //                 model: 'userPage',
+    //                 obj: obj
+    //             });
+    //             return data;
+    //         } else {
+    //             return 'error'
+    //         }
+    //     } catch (error) {
+    //         return 'error'
+    //     }
+    // }
+    
     //update inf home page
     async updateInfHomePage(request, response, next) {
         try {

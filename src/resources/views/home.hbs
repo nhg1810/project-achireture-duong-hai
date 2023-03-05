@@ -4,6 +4,8 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- jsDeliver -->
 <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.0/lazysizes.min.js" async=""></script>
+
 
 <script>
     $(document).ready(function () {
@@ -29,8 +31,8 @@
                 }).map((item) => {
                     let draft_html = `<a href="javascrip:void(0)" class="gallery__link">
                 <figure class="gallery__thumb">
-                    <img src="https://drive.google.com/uc?id=` + item.idImage + `"
-                        alt="Portrait by Noah Buscher" class="gallery__image" />
+                    <img  data-sizes="auto" data-src="https://drive.google.com/uc?id=` + item.idImage + `" data-id-image="` + item.idImage + `"
+                        alt="Portrait by Noah Buscher" class="gallery__image lazyload" />
                     <figcaption class="gallery__caption">
                         
                     </figcaption>
@@ -51,13 +53,119 @@
                 $(".gallery__column_3").html(html_cl_3);
                 console.log(dataHome);
             }).then(() => {
+                $(".gallery__image").click(function () {
+                    $(".layout").css('display', 'block')
+                    $(".contain-item-image").css('display', 'flex')
+                    let idImage = $(this).attr('data-id-image');
+                    $(".image-detail").attr('src', `https://drive.google.com/uc?id=` + idImage + ``);
 
-                
+                    $.ajax({
+                        url: '/findProjectByName',
+                        type: 'POST',
+                        data: { idImage: idImage },
+                        dataType: "json",
+                        encode: true,
+                    }).done(function (data) {
+                        console.log(data);
+                        let html = '';
+                        let arr_img = '';
+                        data.map((item) => {
+                            html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
+                                    <p class="descriptProject">`+ item.descriptionProject + `</p>
 
+                                    <p class="cateProject">`+ item.cateProject.nameProject + `</p>
+                                <p class="descriptCateProject">`+ item.cateProject.descriptionProject + `</p>`;
+
+                            for (let i = 0; i < item.imageProject.length; i++) {
+                                arr_img += `<img src="` + item.imageProject[i].urlImage + `"/>`;
+                            }
+                        })
+                        $(".inf-project").html(html)
+                        $(".img-relative-project").html(arr_img)
+                    })
+                })
             })
+        $(".layout").click(function () {
+            $(this).hide();
+            $('.contain-item-image').hide()
+        })
     })
 </script>
 
+<style>
+    .img-relative-project {
+        width: 100%;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+    }
+
+    .img-relative-project>img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .contain-item-image {
+        width: 90%;
+        min-height: 400px;
+        background-color: rgb(254, 255, 255);
+        position: fixed;
+        z-index: 11;
+        left: 50%;
+        top: 50%;
+        display: none;
+        transform: translate(-50%, -50%);
+        overflow: scroll;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .contain-item-image>.contain-image {
+        width: 49%;
+        min-height: 200px;
+        background-color: aqua;
+        position: relative;
+        padding-bottom: 30px;
+    }
+
+    .contain-item-image>.inf-image {
+        width: 49%;
+        min-height: 200px;
+        background-color: rgba(168, 97, 16, 0.5);
+        position: relative;
+    }
+
+    .contain-item-image>.contain-image>img {
+        position: absolute;
+        width: 100%;
+        height: auto;
+    }
+</style>
+<div class="layout"
+    style="position: absolute; width: 100%; height: 100%; position: fixed; top: 0; left:  0; background-color: rgb(40, 40, 40); opacity: 0.5; z-index: 10; display: none;">
+</div>
+<div class="contain-item-image">
+    <div class="contain-image">
+        <img src="" alt="" class="image-detail">
+    </div>
+    <div class="inf-image">
+        <h3>Thông tin chi tiết về ảnh dự án này</h3>
+        <div class="inf-project">
+
+        </div>
+
+
+        <p>Các ảnh liên quan thuộc dự án này</p>
+        <div class="img-relative-project">
+
+        </div>
+        {{!-- 1 chuỗi các ảnh --}}
+        <a href="">Xem chi tiết >></a>
+    </div>
+</div>
 <div class="mainContentText">
     <div class="textTitle">
         <p></p>

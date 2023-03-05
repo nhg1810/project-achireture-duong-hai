@@ -23,5 +23,12 @@ class HomeController {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.json(res);
     }
+    
+    async findProjectByIdImage(request, response, next){
+        let res = await userManagerService.findProjectByIdImage(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
+    }
 }
 module.exports = new HomeController;

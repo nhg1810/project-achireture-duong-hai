@@ -218,7 +218,7 @@ class AdminController {
         formdata.keepExtensions = true;
         formdata.parse(request, async (err, fields, files) => {
             if (err) {
-                next(err);
+                console.log(err)
                 return;
             }
             var arrOfFiles = []
@@ -251,14 +251,16 @@ class AdminController {
                                         console.log('File deleted!');
                                     });
                                 }, 3000)
-
+                                return res;
                             }
                         })
                         .catch(function (err) {
                             console.log(err)
                         })
+
                 });
-                response.json({ fields, files });
+                response.redirect('/admin/project-photo-manager');
+
             } else {
                 console.log(files.file.filepath)
                 sharp(files.file.filepath)
@@ -282,7 +284,11 @@ class AdminController {
                                     console.log('File deleted!');
                                 });
                             }, 3000)
-
+                            return res;
+                        }
+                    }).then((data) => {
+                        if (data) {
+                            response.redirect('/admin/project-photo-manager');
                         }
                     })
                     .catch(function (err) {

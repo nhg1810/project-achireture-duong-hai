@@ -148,7 +148,7 @@ body {
 
 /* gallery */
 .mainContentGallery {
-    padding-top: 50px;
+    padding-top: 20px;
 }
 
 .gallery {
@@ -207,9 +207,103 @@ body {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
     transition: 1s;
 }
-
-.overlayEffectImg {
+.overlayEffectImg{
     position: fixed;
     display: block;
     z-index: 2;
+}
+.iconMenu>img {
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: none;
+}
+
+.nav__overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none;
+}
+
+.nav__mobile {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #323232;
+    width: 40%;
+    transform: translateX(100%);
+}
+
+.nav__mobile>#navUl__mobile {
+    list-style: none;
+    margin-top: 40px;
+}
+
+.nav__mobile>#navUl__mobile>li {
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+.nav__mobile>#navUl__mobile>li:hover {
+    background-color: #ffff;
+}
+
+.nav__mobile>#navUl__mobile a {
+    text-decoration: none;
+    color: #bab6af;
+    font-size: 19px;
+}
+
+.iconMultiply {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.iconMultiply>img {
+    width: 28px;
+    height: 28px;
+}
+
+.nav__input {
+    display: none;
+}
+
+.nav__input:checked~.nav__overlay {
+    display: block;
+}
+
+.nav__input:checked~.nav__mobile {
+    transform: translateX(0%);
+    transition: .5s;
+}
+
+@media (max-width:1263px) {
+    .nav {
+        display: none;
+    }
+
+    .iconMenu>img {
+        display: block;
+    }
+    .logo{
+        padding-left: 10px
+    }
+    .mainContentText{
+        width: 100%;
+        padding-left: 10px;
+    }
+    .gallery{
+        display: block;
+    }
+    .gallery__column{
+        width: 100%;
+    }
 }
