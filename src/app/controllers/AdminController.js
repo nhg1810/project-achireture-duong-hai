@@ -1,6 +1,12 @@
 const Course = require('../model/EntityModel');
 const logger = require('../constants/LoggerConstant');
 const projectManagerService = require('../services/projectManager.service');
+const formidable = require('formidable');
+const path = require('path');
+const sharp = require("sharp")
+const fs = require('fs');
+const ID_FOLDER_DESIGN = process.env.ID_FOLDER_DESIGN;
+
 
 
 //helper
@@ -202,6 +208,93 @@ class AdminController {
         response.setHeader("Content-Type", "text/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.json(res);
+    }
+    async bulkUploadDesign(request, response, next) {
+        var formdata = formidable({ multiples: true });
+        const uploadFolder = path.join(__dirname, "./uploads");
+        formdata.uploadDir = uploadFolder;
+        formdata.multiples = true;
+        formdata.maxFileSize = 50 * 1024 * 1024; // 5MB
+        formdata.keepExtensions = true;
+        formdata.parse(request, async (err, fields, files) => {
+            if (err) {
+                next(err);
+                return;
+            }
+            var arrOfFiles = []
+            arrOfFiles = files.file;
+
+
+            if (arrOfFiles.length) {
+                console.log(arrOfFiles.length)
+                await arrOfFiles.map((each) => {
+                    console.log(each.filepath)
+                    sharp(each.filepath)
+                        .webp()
+                        .toFile(__dirname + '/convert-upload/' + each.newFilename + '.webp')
+                        .then(function (info) {
+                            console.log(info)
+                        }).then(async () => {
+                            //name file upload
+                            const res = await projectManagerService.upLoadFileDrive(each.newFilename);
+                            if (res) {
+                                setTimeout(function () {
+                                    fs.unlink(__dirname + '/convert-upload/' + res.namePhoto + '.webp', function (err) {
+                                        if (err) throw err;
+                                        console.log('File deleted!');
+                                    });
+                                }, 3000)
+
+                                setTimeout(function () {
+                                    fs.unlink(__dirname + '/uploads/' + res.namePhoto, function (err) {
+                                        if (err) throw err;
+                                        console.log('File deleted!');
+                                    });
+                                }, 3000)
+
+                            }
+                        })
+                        .catch(function (err) {
+                            console.log(err)
+                        })
+                });
+                response.json({ fields, files });
+            } else {
+                console.log(files.file.filepath)
+                sharp(files.file.filepath)
+                    .webp()
+                    .toFile(__dirname + '/convert-upload/' + files.file.newFilename + '.webp')
+                    .then(function (info) {
+                        console.log(info)
+                    }).then(async () => {
+                        const res = await projectManagerService.upLoadFileDrive(files.file.newFilename);
+                        if (res) {
+                            setTimeout(function () {
+                                fs.unlink(__dirname + '/convert-upload/' + res.namePhoto + '.webp', function (err) {
+                                    if (err) throw err;
+                                    console.log('File deleted!');
+                                });
+                            }, 3000)
+
+                            setTimeout(function () {
+                                fs.unlink(__dirname + '/uploads/' + res.namePhoto, function (err) {
+                                    if (err) throw err;
+                                    console.log('File deleted!');
+                                });
+                            }, 3000)
+
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                    })
+            }
+        });
+
+        // console.log('123', request.body);
+        // response.setHeader("Content-Type", "text/json");
+        // response.setHeader("Access-Control-Allow-Origin", "*");
+        // response.json(request.body);
     }
 }
 module.exports = new AdminController;

@@ -3,16 +3,12 @@
 {{!-- sweet alert --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- jsDeliver -->
-<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+
 
 <script>
   $(document).ready(function () {
     //lazy jquery
-    $('img').Lazy();
-    $("img").onload = function () {
-      $(this).src = this.src
-    }
+
     //all image choose in drvier
     var arr_choose_image = [];
     $(".choose-image-from-gallery").click(function () {
@@ -67,6 +63,7 @@
           'imageProject': arr_choose_image,
           'descriptionProject': description_project,
           'cateProject': cate_project,
+          'status': 'live'
         };
         $.ajax({
           url: '/admin/store-project',
@@ -89,7 +86,6 @@
             $(".cate-project").val("");
           }
         });
-
       }
     })
 
@@ -98,7 +94,6 @@
       $(".btn-del-cate-project").click(function () {
         //check valid cateproject
         let idCate = $(this).attr('data-id-cate');
-        {{!-- alert(idCate) --}}
         $.ajax({
           url: '/admin/get-project-by-id-cate',
           type: 'POST',
@@ -321,6 +316,7 @@
             $(".side-edit-project").css('display', 'block');
             $(".vl-detail-name-project").val(nameProject)
             $('.vl-detail-cate-project option[value=' + idCateProject + ']').attr('selected', 'selected');
+            $('.status-update option[value=' + data.status + ']').attr('selected', 'selected');
             $(".vl-detail-descript-project").val(descriptionProject);
             let html_arr_img_project = ""
             for (let i = 0; i < arr_edit_img_project.length; i++) {
@@ -456,14 +452,16 @@
       let n_name_project = $(".vl-detail-name-project").val();
       let n_id_cate_project = $(".vl-detail-cate-project").val();
       let n_detail_project = $(".vl-detail-descript-project").val();
-
+      let n_status = $('.status-update').val();
+      alert(n_status)
       formUpdateProject = {
         '_id': idProject,
         'obj': {
           'nameProject': n_name_project,
           'descriptionProject': n_detail_project,
           'cateProject': n_id_cate_project,
-          'imageProject': arr_edit_img_project
+          'imageProject': arr_edit_img_project,
+          'status': n_status
         }
       }
       if (arr_edit_img_project.length == 0) {
@@ -543,7 +541,8 @@
       }).done(function (data) {
         let html = ``;
         for (let i = 0; i < data.length; i++) {
-          html += ` <tr>
+          if (data[i].status == 'live') {
+            html += `<tr>
                         <td class="ed-name-project" value='`+ data[i].nameProject + `'>
                           `+ data[i].nameProject + `
                         </td>
@@ -567,9 +566,40 @@
                           <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
                             data-id-project=`+ data[i]._id + `><i class="mdi mdi-lead-pencil"></i></button>
                         </td>
-                      </tr>
-          `;
+                        <td><button type="button" class="btn btn-outline-info btn-rounded btn-sm btn-fw btn-live-status">Live</button></td>
+                       
+                      </tr>`;
+          } else {
+            html += `<tr>
+                        <td class="ed-name-project" value='`+ data[i].nameProject + `'>
+                          `+ data[i].nameProject + `
+                        </td>
+
+                        <td class="ed-cate-project" value=`+ data[i].cateProject._id + `>
+                          `+ data[i].cateProject.nameProject + `
+                        </td>
+                        <td>
+                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
+                            `+ data[i].createdAt + `
+                          </p>
+                        </td>
+                        <td>
+                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
+                            `+ data[i].updatedAt + `</p>
+                        </td>
+                        <td>
+                          <button type="button" data-id-project=`+ data[i]._id + `
+                            class="btn btn-delete-project btn-danger btn-sm btn-icon-text"><i
+                              class="mdi mdi-delete"></i></button>
+                          <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
+                            data-id-project=`+ data[i]._id + `><i class="mdi mdi-lead-pencil"></i></button>
+                        </td>
+                        <td><button type="button" class="btn btn-outline-warning btn-rounded btn-sm btn-fw" data-id-project=`+ data[i]._id + `>Bản thảo(draft)</button></td>
+                       
+                      </tr>`;
+          }
         }
+
         $(".tbl-all-project").html(html);
         //ajax delete project
         deleteProject();
@@ -639,7 +669,8 @@
       }).done(function (data) {
         let html = ``;
         for (let i = 0; i < data.length; i++) {
-          html += `<tr>
+          if (data[i].status === 'live') {
+            html += `<tr>
                         <td class="ed-name-project" value='`+ data[i].nameProject + `'>
                           `+ data[i].nameProject + `
                         </td>
@@ -663,7 +694,39 @@
                           <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
                             data-id-project=`+ data[i]._id + `><i class="mdi mdi-lead-pencil"></i></button>
                         </td>
+                        <td><button type="button" class="btn btn-info btn-rounded btn-sm btn-fw">Live</button></td>
+                       
                       </tr>`;
+          } else {
+            html += `<tr>
+                        <td class="ed-name-project" value='`+ data[i].nameProject + `'>
+                          `+ data[i].nameProject + `
+                        </td>
+
+                        <td class="ed-cate-project" value=`+ data[i].cateProject._id + `>
+                          `+ data[i].cateProject.nameProject + `
+                        </td>
+                        <td>
+                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
+                            `+ data[i].createdAt + `
+                          </p>
+                        </td>
+                        <td>
+                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
+                            `+ data[i].updatedAt + `</p>
+                        </td>
+                        <td>
+                          <button type="button" data-id-project=`+ data[i]._id + `
+                            class="btn btn-delete-project btn-danger btn-sm btn-icon-text"><i
+                              class="mdi mdi-delete"></i></button>
+                          <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
+                            data-id-project=`+ data[i]._id + `><i class="mdi mdi-lead-pencil"></i></button>
+                        </td>
+                        <td><button type="button" class="btn btn-warning btn-rounded btn-sm btn-fw">Bản thảo(draft)</button></td>
+                       
+                      </tr>`;
+          }
+
         }
         $(".tbl-all-project").html(html);
         deleteProject();
@@ -760,6 +823,9 @@
                         </th>
                         <th>
                           Thao tác
+                        </th>
+                        <th>
+                          Trạng thái
                         </th>
                       </tr>
                     </thead>
@@ -1108,6 +1174,7 @@
                 <label>Tên dự án</label>
                 <input type="text" class="form-control form-control-lg vl-detail-name-project" placeholder="Tên dự án">
               </div>
+
               <div class="form-group">
                 <label for="exampleFormControlSelect3">Loại Dự Án</label>
                 <select class="form-control form-control-sm vl-detail-cate-project" id="exampleFormControlSelect3">
@@ -1120,7 +1187,16 @@
                 <label>Mô tả</label>
                 <textarea class="form-control vl-detail-descript-project" id="exampleTextarea1" rows="4"
                   style="height: 50px"></textarea>
+
               </div>
+              <div class="form-group">
+                <label for="exampleSelectGender">Trạng thái</label>
+                <select class="form-control status-update" id="exampleSelectGender">
+                  <option value="live">live</option>
+                  <option value="draft">draft(bản thảo)</option>
+                </select>
+              </div>
+
             </div>
           </div>
         </div>
@@ -1155,52 +1231,3 @@
     </div>
   </div>
 </div>
-<script>
-  // create config object: rootMargin and threshold
-
-  // are two properties exposed by the interface
-
-  const config = {
-
-    rootMargin: ‘0px 0px 50px 0px’,
-
-    threshold: 0
-
-  };
-
-  // register the config object with an instance
-
-  // of intersectionObserver
-
-  let observer = new intersectionObserver(function (entries, self) {
-
-    // iterate over each entry
-
-    entries.forEach(entry => {
-
-      // process just the images that are intersecting.
-
-      // isIntersecting is a property exposed by the interface lazy load là gì
-
-      if (entry.isIntersecting) {
-
-        // custom function that copies the path to the img
-
-        // from data-src to src
-
-        preloadImage(entry.target);
-
-        // the image is now in place, stop watching
-
-        self.unobserve(entry.target);
-
-      }
-
-    });
-
-  }, config);
-  const imgs = document.querySelectorAll('[data-src]');
-  imgs.forEach(img => {
-    observer.observe(img);
-  });
-</script>

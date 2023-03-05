@@ -256,5 +256,15 @@ class ProjectManagerService {
             return 'error';
         }
     }
+
+    async upLoadFileDrive(namePhoto) {
+        try {
+            let data = await googleDriverHelper.uploadFileDrive(ID_FOLDER_DESIGN, namePhoto);
+            return { 'data': data, 'namePhoto': namePhoto };
+        } catch (error) {
+            return 'error';
+        }
+
+    }
 }
 module.exports = new ProjectManagerService();

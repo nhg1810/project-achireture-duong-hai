@@ -3,12 +3,14 @@
 {{!-- sweet alert --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- jsDeliver -->
-<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
+
 <script>
     $(document).ready(function () {
+        console.log(1);
         fetch("/admin/all-inf-user-page").then(res => { return res.json() })
             .then((data) => {
+                console.log(123);
                 let dataHome = data[0].home[0];
                 $(".textTitle p").html(dataHome.blog.title)
                 $(".textContent p").html(dataHome.blog.content)
@@ -47,9 +49,11 @@
                 $(".gallery__column_1").html(html_cl_1);
                 $(".gallery__column_2").html(html_cl_2);
                 $(".gallery__column_3").html(html_cl_3);
-
-
                 console.log(dataHome);
+            }).then(() => {
+
+                
+
             })
     })
 </script>
@@ -60,7 +64,7 @@
     </div>
     <div class="textContent">
         <p>
-           
+
         </p>
     </div>
     <div class="media">
@@ -103,3 +107,6 @@
 
     </div>
 </div>
+<script>
+
+</script>

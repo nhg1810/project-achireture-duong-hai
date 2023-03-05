@@ -12,6 +12,7 @@ const Project = new Schema({
     imageProject: [{
         urlImage: String,
         idImage: String
-    }]
+    }],
+    status: { type: String }
 }, { timestamps: true })
 module.exports = mongoose.model('Project', Project)

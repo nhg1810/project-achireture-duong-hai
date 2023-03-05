@@ -24,7 +24,6 @@ const drive = google.drive({
 class GoogleHelper {
     //get all list file in folder ggdriver
     async listFiles(googleFolderId) {
-        console.log(oauth2Client)
         let arr = [];
         const response = await
             drive.files.list({
@@ -38,6 +37,31 @@ class GoogleHelper {
             })
         }
         return arr;
+    }
+    async uploadFileDrive(targetFolderId, namePhoto) {
+        const fileMetadata = {
+            name: namePhoto + '.webp',
+            parents: [targetFolderId]
+
+        };
+        const media = {
+            mimeType: 'image/jpeg/webp',
+
+            body: fs.createReadStream('D:/nodejs/nodejs-express/project-achireture/src/app/controllers/convert-upload/' + namePhoto + '.webp'),
+        };
+        try {
+            const file = await drive.files.create({
+                resource: fileMetadata,
+                media: media,
+                fields: 'id',
+            });
+            console.log('File Id:', file.data.id);
+            return file.data.id;
+        } catch (err) {
+            console.log(err)
+            // TODO(developer) - Handle error
+            throw err;
+        }
     }
 }
 module.exports = new GoogleHelper();

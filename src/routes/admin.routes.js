@@ -20,6 +20,7 @@ router.get('/get-all-cate-project', AdminController.getAllCateProject);
 router.post('/get-project-by-name', AdminController.getProjectByName);
 router.post('/get-cate-project-by-name-cate', AdminController.getCateProjectByName);
 router.post('/get-project-by-id-cate', AdminController.getProjectByCate);
+router.post('/bulk-upload-design', AdminController.bulkUploadDesign);
 
 //get all information of user page
 router.get('/all-inf-user-page', AdminController.getAllInformationUserPage);

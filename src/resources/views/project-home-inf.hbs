@@ -118,14 +118,13 @@
 
                     }).then(() => {
                         let target = "";
-                        let idImage;
                         chooseTarget(target)
+
                     })
             })
 
         clickItemPreview();
         function clickItemPreview() {
-
             $(".item-preview").click(function () {
                 let idImage = $(this).attr('data-id-image')
                 if (idImage) {

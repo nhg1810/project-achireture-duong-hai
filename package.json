@@ -19,10 +19,13 @@
   },
   "homepage": "https://github.com/nhg1810/project-duonghai#readme",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
+    "dropzone": "^6.0.0-beta.2",
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
+    "formidable": "^2.1.1",
     "googleapis": "^110.0.0",
     "handlebars": "^4.7.7",
     "jsonwebtoken": "^9.0.0",
@@ -30,6 +33,7 @@
     "morgan": "^1.10.0",
     "node-sass": "^8.0.0",
     "nodemon": "^2.0.20",
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "sharp": "^0.31.3"
   }
 }

@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 const route = require('./routes');
 const db = require('./app/config/db');
+const bodyParser = require('body-parser')
 const app = express();
 
 //dotenv
@@ -11,7 +12,7 @@ require('dotenv').config();
 
 app.use(express.static(path.join(__dirname, '/public/')))
 //handle bar(template engine)
-const hbs  = require('express-handlebars');
+const hbs = require('express-handlebars');
 const { extname } = require('path');
 
 //port
@@ -28,6 +29,11 @@ app.engine('.hbs', hbs.engine({
   extname: 'hbs'
 }
 ));
+//body parser
+app.use(bodyParser.urlencoded({
+  extends: true
+}))
+
 app.set('view engine', 'hbs');
 app.set('views', './src/resources/views')
 

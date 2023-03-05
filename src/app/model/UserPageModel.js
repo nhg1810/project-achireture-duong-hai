@@ -18,6 +18,7 @@ const UserPage = new Schema({
         images: [
             {
                 idImage: { type: String },
+                thumbnail: {type: String},
                 zIndex: { type: String },
             }
         ]
