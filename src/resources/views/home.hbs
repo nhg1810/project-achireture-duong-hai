@@ -110,9 +110,10 @@
     }
 
     .contain-item-image {
-        width: 90%;
-        min-height: 400px;
-        background-color: rgb(254, 255, 255);
+        width: 80%;
+        height: auto;
+        overflow: hidden;
+        background-color: #474747;
         position: fixed;
         z-index: 11;
         left: 50%;
@@ -120,30 +121,49 @@
         display: none;
         transform: translate(-50%, -50%);
         overflow: scroll;
-        justify-content: space-evenly;
-        align-items: center;
         flex-wrap: wrap;
     }
 
     .contain-item-image>.contain-image {
         width: 49%;
-        min-height: 200px;
-        background-color: aqua;
+        min-height: auto;
         position: relative;
-        padding-bottom: 30px;
+        padding-bottom: 2px;
     }
 
     .contain-item-image>.inf-image {
         width: 49%;
-        min-height: 200px;
-        background-color: rgba(168, 97, 16, 0.5);
-        position: relative;
+        background-color: #474747;
+        margin-top: 10px;
+        margin-bottom: 16px;
+        margin-left: 10px;
     }
 
     .contain-item-image>.contain-image>img {
-        position: absolute;
+        padding-top: 10px;
         width: 100%;
         height: auto;
+    }
+
+    .inf-image-a,
+    .inf-image-describe,
+    .inf-image-title {
+        margin: 15px 0 0 15px;
+    }
+
+    .inf-image-describe>p {
+        font-size: 17px;
+        color: #bab6af
+    }
+
+    .inf-image-title>p {
+        font-size: 30px;
+        color: #bab6af
+    }
+
+    .inf-image-a>a {
+        text-decoration: none;
+        color: #bab6af
     }
 </style>
 <div class="layout"
@@ -154,18 +174,25 @@
         <img src="" alt="" class="image-detail">
     </div>
     <div class="inf-image">
-        <h3>Thông tin chi tiết về ảnh dự án này</h3>
+        <div class="inf-image-title">
+            <p>Thông tin chi tiết về ảnh dự án này</p>
+        </div>
         <div class="inf-project">
-
         </div>
 
-
-        <p>Các ảnh liên quan thuộc dự án này</p>
+        <div class="inf-image-describe">
+            <p>Các ảnh liên quan thuộc dự án này</p>
+        </div>
         <div class="img-relative-project">
 
         </div>
         {{!-- 1 chuỗi các ảnh --}}
-        <a href="">Xem chi tiết >></a>
+        <div class="inf-image-a">
+            <a href="">Xem chi tiết >></a>
+
+        </div>
+
+
     </div>
 </div>
 <div class="mainContentText">

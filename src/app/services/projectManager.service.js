@@ -213,18 +213,18 @@ class ProjectManagerService {
     //             home: [{
     //                 name: 'Home',
     //                 blog: {
-    //                     title: 'con cac',
-    //                     content: 'cac con'
+    //                     title: '123',
+    //                     content: '123'
     //                 },
     //                 socialMedia: {
-    //                     facebook: 'con cac',
-    //                     instagram: 'con cac',
-    //                     youtube: 'con cac',
-    //                     email: 'con cac'
+    //                     facebook: '',
+    //                     instagram: '',
+    //                     youtube: '',
+    //                     email: ''
     //                 },
     //                 images: [
     //                     {
-    //                         idImage: 'con cac',
+    //                         idImage: '',
     //                         zIndex: '1',
     //                     }
     //                 ]
