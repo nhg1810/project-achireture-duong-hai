@@ -5,6 +5,7 @@ router.get('/project-manager', AdminController.projectManager);
 router.get('/project-personnel-manager', AdminController.projectPersonnelManager);
 router.get('/project-photo-manager', AdminController.projectPhotoManager);
 router.get('/mana-inf-home-user', AdminController.manaInfHomeUser);
+router.get('/infor-company', AdminController.inforCompany)
 
 //api data
 router.post('/store-category-project', AdminController.createCategoryProject)
@@ -21,6 +22,9 @@ router.post('/get-project-by-name', AdminController.getProjectByName);
 router.post('/get-cate-project-by-name-cate', AdminController.getCateProjectByName);
 router.post('/get-project-by-id-cate', AdminController.getProjectByCate);
 router.post('/bulk-upload-design', AdminController.bulkUploadDesign);
+router.get('/get-inf-company', AdminController.getAllInfCompany);
+//update logo company
+router.post('/update-inf-company', AdminController.updateInfCompany);
 
 //get all information of user page
 router.get('/all-inf-user-page', AdminController.getAllInformationUserPage);

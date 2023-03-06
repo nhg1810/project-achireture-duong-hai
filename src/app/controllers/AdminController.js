@@ -198,10 +198,10 @@ class AdminController {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.json(res)
     }
-    async createInf(request, response, next) {
-        const res = await projectManagerService.createINFHomePage(request);
-        console.log(res);
-    }
+    // async createInf(request, response, next) {
+    //     const res = await projectManagerService.createINFHomePage(request);
+    //     console.log(res);
+    // }
 
     async updateInfHomePge(request, response, next) {
         const res = await projectManagerService.updateInfHomePage(request);
@@ -302,6 +302,24 @@ class AdminController {
         // response.setHeader("Content-Type", "text/json");
         // response.setHeader("Access-Control-Allow-Origin", "*");
         // response.json(request.body);
+    }
+
+    async inforCompany(request, response, next) {
+        response.render('project-company-manager')
+    }
+    async getAllInfCompany(request, response, next) {
+        const res = await projectManagerService.getInfCompany('64061f7b8a4398c824dbf196');
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
+    }
+    async updateInfCompany(request, response, next) {
+        const res = await projectManagerService.updateCompany(request);
+        console.log(res)
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        // console.log(res)
+        response.json(res);
     }
 }
 module.exports = new AdminController;

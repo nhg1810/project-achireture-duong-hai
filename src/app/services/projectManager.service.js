@@ -5,7 +5,8 @@ const e = require('express');
 const ProjectModel = require('../model/ProjectModel');
 const CateProject = require('../model/CateProject');
 const AccountModel = require('../model/AccountModel');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const CompanyModel = require('../model/CompanyModel');
 
 const ID_FOLDER_DESIGN = process.env.ID_FOLDER_DESIGN;
 
@@ -210,29 +211,17 @@ class ProjectManagerService {
     // async createINFHomePage(request, response, next) {
     //     try {
     //         let obj = {
-    //             home: [{
-    //                 name: 'Home',
-    //                 blog: {
-    //                     title: '123',
-    //                     content: '123'
-    //                 },
-    //                 socialMedia: {
-    //                     facebook: '',
-    //                     instagram: '',
-    //                     youtube: '',
-    //                     email: ''
-    //                 },
-    //                 images: [
-    //                     {
-    //                         idImage: '',
-    //                         zIndex: '1',
-    //                     }
-    //                 ]
-    //             }]
+    //             nameCompany: "ádd",
+    //             addressCompany: "ádd",
+    //             emailCompany: "ádd",
+    //             phoneCompany: "ádd",
+    //             description: "ádd",
+    //             logoCompany: "ádd",
+    //             imageReview: "ádd"
     //         }
     //         if (request) {
     //             let data = await curdHelper.create({
-    //                 model: 'userPage',
+    //                 model: 'company',
     //                 obj: obj
     //             });
     //             return data;
@@ -243,7 +232,7 @@ class ProjectManagerService {
     //         return 'error'
     //     }
     // }
-    
+
     //update inf home page
     async updateInfHomePage(request, response, next) {
         try {
@@ -266,6 +255,38 @@ class ProjectManagerService {
             return 'error';
         }
 
+    }
+    async upLoadLogo(namePhoto, idFolder) {
+        try {
+            let data = await googleDriverHelper.uploadFileDrive(idFolder, namePhoto);
+            return { 'data': data, 'namePhoto': namePhoto };
+        } catch (error) {
+            return 'error';
+        }
+
+    }
+    async getInfCompany(idCompany) {
+        try {
+            let rs = await CompanyModel.find({ _id: idCompany });
+            rs = rs.slice(0, 10);
+            return rs;
+        } catch (error) {
+            return 'error';
+        }
+
+    }
+    async updateCompany(request, response, next) {
+        console.log(request.body)
+        try {
+            let data = await curdHelper.update({
+                model: 'company',
+                id: request.body._id,
+                obj: request.body.obj
+            });
+            return data;
+        } catch (error) {
+            return 'error';
+        }
     }
 }
 module.exports = new ProjectManagerService();

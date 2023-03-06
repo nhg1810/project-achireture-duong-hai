@@ -8,6 +8,7 @@ const Company = new Schema({
     emailCompany: { type: String },
     phoneCompany: { type: String },
     description: { type: String },
-    imageReview: [{ type: String }]
+    logoCompany: { type: String },
+    imageReview: { type: String }
 })
 module.exports = mongoose.model('Company', Company)

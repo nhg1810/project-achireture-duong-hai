@@ -1,0 +1,145 @@
+{{!-- js for this page --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{!-- sweet alert --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        getInf()
+        function getInf() {
+            $.ajax({
+                url: '/admin/get-inf-company',
+                type: 'GET',
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                let desCompany = $(".desCompany").val(data[0].description)
+                let phoneCompany = $(".phoneCompany").val(data[0].phoneCompany)
+                let emailCompany = $(".emailCompany").val(data[0].emailCompany)
+                let addressCompany = $(".addressCompany").val(data[0].addressCompany)
+                let nameCompany = $(".nameCompany").val(data[0].nameCompany)
+            })
+        }
+        $(".btn-update-inf-company").click(function () {
+            let vl_desCompany = $(".desCompany").val()
+            let vl_phoneCompany = $(".phoneCompany").val()
+            let vl_emailCompany = $(".emailCompany").val()
+            let vl_addressCompany = $(".addressCompany").val()
+            let vl_nameCompany = $(".nameCompany").val()
+            if (vl_desCompany == "" || vl_nameCompany == "" || vl_addressCompany == "" || vl_emailCompany == "" || vl_phoneCompany == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Đang thiếu thông tin của công ty!',
+                    footer: '<a href="">Kiểm tra lại !</a>'
+                })
+            } else {
+                let form_project = new FormData();
+                form_project = {
+                    _id: '64061f7b8a4398c824dbf196',
+                    obj: {
+                        nameCompany: vl_nameCompany,
+                        addressCompany: vl_addressCompany,
+                        emailCompany: vl_emailCompany,
+                        phoneCompany: vl_phoneCompany,
+                        description: vl_desCompany,
+                    }
+
+                }
+                $.ajax({
+                    url: '/admin/update-inf-company',
+                    type: 'POST',
+                    data: form_project,
+                    dataType: "json",
+                    encode: true,
+                }).done(function (data) {
+                    if (data == 'success') {
+                        getInf()
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Cập nhật thành công !',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+
+                })
+            }
+        })
+    })
+</script>
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Thông tin công ty</h4>
+                   
+                    <form class="form-sample">
+                        <p class="card-description">
+                            Dữ liệu do admin cập nhật
+                        </p>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Tên công ty</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control nameCompany" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label ">Địa chỉ công ty</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control addressCompany" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label ">Email công ty</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control emailCompany" placeholder="dabc@gmail.com" />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Số điện thoại liên hệ</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control phoneCompany" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Mô tả</label>
+                                    <div class="col-sm-9">
+                                        <div class="form-group">
+                                            <label for="exampleTextarea1">Mô tả công ty (nên soạn thảo trước rồi copy
+                                                vào)</label>
+                                            <textarea class="form-control desCompany" id="exampleTextarea1"
+                                                style="height: 300px" rows="4"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-inverse-primary btn-fw btn-update-inf-company">Cập
+                            nhật</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
