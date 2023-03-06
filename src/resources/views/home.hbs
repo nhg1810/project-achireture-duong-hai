@@ -59,6 +59,7 @@
                     let idImage = $(this).attr('data-id-image');
                     $(".image-detail").attr('src', `https://drive.google.com/uc?id=` + idImage + ``);
 
+
                     $.ajax({
                         url: '/findProjectByName',
                         type: 'POST',
@@ -71,8 +72,11 @@
                         $(".img-relative-project").html('')
                         let html = '';
                         let arr_img = '';
+                        let linkDetail = '';
                         if (data != "") {
                             data.map((item) => {
+                                linkDetail += ` <a target="_blank" href="detailproject/` + item._id + `" id="a-link-detail">Xem chi tiết >></a>`;
+
                                 html += ` <p class="nameProject">- Tên dự án: ` + item.nameProject.trim() + `</p>
                                     <p class="descriptProject">- Mô tả dự án: `+ item.descriptionProject + `</p>
 
@@ -90,6 +94,7 @@
                                     <p class="cateProject">- Dự án này thuộc danh mục: Chuẩn bị cập nhật...</p>
                                 <p class="descriptCateProject">- Mô tả danh mục này: Chuẩn bị cập nhật...</p>`;
                         }
+                        $(".inf-image-a").html(linkDetail)
                         $(".inf-project").html(html)
                         $(".img-relative-project").html(arr_img)
                     })
@@ -104,7 +109,7 @@
 
 <style>
     /*chưa làm responesive*/
-    
+
     .inf-project>p {
         margin-left: 30px;
     }
@@ -239,7 +244,7 @@
         </div>
         {{!-- 1 chuỗi các ảnh --}}
         <div class="inf-image-a">
-            <a href="">Xem chi tiết >></a>
+
 
         </div>
 

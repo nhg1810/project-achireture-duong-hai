@@ -36,8 +36,15 @@ class HomeController {
             console.log(request.params.idProject);
             let res = await userManagerService.detailProjectById(request.params.idProject);
             console.log(res);
-            response.render('detail', { layout: 'layout-user.hbs', data: res })
+            response.render('detail', { layout: 'layout-user.hbs', data: request.params.idProject })
         }
+    }
+    async getDetailProject(request, response, next) {
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        let res = await userManagerService.detailProjectById(request.body.idProject);
+
+        response.json(res);
     }
 }
 module.exports = new HomeController;

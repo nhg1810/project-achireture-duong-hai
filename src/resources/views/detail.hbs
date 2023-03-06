@@ -66,128 +66,62 @@
         z-index: 2;
     }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.0/lazysizes.min.js" async=""></script>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/getDetailProject',
+            type: 'POST',
+            data: { idProject: "{{data}}" },
+            dataType: "json",
+            encode: true,
+        }).done(function (data) {
+            console.log(data);
+            $(".nameProject").html(data.nameProject)
+            $(".bannerDetail").attr('src', data.imageProject[0].urlImage);
+            let arrImg = data.imageProject;
+            let html = '';
+            arrImg.map((img) => {
+                html += `<div class="item-image" style="width: 33%; height:  500px; position: relative ">
+            <img src="`+ img.urlImage + `" style="width: 100%; height: 100%; position: absolute; object-fit: cover" alt="">
+        </div>`;
+            })
+            $(".contain-all-image").html(html);
+            $(".title-project").html('tên dự án: ' + data.nameProject)
+            $(".des-project").html('Mô tả: '+ data.descriptionProject)
+
+            $(".cate-project").html('danh mục thuộc dự án: ' + data.cateProject.nameProject);
+            $(".des-cate-project").html('mô tả danh mục thuộc dự án: ' + data.cateProject.descriptionProject);
+
+
+        })
+    })
+</script>
+<input type="hidden" name="" id="idProject" data-id="{{data}}">
 <div class="mainContentBanner">
-    <div class="mainContentBanner-p">
-        <p>Beach Villa</p>
+    <div class="mainContentBanner-p" style="position: relative; width: 100%; height: 550px;">
+        <img src="" class="bannerDetail" alt=""
+            style="position: absolute; width: 95%;  height: 100%; object-fit: cover; padding-bottom: 10%; margin: auto; left: 50%;  transform: translate(-50%)">
+        <p class="nameProject"
+            style="position: absolute;  top: 50%;left: 50%;transform: translate(-50%, -50%); font-size: 50px; font-weight: 800; color: bisque; padding: 10px; background-color: #323232;">
+            Không tồn tại trang này !!!</p>
     </div>
 </div>
+
 <div class="mainContentProjectDetail">
-    <div class="gallery">
-        <div class="gallery__column">
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb">
-                    <img src="../img/269372937_1329469600829378_2172518883074724499_n.jpg"
-                        alt="Portrait by Jessica Felicio" class="gallery__image" />
-                    <figcaption class="gallery__caption">
-                        Portrait by Jessica Felicio
-                    </figcaption>
-                </figure>
-            </a>
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb">
-                    <img src="../img/269372937_1329469600829378_2172518883074724499_n.jpg"
-                        alt="Portrait by Jessica Felicio" class="gallery__image" />
-                    <figcaption class="gallery__caption">
-                        Portrait by Jessica Felicio
-                    </figcaption>
-                </figure>
-            </a>
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb">
-                    <img src="../img/269372937_1329469600829378_2172518883074724499_n.jpg"
-                        alt="Portrait by Jessica Felicio" class="gallery__image" />
-                    <figcaption class="gallery__caption">
-                        Portrait by Jessica Felicio
-                    </figcaption>
-                </figure>
-            </a>
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb">
-                    <img src="../img/269372937_1329469600829378_2172518883074724499_n.jpg"
-                        alt="Portrait by Jessica Felicio" class="gallery__image" />
-                    <figcaption class="gallery__caption">
-                        Portrait by Jessica Felicio
-                    </figcaption>
-                </figure>
-            </a>
-        </div>
-        <div class="gallery__column" id="middle__column">
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb">
-                    <img src="../img/269372937_1329469600829378_2172518883074724499_n.jpg"
-                        alt="Portrait by Jessica Felicio" class="gallery__image" />
-                    <figcaption class="gallery__caption">
-                        Portrait by Jessica Felicio
-                    </figcaption>
-                </figure>
-            </a>
+    <div class="contain-all-image"
+        style="display: flex; width: 90%; height: auto; align-items: center; justify-content: space-evenly;">
 
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb">
-                    <img src="../img/269372937_1329469600829378_2172518883074724499_n.jpg"
-                        alt="Portrait by Jessica Felicio" class="gallery__image" />
-                    <figcaption class="gallery__caption">
-                        Portrait by Jessica Felicio
-                    </figcaption>
-                </figure>
-            </a>
-
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb">
-                    <img src="../img/269372937_1329469600829378_2172518883074724499_n.jpg"
-                        alt="Portrait by Jessica Felicio" class="gallery__image" />
-                    <figcaption class="gallery__caption">
-                        Portrait by Jessica Felicio
-                    </figcaption>
-                </figure>
-            </a>
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb">
-                    <img src="../img/269372937_1329469600829378_2172518883074724499_n.jpg"
-                        alt="Portrait by Jessica Felicio" class="gallery__image" />
-                    <figcaption class="gallery__caption">
-                        Portrait by Jessica Felicio
-                    </figcaption>
-                </figure>
-            </a>
-        </div>
-        <div class="gallery__column">
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb">
-                    <img src="../img/269372937_1329469600829378_2172518883074724499_n.jpg"
-                        alt="Portrait by Jessica Felicio" class="gallery__image" />
-                    <figcaption class="gallery__caption">
-                        Portrait by Jessica Felicio
-                    </figcaption>
-                </figure>
-            </a>
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb">
-                    <img src="../img/269372937_1329469600829378_2172518883074724499_n.jpg"
-                        alt="Portrait by Jessica Felicio" class="gallery__image" />
-                    <figcaption class="gallery__caption">
-                        Portrait by Jessica Felicio
-                    </figcaption>
-                </figure>
-            </a>
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb">
-                    <img src="../img/269372937_1329469600829378_2172518883074724499_n.jpg"
-                        alt="Portrait by Jessica Felicio" class="gallery__image" />
-                    <figcaption class="gallery__caption">
-                        Portrait by Jessica Felicio
-                    </figcaption>
-                </figure>
-            </a>
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb">
-                    <img src="../img/269372937_1329469600829378_2172518883074724499_n.jpg"
-                        alt="Portrait by Jessica Felicio" class="gallery__image" />
-                    <figcaption class="gallery__caption">
-                        Portrait by Jessica Felicio
-                    </figcaption>
-                </figure>
-            </a>
-        </div>
     </div>
+    <div class="contain-inf-design">
+        <p style="color: aliceblue;" class="title-project"></p>
+        <p style="color: aliceblue;" class="cate-project"></p>
+        <p style="color: aliceblue;" class="des-project"></p>
+        <p style="color: aliceblue;" class="des-cate-project"></p>
+
+    </div>
+
+
 </div>
