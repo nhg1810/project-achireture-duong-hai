@@ -71,17 +71,25 @@
                         $(".img-relative-project").html('')
                         let html = '';
                         let arr_img = '';
-                        data.map((item) => {
-                            html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
-                                    <p class="descriptProject">`+ item.descriptionProject + `</p>
+                        if (data != "") {
+                            data.map((item) => {
+                                html += ` <p class="nameProject">- Tên dự án: ` + item.nameProject.trim() + `</p>
+                                    <p class="descriptProject">- Mô tả dự án: `+ item.descriptionProject + `</p>
 
-                                    <p class="cateProject">`+ item.cateProject.nameProject + `</p>
-                                <p class="descriptCateProject">`+ item.cateProject.descriptionProject + `</p>`;
+                                    <p class="cateProject">- Dự án này thuộc danh mục: `+ item.cateProject.nameProject + `</p>
+                                <p class="descriptCateProject">- Mô tả danh mục này: `+ item.cateProject.descriptionProject + `</p>`;
 
-                            for (let i = 0; i < item.imageProject.length; i++) {
-                                arr_img += `<img src="` + item.imageProject[i].urlImage + `"/>`;
-                            }
-                        })
+                                for (let i = 0; i < item.imageProject.length; i++) {
+                                    arr_img += `<img src="` + item.imageProject[i].urlImage + `"/>`;
+                                }
+                            })
+                        } else {
+                            html = ` <p class="nameProject">- Tên dự án: Dự án này chưa được công bố chi tiết</p>
+                                    <p class="descriptProject">- Mô tả dự án: Dự án này chưa được công bố chi tiết</p>
+
+                                    <p class="cateProject">- Dự án này thuộc danh mục: Chuẩn bị cập nhật...</p>
+                                <p class="descriptCateProject">- Mô tả danh mục này: Chuẩn bị cập nhật...</p>`;
+                        }
                         $(".inf-project").html(html)
                         $(".img-relative-project").html(arr_img)
                     })
@@ -95,18 +103,44 @@
 </script>
 
 <style>
+    /*chưa làm responesive*/
+    
+    .inf-project>p {
+        margin-left: 30px;
+    }
+
+    .inf-project>.nameProject {
+        margin-top: 20px;
+        font-size: 30px;
+        color: #b19023;
+        font-weight: 800;
+
+    }
+
+    .inf-project>.descriptProject {
+        font-size: 20px;
+        color: white
+    }
+
+    .inf-project>.cateProject,
+    .descriptCateProject {
+        font-size: 20px;
+        color: white
+    }
+
     .img-relative-project {
         width: 100%;
-        height: auto;
+        height: 200px;
+        overflow-y: scroll;
         display: flex;
-        align-items: center;
-        justify-content: space-evenly;
         flex-wrap: wrap;
     }
 
     .img-relative-project>img {
-        width: 80px;
-        height: 80px;
+        margin-left: 20px;
+        margin-bottom: 20px;
+        width: 150px;
+        height: auto;
     }
 
     .contain-item-image {
@@ -120,15 +154,16 @@
         top: 50%;
         display: none;
         transform: translate(-50%, -50%);
-        overflow: scroll;
         flex-wrap: wrap;
+        align-items: center;
     }
 
     .contain-item-image>.contain-image {
         width: 49%;
-        min-height: auto;
+        min-height: 500px;
         position: relative;
         padding-bottom: 2px;
+        overflow: hidden;
     }
 
     .contain-item-image>.inf-image {
@@ -140,6 +175,7 @@
     }
 
     .contain-item-image>.contain-image>img {
+        object-fit: cover;
         padding-top: 10px;
         width: 100%;
         height: auto;
@@ -163,7 +199,20 @@
 
     .inf-image-a>a {
         text-decoration: none;
-        color: #bab6af
+        color: #181818;
+        padding: 15px;
+        background-color: #f1f1f1;
+        border: solid 2px #b19023;
+        border-radius: 5px;
+        margin-top: 30px;
+        float: right;
+        font-size: 20px;
+    }
+
+    .inf-image-a>a:hover {
+        transition: 0.4s ease-in-out;
+        background-color: #181818;
+        color: #f1f1f1;
     }
 </style>
 <div class="layout"
@@ -181,7 +230,9 @@
         </div>
 
         <div class="inf-image-describe">
-            <p>Các ảnh liên quan thuộc dự án này</p>
+            <p
+                style="margin-top: 20px; color: white; font-size: 18px; padding: 10px; border-bottom: solid 3px #b19023; margin-bottom: 30px;">
+                Các ảnh liên quan thuộc dự án này</p>
         </div>
         <div class="img-relative-project">
 
