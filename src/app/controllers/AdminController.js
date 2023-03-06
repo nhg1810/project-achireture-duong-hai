@@ -1,5 +1,5 @@
 const Course = require('../model/EntityModel');
-const logger = require('../constants/LoggerConstant');
+const logger = require('../constants/loggerConstant');
 const projectManagerService = require('../services/projectManager.service');
 const formidable = require('formidable');
 const path = require('path');
