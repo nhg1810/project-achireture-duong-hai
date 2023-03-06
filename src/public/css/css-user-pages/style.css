@@ -286,6 +286,9 @@ body {
 }
 
 @media (max-width:1263px) {
+    .header{
+        padding-top: 20px;
+    }
     .nav {
         display: none;
     }

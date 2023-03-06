@@ -65,6 +65,7 @@
         display: block;
         z-index: 2;
     }
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.0/lazysizes.min.js" async=""></script>
@@ -637,7 +638,29 @@
         }
 
     }
-</style>
+    /*hover detail img*/
+    .item-image>img{
+        -webkit-transform: scale(1);
+	    transform: scale(1);
+	    -webkit-transition: .3s ease-in-out;
+	    transition: .3s ease-in-out;
+    }
+    .item-image:hover>img{
+        -webkit-transform: scale(1.3);
+	    transform: scale(1.02);
+        filter: grayscale(1);
+    }
+    /*scroll*/
+    ::-webkit-scrollbar {
+        width: 5px;
+        background-color: #474747;
+    }
+
+    ::-webkit-scrollbar-thumb{
+        background-color: #bab6af;
+        border-radius: 5px;
+    }
+    </style>
 
 
 <div class="detail-banner" style="width: 100%;  height: 500px; margin-top: -38px; position: relative;">
