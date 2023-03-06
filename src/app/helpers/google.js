@@ -44,10 +44,11 @@ class GoogleHelper {
             parents: [targetFolderId]
 
         };
+        console.log("process.cwd())", process.cwd());
         const media = {
             mimeType: 'image/jpeg/webp',
 
-            body: fs.createReadStream('D:/nodejs/nodejs-express/project-achireture/src/app/controllers/convert-upload/' + namePhoto + '.webp'),
+            body: fs.createReadStream(`${process.cwd()}/src/app/controllers/convert-upload/` + namePhoto + '.webp'),
         };
         try {
             const file = await drive.files.create({

@@ -44,7 +44,7 @@
             $(this).html('Đăng tải...');
             $(this).attr('type', 'button').addClass('btn-inverse-dark btn-fw');
             if ($(".all-file-upload")[0].files[0]) {
-                alert($(".all-file-upload")[0].files[0]);
+               
                 $("#form-upload-image").submit();
             } else {
                 $(this).attr('type', 'submit').removeClass('btn-inverse-dark btn-fw');

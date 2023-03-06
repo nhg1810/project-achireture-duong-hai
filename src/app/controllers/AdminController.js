@@ -272,6 +272,7 @@ class AdminController {
                         const res = await projectManagerService.upLoadFileDrive(files.file.newFilename);
                         if (res) {
                             setTimeout(function () {
+                                console.log(__dirname);
                                 fs.unlink(__dirname + '/convert-upload/' + res.namePhoto + '.webp', function (err) {
                                     if (err) throw err;
                                     console.log('File deleted!');
