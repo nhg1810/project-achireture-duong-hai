@@ -223,7 +223,7 @@ class AdminController {
             }
             var arrOfFiles = []
             arrOfFiles = files.file;
-
+            console.log(arrOfFiles)
 
             if (arrOfFiles.length) {
                 console.log(arrOfFiles.length)
