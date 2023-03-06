@@ -134,14 +134,23 @@
     }
 
     .img-relative-project {
-        width: 100%;
+        width: 95%;
         height: 200px;
         overflow-y: scroll;
         display: flex;
         flex-wrap: wrap;
     }
 
-    .img-relative-project>img {
+    ::-webkit-scrollbar {
+        width: 5px;
+        background-color: #474747;
+    }
+
+    ::-webkit-scrollbar-thumb{
+        background-color: #bab6af;
+        border-radius: 5px;
+    }
+     .img-relative-project>img {
         margin-left: 20px;
         margin-bottom: 20px;
         width: 150px;
@@ -219,9 +228,50 @@
         background-color: #181818;
         color: #f1f1f1;
     }
+
+    @media (max-width:1263px) {
+        .contain-item-image>.contain-image {
+            width: 100%;
+            min-height: auto;
+            position: relative;
+            padding-bottom: 2px;
+            overflow: hidden;
+        }
+
+        .contain-item-image>.inf-image {
+            width: 100%;
+            background-color: #474747;
+            margin-top: 10px;
+            margin-bottom: 16px;
+            margin-left: 10px;
+        }
+
+        .contain-item-image {
+            width: 80%;
+            height: 500px;
+            overflow-y: scroll;
+            background-color: #474747;
+            position: fixed;
+            z-index: 11;
+            left: 50%;
+            top: 50%;
+            display: none;
+            transform: translate(-50%, -50%);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .contain-item-image>.contain-image>img {
+            object-fit: cover;
+            padding-top: 10px;
+            width: 100%;
+            height: auto;
+            padding: 10px 10px 0 10px;
+        }
+    }
 </style>
 <div class="layout"
-    style="position: absolute; width: 100%; height: 100%; position: fixed; top: 0; left:  0; background-color: rgb(40, 40, 40); opacity: 0.5; z-index: 10; display: none;">
+    style="position: absolute; width: 100%; height: 100%; position: fixed; top: 0; left:  0; background-color: rgb(40, 40, 40); opacity: 0.8; z-index: 10; display: none;">
 </div>
 <div class="contain-item-image">
     <div class="contain-image">
@@ -240,7 +290,6 @@
                 Các ảnh liên quan thuộc dự án này</p>
         </div>
         <div class="img-relative-project">
-
         </div>
         {{!-- 1 chuỗi các ảnh --}}
         <div class="inf-image-a">
