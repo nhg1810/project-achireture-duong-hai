@@ -1,52 +1,51 @@
 <style>
-    
-.mainHeader {
+  .mainHeader {
     width: 1200px;
     display: flex;
     margin: 0 auto;
-}
+  }
 
-.logo {
+  .logo {
     width: 10%;
-}
+  }
 
-.logo img {
+  .logo img {
     width: 90px;
-}
+  }
 
-.nav {
+  .nav {
     width: 90%;
-}
+  }
 
-.nav #navUl {
+  .nav #navUl {
     display: flex;
     list-style: none;
-}
+  }
 
-.nav>ul>li {
+  .nav>ul>li {
     margin-left: 21.2%;
     position: relative;
     height: 32px;
-}
+  }
 
-#navUl>li>a:hover {
+  #navUl>li>a:hover {
     color: #ffff;
     transition: 1s;
-}
+  }
 
-.nav ul li a {
+  .nav ul li a {
     text-decoration: none;
     color: #bab6af;
     font-size: 15px;
-}
+  }
 
-.nav ul li:hover #subNavProject {
+  .nav ul li:hover #subNavProject {
 
     display: block;
     border: 1px;
-}
+  }
 
-#subNavProject {
+  #subNavProject {
     position: absolute;
     list-style: none;
     top: 32.2px;
@@ -56,285 +55,266 @@
     display: none;
     border: #bab6af;
     border: 0 1px 1px 1px;
-}
+  }
 
-#subNavProject>a>li {
+  #subNavProject>a>li {
     padding: 5px 0 5px 10px;
     width: 100%;
     border-radius: 5px;
-}
+  }
 
-#subNavProject>a>li:hover {
+  #subNavProject>a>li:hover {
     color: #5c5757;
     transition: .3s;
     background-color: rgb(230, 226, 226);
 
 
-}
+  }
 
-/* MAINCONTENT */
-.mainContent {
+  /* MAINCONTENT */
+  .mainContent {
     position: absolute;
     width: 100%;
     height: auto;
-}
+  }
 
-.mainContentText {
+  .mainContentText {
     width: 1200px;
     margin: 0 auto;
     color: #bab6af;
-}
+  }
 
-.textTitle p {
+  .textTitle p {
     font-size: 30px;
-}
+  }
 
-.textMedia,
-.textContent {
+  .textMedia,
+  .textContent {
     font-size: 15px;
     width: 99%;
     padding-top: 40px;
-}
+  }
 
-.iconMedia ul {
+  .iconMedia ul {
     display: flex;
     list-style: none;
-}
+  }
 
-.iconMedia ul li {
+  .iconMedia ul li {
     padding-left: 15px;
     padding-top: 10px;
-}
+  }
 
-.iconMedia .hr {
+  .iconMedia .hr {
     width: 300px;
     color: #bab6af;
     padding-top: 20px;
-}
+  }
 
-/* mainContentCategories */
+  /* mainContentCategories */
 
-.mainContentCategories {
+  .mainContentCategories {
     padding-top: 20px;
     width: 95%;
     margin: auto;
     color: #bab6af;
-}
+  }
 
-.categoryItem {
+  .categoryItem {
     width: 100%;
     display: flex;
     background-color: #444444;
     margin-bottom: 30px;
     position: relative;
-}
+  }
 
-.categoryItemImage {
+  .categoryItemImage {
     width: 50%;
     overflow: hidden;
-}
+  }
 
-.categoryItemImage img {
+  .categoryItemImage img {
     width: 100%;
     height: 100%;
     margin: auto;
-}
+  }
 
-.categoryItemText {
+  .categoryItemText {
     width: 50%;
     margin-left: 30px;
     margin-right: 30px;
     margin-top: 20px;
-}
+  }
 
-.categoryItemText-1 {
+  .categoryItemText-1 {
     font-size: 33px;
-}
+  }
 
-.categoryItemText-2 {
+  .categoryItemText-2 {
     padding-top: 15px;
     font-size: 19px;
-}
+  }
 
-.categoryItemBtn {
+  .categoryItemBtn {
     padding-top: 30px;
-}
+  }
 
-.categoryItemBtn>a {
+  .categoryItemBtn>a {
     font-size: 23px;
     text-decoration: none;
     color: #bab6af;
-}
+  }
 
-.categoryItemBtn>a:hover {
+  .categoryItemBtn>a:hover {
     color: rgb(107, 106, 104);
     transition: .6s;
-}
-@media (max-width:1263px) {
+  }
+
+  @media (max-width:1263px) {
 
     /* project */
     .mainContentText {
-        width: 100%;
-        padding-left: 10px;
+      width: 100%;
+      padding-left: 10px;
     }
+
     .categoryItem {
-        display: block;
+      display: block;
     }
 
     .categoryItemImage {
-        width: 100%;
-        overflow: hidden;
+      width: 100%;
+      overflow: hidden;
     }
 
     .categoryItemImage img {
-        width: 100%;
-        height: 100%;
-        margin: auto;
+      width: 100%;
+      height: 100%;
+      margin: auto;
     }
 
     .categoryItemText {
-        width: 100%;
-        margin-left: 5px;
-        margin-top: 20px;
+      width: 100%;
+      margin-left: 5px;
+      margin-top: 20px;
     }
 
     .categoryItemText-1 {
-        font-size: 28px;
+      font-size: 28px;
     }
 
     .categoryItemText-2 {
-        width: 98%;
-        padding-top: 15px;
-        font-size: 14px;
+      width: 98%;
+      padding-top: 15px;
+      font-size: 14px;
     }
 
     .categoryItemBtn>a {
-        font-size: 18px;
-        
+      font-size: 18px;
+
     }
-}
+  }
 </style>
-
-        <div class="mainContentText">
-          <div class="textTitle">
-            <p>Possibilities , Portrayed</p>
-          </div>
-          <div class="textContent">
-            <p>
-              Welcome to Koma Visualization! This section shows our hand-picked
-              projects that showcase our passion in visualizing architecture
-              with our signature visual style. We are proud to be trusted by our
-              clients to visualize their designs, ranging from small-scale to
-              large-scale projects. If you find our visual works interesting and
-              suitable for your needs, please do reach us through the Info page
-              for further information. Thank you!
-            </p>
-          </div>
-          <div class="media">
-            <div class="textMedia">
-              <p>
-                See more completed projects on our Behance, Youtube, and
-                Facebook :
-              </p>
-            </div>
-            <div class="iconMedia">
-            <ul>
-              <li>
-                <a href="" target="_blank"><img src="icon-user-page/icon1.png" alt="" /></a>
-              </li>
-              <li>
-                <a href="" target="_blank"><img src="icon-user-page/icon3.png" alt="" /></a>
-              </li>
-              <li>
-                <a href="" target="_blank"><img src="icon-user-page/kisspng-facebook-social-media-computer-icons-linkedin-soci-gray-5ac493cf1c2975.7867418415228323351154.png" alt="" style="height: 40px; width: 40px; margin-top: 5px;"/></a>
-              </li>
-            </ul>
-          </div>
-          </div>
-        </div>
-        <div class="mainContentCategories">
-          <div class="categoryItem ">
-            <div class="categoryItemImage ">
-              <img
-                src="../img/329562800_1504790936711340_5378388942636186252_n.jpg"
-                alt=""
-              />
-            </div>
-            <div class="categoryItemText">
-              <div class="categoryItemText-1">
-                <p>Beach Villa</p>
-              </div>
-              <div class="categoryItemText-2">
-                <p>Beach villas are a typical product of the resort real estate segment, possessing a trendy and classy design and are often built on famous beaches with potential for tourism development.
-
-                    Most of the beautiful beach villas are designed in styles that show sophistication and luxury such as modern style, European royal style, .... Besides, beach villas often use Using main materials is tempered glass and natural wood, bringing a beautiful, high-class and close to nature resort space.</p>
-              </div>
-              <div class="categoryItemBtn">
-                <a href="">Show All</a>
-              </div>
-            </div>
-          </div>
-          <div class="categoryItem">
-            <div class="categoryItemText">
-              <div class="categoryItemText-1">
-                <p>Beach Villa</p>
-              </div>
-              <div class="categoryItemText-2">
-                <p>Beach villas are a typical product of the resort real estate segment, possessing a trendy and classy design and are often built on famous beaches with potential for tourism development.
-                  
-                  Most of the beautiful beach villas are designed in styles that show sophistication and luxury such as modern style, European royal style, .... Besides, beach villas often use Using main materials is tempered glass and natural wood, bringing a beautiful, high-class and close to nature resort space.</p>
-                </div>
-                <div class="categoryItemBtn">
-                  <a href="">Show All</a>
-                </div>
-              </div>
-              <div class="categoryItemImage ">
-                <img
-                src="../img/329562800_1504790936711340_5378388942636186252_n.jpg"
-                alt=""
-                />
-              </div>
-            </div>
-          <div class="categoryItem">
-            <div class="categoryItemImage">
-              <img
-                src="../img/329562800_1504790936711340_5378388942636186252_n.jpg"
-                alt=""
-              />
-            </div>
-            <div class="categoryItemText">
-              <div class="categoryItemText-1">
-                <p>Beach Villa</p>
-              </div>
-              <div class="categoryItemText-2">
-                <p>Beach villas are a typical product of the resort real estate segment, possessing a trendy and classy design and are often built on famous beaches with potential for tourism development.
-
-                    Most of the beautiful beach villas are designed in styles that show sophistication and luxury such as modern style, European royal style, .... Besides, beach villas often use Using main materials is tempered glass and natural wood, bringing a beautiful, high-class and close to nature resort space.</p>
-              </div>
-              <div class="categoryItemBtn">
-                <a href="">Show All</a>
-              </div>
-            </div>
-          </div>
-          <div class="categoryItem">
-              <div class="categoryItemText">
-                  <div class="categoryItemText-1">
-                <p>Beach Villa</p>
-              </div>
-              <div class="categoryItemText-2">
-                <p>Beach villas are a typical product of the resort real estate segment, possessing a trendy and classy design and are often built on famous beaches with potential for tourism development.
-
-                    Most of the beautiful beach villas are designed in styles that show sophistication and luxury such as modern style, European royal style, .... Besides, beach villas often use Using main materials is tempered glass and natural wood, bringing a beautiful, high-class and close to nature resort space.</p>
-              </div>
-              <div class="categoryItemBtn">
-                <a href="">Show All</a>
-              </div>
-            </div>
-            <div class="categoryItemImage">
-                <img
-                  src="../img/329562800_1504790936711340_5378388942636186252_n.jpg"
-                  alt=""
-                />
-              </div>
-          </div>
+{{!-- js for this page --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{!-- sweet alert --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  $(document).ready(function () {
+    $.ajax({
+      url: '/all-cate-project',
+      type: 'GET',
+      dataType: "json",
+      encode: true,
+    }).done(function (data) {
+      console.log(data)
+      let html = "";
+      let i = 0;
+      data.map((item) => {
+        if (i % 2 == 0) {
+          $(".mainContentCategories").append(`<div class="categoryItem ">
+    <div class="categoryItemImage ">
+      <img src="" alt="" />
     </div>
+    <div class="categoryItemText">
+      <div class="categoryItemText-1">
+        <p>`+item.nameProject+`</p>
+      </div>
+      <div class="categoryItemText-2">
+        <p>`+item.descriptionProject+`</p>
+      </div>
+      <div class="categoryItemBtn">
+        <a href="">Show All</a>
+      </div>
+    </div>
+  </div>`);
+        } else {
+          $(".mainContentCategories").append(` <div class="categoryItem">
+    <div class="categoryItemText">
+      <div class="categoryItemText-1">
+        <p>Beach Villa</p>
+      </div>
+      <div class="categoryItemText-2">
+        <p>`+item.descriptionProject+`</p>
+      </div>
+      <div class="categoryItemBtn">
+        <a href="">Show All</a>
+      </div>
+    </div>
+
+    <div class="categoryItemImage ">
+      <img src="" alt="" />
+    </div>
+  </div>`);
+        }
+        html += ``;
+        i++;
+      })
+    })
+  })
+</script>
+<div class="mainContentText">
+  <div class="textTitle">
+    <p>Danh mục các dự án</p>
+  </div>
+  <div class="textContent">
+    <p>
+      Welcome to Koma Visualization! This section shows our hand-picked
+      projects that showcase our passion in visualizing architecture
+      with our signature visual style. We are proud to be trusted by our
+      clients to visualize their designs, ranging from small-scale to
+      large-scale projects. If you find our visual works interesting and
+      suitable for your needs, please do reach us through the Info page
+      for further information. Thank you!
+    </p>
+  </div>
+  <div class="media">
+    <div class="textMedia">
+      <p>
+        See more completed projects on our Behance, Youtube, and
+        Facebook :
+      </p>
+    </div>
+    <div class="iconMedia">
+      <ul>
+        <li>
+          <a href="" target="_blank"><img src="icon-user-page/icon1.png" alt="" /></a>
+        </li>
+        <li>
+          <a href="" target="_blank"><img src="icon-user-page/icon3.png" alt="" /></a>
+        </li>
+        <li>
+          <a href="" target="_blank"><img
+              src="icon-user-page/kisspng-facebook-social-media-computer-icons-linkedin-soci-gray-5ac493cf1c2975.7867418415228323351154.png"
+              alt="" style="height: 40px; width: 40px; margin-top: 5px;" /></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="mainContentCategories">
+
+
+
+
+</div>

@@ -72,7 +72,7 @@ class UserManager {
 
                 status: "live",
                 "cateProject._id": idCate
-                
+
             }).populate([{ path: 'cateProject', strictPopulate: false }])
             rs = rs.slice(0, 10);
             // console.log(rs)
@@ -80,6 +80,19 @@ class UserManager {
         } catch (error) {
             return 'error';
         }
+    }
+    async getAllCateProject(request, response, next) {
+        try {
+            let data = await curdHelper.getAll({
+                model: 'cateProject',
+                query: request.query,
+            })
+            data = data.map(data => data.toObject());
+            return data;
+        } catch (error) {
+            return 'error';
+        }
+
     }
 
 }

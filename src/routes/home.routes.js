@@ -12,6 +12,7 @@ router.post('/getDetailProject',HomeController.getDetailProject)
 router.post('/findProjectByName', HomeController.findProjectByIdImage);
 router.post("/get-inf-company", HomeController.getInfCompany);
 router.post("/get-relative-project",HomeController.getRelativeProject);
+router.get('/all-cate-project',HomeController.getCateProject);
 router.get('/', HomeController.index);
 
 module.exports = router;

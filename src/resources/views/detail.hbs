@@ -113,18 +113,18 @@
                     html_rlt += `  <div class="slider swiper-slide">
                 <div class="content-img">
 
-                    <img src="`+item.imageProject[0].urlImage+`" class="img-content" alt="">
+                    <img src="`+ item.imageProject[0].urlImage + `" class="img-content" alt="">
                 </div>
                 <div class="content-inf">
-                    <img src="`+item.imageProject[0].urlImage+`" alt="">
+                    <img src="`+ item.imageProject[0].urlImage + `" alt="">
                     <div class="inf">
-                        <h5>`+item.updatedAt+` </h5>
+                        <h5>`+ item.updatedAt + ` </h5>
                         <p>- </p>
-                        <b>`+item.nameProject+`</b>
+                        <b>`+ item.nameProject + `</b>
                         <span>
-                            `+item.cateProject.nameProject+`
+                            `+ item.cateProject.nameProject + `
                         </span>
-                        <a href="`+item._id+`">Xem chi tiết</a>
+                        <a href="`+ item._id + `">Xem chi tiết</a>
                     </div>
                 </div>
             </div>`;
@@ -157,6 +157,7 @@
             $(".addressCompany").html(data[0].addressCompany)
             $(".emailCompany").html(data[0].emailCompany)
             $(".nameConpany").html(data[0].nameCompany)
+            $(".img-review-company").attr('src', data[0].imageReview)
         })
         //các dự án liên quan
 
@@ -746,9 +747,9 @@
                     </p>
                 </div>
                 <div class="contain-user">
-                    <img src="./img/coding.png" alt="">
-                    <b>0868617603</b>
-                    <p>Người mới</p>
+                    <img class="logoCompany" src="./img/coding.png" alt="">
+                    <b>logo</b>
+                    <p class="nameConpany">Người mới</p>
                 </div>
             </div>
             <div class="about-job">
@@ -840,6 +841,7 @@
                             <p>0.0</p>
                         </div>
                     </div>
+                    <img src="" class="img-review-company" style="width: 100%; height: auto;" alt="">
                 </div>
 
             </div>
