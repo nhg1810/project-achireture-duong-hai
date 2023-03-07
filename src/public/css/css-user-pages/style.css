@@ -10,7 +10,7 @@ html {
 }
 
 body {
-    font-family: 'Jost', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
 .container {
@@ -284,7 +284,15 @@ body {
     transform: translateX(0%);
     transition: .5s;
 }
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: #474747;
+}
 
+::-webkit-scrollbar-thumb{
+    background-color: #bab6af;
+    border-radius: 5px;
+}
 @media (max-width:1263px) {
     .header{
         padding-top: 20px;
