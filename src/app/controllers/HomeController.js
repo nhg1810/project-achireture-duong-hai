@@ -28,6 +28,9 @@ class HomeController {
         let res = await userManagerService.findProjectByIdImage(request);
         response.setHeader("Content-Type", "text/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
+        console.log(res);
+        console.log(request.body);
+
         response.json(res);
     }
 
@@ -35,16 +38,31 @@ class HomeController {
         if (request.params.idProject) {
             console.log(request.params.idProject);
             let res = await userManagerService.detailProjectById(request.params.idProject);
-            console.log(res);
             response.render('detail', { layout: 'layout-user.hbs', data: request.params.idProject })
         }
     }
     async getDetailProject(request, response, next) {
         response.setHeader("Content-Type", "text/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
+        console.log('asdasdsa', request.body.idProject)
         let res = await userManagerService.detailProjectById(request.body.idProject);
 
         response.json(res);
+    }
+    async getInfCompany(request, response, next) {
+        let res = await userManagerService.getInfCompany(request.body);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
+    }
+    async getRelativeProject(request, response, next) {
+        let res = await userManagerService.getRelativeProject(request.body.idCate);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
+    }
+    async getAllCateProject(request, response, next) {
+        response.render('cateProject', { layout: 'layout-user.hbs' })
     }
 }
 module.exports = new HomeController;

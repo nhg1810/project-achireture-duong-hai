@@ -65,7 +65,6 @@
         display: block;
         z-index: 2;
     }
-
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.0/lazysizes.min.js" async=""></script>
@@ -79,24 +78,60 @@
             dataType: "json",
             encode: true,
         }).done(function (data) {
-            console.log(data);
-            $(".nameProject").html(data.nameProject)
-            $(".img-banner").attr('src', data.imageProject[0].urlImage);
-            let arrImg = data.imageProject;
-            let html = '';
-            arrImg.map((img) => {
-                html += `<div class="item-image" style="width: 100%; height:  500px; position: relative ">
+            if (data != "") {
+                $(".nameProject").html(data[0].nameProject)
+                $(".img-banner").attr('src', data[0].imageProject[0].urlImage);
+                let arrImg = data[0].imageProject;
+                let html = '';
+                arrImg.map((img) => {
+                    html += `<div class="item-image" style="width: 100%; height:  500px; position: relative ">
             <img src="`+ img.urlImage + `" style="width: 100%; height: 100%; position: absolute; object-fit: cover" alt="">
         </div>`;
-            })
-            $(".contain-all-image").html(html);
-            $(".title-project").html('tên dự án: ' + data.nameProject)
-            $(".des-project").html('Mô tả: ' + data.descriptionProject)
+                })
+                $(".contain-all-image").html(html);
+                $(".title-project").html('tên dự án: ' + data[0].nameProject)
+                $(".des-project").html('Mô tả: ' + data[0].descriptionProject)
 
-            $(".cate-project").html('danh mục thuộc dự án: ' + data.cateProject.nameProject);
-            $(".des-cate-project").html('mô tả danh mục thuộc dự án: ' + data.cateProject.descriptionProject);
-            $(".nameProject").html(data.nameProject)
-            $(".contain-image-project").html(html);
+                $(".cate-project").html('danh mục thuộc dự án: ' + data[0].cateProject.nameProject);
+                $(".des-cate-project").html('mô tả danh mục thuộc dự án: ' + data[0].cateProject.descriptionProject);
+                $(".nameProject").html(data[0].nameProject)
+                $(".contain-image-project").html(html);
+            } else {
+                $(".nameProject").html('Không tồn tại')
+            }
+
+            $.ajax({
+                url: '/get-relative-project',
+                type: 'POST',
+                data: { idCate: data[0].cateProject_id },
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                console.log(data)
+                let html_rlt = ``;
+                data.map((item) => {
+                    html_rlt += `  <div class="slider swiper-slide">
+                <div class="content-img">
+
+                    <img src="`+item.imageProject[0].urlImage+`" class="img-content" alt="">
+                </div>
+                <div class="content-inf">
+                    <img src="`+item.imageProject[0].urlImage+`" alt="">
+                    <div class="inf">
+                        <h5>`+item.updatedAt+` </h5>
+                        <p>- </p>
+                        <b>`+item.nameProject+`</b>
+                        <span>
+                            `+item.cateProject.nameProject+`
+                        </span>
+                        <a href="`+item._id+`">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>`;
+                })
+                $(".contain-relative-project").html(html_rlt);
+
+            })
         })
         $(window).scroll(function (event) {
             var scroll = $(window).scrollTop();
@@ -107,6 +142,26 @@
             }
             console.log(scroll);
         });
+
+        $.ajax({
+            url: '/get-inf-company',
+            type: 'POST',
+            data: { _id: '64061f7b8a4398c824dbf196' },
+            dataType: "json",
+            encode: true,
+        }).done(function (data) {
+            console.log(data)
+            $(".logoCompany").attr('src', data[0].logoCompany)
+            $(".description").html(data[0].description)
+            $(".phoneCompany").html(data[0].phoneCompany)
+            $(".addressCompany").html(data[0].addressCompany)
+            $(".emailCompany").html(data[0].emailCompany)
+            $(".nameConpany").html(data[0].nameCompany)
+        })
+        //các dự án liên quan
+
+
+
 
     })
 </script>
@@ -638,29 +693,32 @@
         }
 
     }
+
     /*hover detail img*/
-    .item-image>img{
+    .item-image>img {
         -webkit-transform: scale(1);
-	    transform: scale(1);
-	    -webkit-transition: .3s ease-in-out;
-	    transition: .3s ease-in-out;
+        transform: scale(1);
+        -webkit-transition: .3s ease-in-out;
+        transition: .3s ease-in-out;
     }
-    .item-image:hover>img{
+
+    .item-image:hover>img {
         -webkit-transform: scale(1.3);
-	    transform: scale(1.02);
+        transform: scale(1.02);
         filter: grayscale(1);
     }
+
     /*scroll*/
     ::-webkit-scrollbar {
         width: 5px;
         background-color: #474747;
     }
 
-    ::-webkit-scrollbar-thumb{
+    ::-webkit-scrollbar-thumb {
         background-color: #bab6af;
         border-radius: 5px;
     }
-    </style>
+</style>
 
 
 <div class="detail-banner" style="width: 100%;  height: 500px; margin-top: -38px; position: relative;">
@@ -718,30 +776,30 @@
                         <div class="inf-me">
                             <img src="./img/coding.png" alt="">
                             <div class="contact">
-                                <b>0868617603</b>
+                                <b class="nameConpany">0868617603</b>
                                 <p>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
-                                    0(0)
+
                                 </p>
                             </div>
 
                         </div>
                         <a href="">Xem thông tin của tôi</a>
-                        <b>Kĩ năng</b>
-                        <p>Editer</p>
+                        <b>Chuyên gia</b>
+                        <p>Thiết kế kiến trúc</p>
                     </div>
                     <div class="relative-action">
                         <p>Từ</p>
                         <b style="color: #bab6af;">Việt Nam</b>
                         <p>Ngôn ngữ</p>
                         <b style="color: #bab6af;">Tiếng Anh</b>
-                        <p>Thành viên từ</p>
+                        <p>Thành lập</p>
                         <b style="color: #bab6af;">18-10-2002</b>
-                        <p>Giao dịch gần nhất</p>
+                        <p>Logo</p>
                         <b style="color: #bab6af;">N/A</b>
                     </div>
 
@@ -789,51 +847,31 @@
         <div class="form-bought">
             <div class="f-stiky">
                 <div class="wrapper">
-                    <header style="color: #bab6af;">Thông tin khác</header>
+                    <header style="color: #bab6af;">Thông tin Công ty</header>
                     <input type="radio" name="slider" checked id="basic">
                     <input type="radio" name="slider" id="pro">
                     <input type="radio" name="slider" id="premium">
                     <nav>
-                        <label for="basic" class="basic"><i class="fas fa-home"></i>BASIC</label>
+                        <label for="basic" class="basic"><i class="fas fa-home"></i>Công ty</label>
                         <label for="pro" class="pro"><i class="fas fa-blog"></i>Blog</label>
                         <label for="premium" class="premium"><i class="fas fa-code"></i>Code</label>
                     </nav>
                     <section>
                         <div class="content content-1">
-                            <div class="title" style="color: #bab6af;">This is a Home content</div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero aspernatur nobis provident
-                                dolores
-                                molestias quia quisquam laborum, inventore quis, distinctioa, fugit repudiandae delectus
-                                sunt ipsam!
-                                Odio illo at quia doloremque fugit iops, asperiores? Consectetur esse officia labore
-                                voluptatum
-                                blanditiis molestias dic voluptas est, minima unde sequi, praesentium dicta suscipit
-                                quisquam iure
-                                sed, nemo.</p>
+                            <div class="title nameCompany" style="color: #bab6af;">This is a Home content</div>
+                            <p class="emailCompany"></p>
+                            <p class="addressCompany"></p>
+                            <p class="phoneCompany"></p>
+                            <p class="description"></p>
+                            <img class="logoCompany" src="" style="width: 70px; height: auto;" alt="">
                         </div>
                         <div class="content content-2">
                             <div class="title">This is a Blog content</div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit amet. Possimus doloris nesciunt
-                                mollitia
-                                culpa sint itaque, vitae praesentium assumenda suscipit fugit doloremque adipisci
-                                doloribus, sequi
-                                facere itaque cumque accusamus, quam molestias sed provident quibusdam nam deleniti.
-                                Autem eaque aut
-                                impedit eo nobis quia, eos sequi tempore! Facere ex repellendus, laboriosam
-                                perferendise. Enim quis
-                                illo harum, exercitationem nam totam fugit omnis natus quam totam, repudiandae dolor
-                                laborum!
-                                Commodi?</p>
+                            <p></p>
                         </div>
                         <div class="content content-3">
                             <div class="title">This is a Code content</div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure, debitis nesciunt!
-                                Consectetur
-                                officiis, libero nobis dolorem pariatur quisquam temporibus. Labore quaerat neque facere
-                                itaque
-                                laudantium odit veniam consectetur numquam delectus aspernatur, perferendis repellat
-                                illo sequi
-                                excepturi quos ipsam aliquid est consequuntur.</p>
+                            <p></p>
                         </div>
                     </section>
                 </div>
@@ -844,77 +882,9 @@
     <!-- slider -->
     <section id="slider" class="swiper mySwiper">
         <h3>Các dự án khác thuộc danh mục này</h3>
-        <div class="contain-slider swiper-wrapper">
-            <div class="slider swiper-slide">
-                <div class="content-img">
-                    <i class="fa-solid fa-heart"></i>
-                    <img src="./img/relativebanner.jpg" class="img-content" alt="">
-                </div>
-                <div class="content-inf">
-                    <img src="./img/relativebanner.jpg" alt="">
-                    <div class="inf">
-                        <h5>300.000 đ </h5>
-                        <p>Người mới</p>
-                        <b>Chanh NCA</b>
-                        <span>
-                            Tôi sẽ giúp bạn làm banner, coder, design,..
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="slider swiper-slide">
-                <div class="content-img">
-                    <i class="fa-solid fa-heart"></i>
-                    <img src="./img/relativebanner.jpg" class="img-content" alt="">
-                </div>
-                <div class="content-inf">
-                    <img src="./img/relativebanner.jpg" alt="">
-                    <div class="inf">
-                        <h5>300.000 đ </h5>
-                        <p>Người mới</p>
-                        <b>Chanh NCA</b>
-                        <span>
-                            Tôi sẽ giúp bạn làm banner, coder, design,..
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="slider swiper-slide">
-                <div class="content-img">
-                    <i class="fa-solid fa-heart"></i>
-                    <img src="./img/relativebanner.jpg" class="img-content" alt="">
-                </div>
-                <div class="content-inf">
-                    <img src="./img/relativebanner.jpg" alt="">
-                    <div class="inf">
-                        <h5>300.000 đ </h5>
-                        <p>Người mới</p>
-                        <b>Chanh NCA</b>
-                        <span>
-                            Tôi sẽ giúp bạn làm banner, coder, design,..
-                        </span>
-                    </div>
-                </div>
+        <div class="contain-slider swiper-wrapper contain-relative-project">
 
 
-            </div>
-            <div class="slider swiper-slide">
-                <div class="content-img">
-                    <i class="fa-solid fa-heart"></i>
-                    <img src="./img/relativebanner.jpg" class="img-content" alt="">
-                </div>
-                <div class="content-inf">
-                    <img src="./img/relativebanner.jpg" alt="">
-                    <div class="inf">
-                        <h5>300.000 đ </h5>
-                        <p>Người mới</p>
-                        <b>Chanh NCA</b>
-                        <span>
-                            Tôi sẽ giúp bạn làm banner, coder, design,..
-                        </span>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="swiper-button-next"><i class="fa-solid fa-angle-right"></i></div>
         <div class="swiper-button-prev"><i class="fa-solid fa-angle-left"></i></div>

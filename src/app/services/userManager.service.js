@@ -1,4 +1,5 @@
 const curdHelper = require('../helpers/crud');
+const CompanyModel = require('../model/CompanyModel');
 const ProjectModel = require('../model/ProjectModel');
 class UserManager {
     //get all information of home page
@@ -30,16 +31,56 @@ class UserManager {
     }
     async detailProjectById(idProject) {
         try {
-            let data = await curdHelper.getSingle({
-                model: 'project',
-                id: idProject,
-                populate: [{ path: 'cateProject', strictPopulate: false }],
-            });
-            return data;
+            let rs = await ProjectModel.find({
+                _id: idProject,
+                status: "live"
+            }).populate([{ path: 'cateProject', strictPopulate: false }])
+            rs = rs.slice(0, 10);
+            // console.log(rs)
+            return rs;
+        } catch (error) {
+            return 'error';
+        }
+
+        // try {
+        //     let data = await curdHelper.getSingle({
+        //         model: 'project',
+        //         id: idProject,
+        //         populate: [{ path: 'cateProject', strictPopulate: false }],
+        //     });
+        //     return data;
+        // } catch (error) {
+        //     console.log(error)
+        //     return 'error';
+        // }
+    }
+    async getInfCompany(idCompany) {
+
+        try {
+            let rs = await CompanyModel.find({ _id: idCompany });
+            rs = rs.slice(0, 10);
+            return rs;
         } catch (error) {
             console.log(error)
             return 'error';
         }
+
     }
+    async getRelativeProject(idCate) {
+        try {
+            let rs = await ProjectModel.find({
+
+                status: "live",
+                "cateProject._id": idCate
+                
+            }).populate([{ path: 'cateProject', strictPopulate: false }])
+            rs = rs.slice(0, 10);
+            // console.log(rs)
+            return rs;
+        } catch (error) {
+            return 'error';
+        }
+    }
+
 }
 module.exports = new UserManager();
