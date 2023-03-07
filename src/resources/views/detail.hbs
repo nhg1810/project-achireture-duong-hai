@@ -116,15 +116,14 @@
                     <img src="`+item.imageProject[0].urlImage+`" class="img-content" alt="">
                 </div>
                 <div class="content-inf">
-                    <img src="`+item.imageProject[0].urlImage+`" alt="">
                     <div class="inf">
-                        <h5>`+item.updatedAt+` </h5>
+                        <h5 class="h5">`+item.updatedAt+` </h5>
                         <p>- </p>
-                        <b>`+item.nameProject+`</b>
-                        <span>
+                        <b class="b">`+item.nameProject+`</b>
+                        <span class="span">
                             `+item.cateProject.nameProject+`
                         </span>
-                        <a href="`+item._id+`">Xem chi tiết</a>
+                        <a href="`+item._id+`" class="a">Xem chi tiết</a>
                     </div>
                 </div>
             </div>`;
@@ -224,7 +223,9 @@
         margin: 0;
         color: #bab6af;
     }
-
+    .title-job>.inf>a{
+        text-decoration: none;
+    }
     .contain-user {
         width: 30%;
         display: flex;
@@ -518,7 +519,6 @@
         flex-direction: column;
         align-items: center;
         border: solid 1px rgba(186, 182, 175, 0.712);
-        border-radius: 20px;
     }
 
     .contain-slider>.slider>.content-img {
@@ -528,22 +528,17 @@
     }
 
     .contain-slider>.slider>.content-img>.img-content {
-        width: 90%;
-        height: 90%;
+        width: 100%;
+        height: 100%;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         position: absolute;
         object-fit: cover;
         padding-bottom: 10px;
-        border-radius: 20px;
         z-index: 1;
     }
 
-    .contain-slider>.slider>.content-img>.img-content:hover {
-        width: 95%;
-        height: 95%;
-    }
 
     .contain-slider>.slider:hover .content-img>i {
         background-color: aliceblue;
@@ -597,17 +592,17 @@
     }
 
     .contain-slider>.slider>.content-inf>.inf>p {
-        margin: 0;
+        margin:0;
         font-size: 12px;
         color: rgb(123, 122, 120);
     }
-
     .contain-slider>.slider>.content-inf>.inf>b {
-        margin: 0;
+        margin: 5px 0;
         color: rgba(186, 182, 175, 0.712);
     }
 
     .contain-slider>.slider>.content-inf>.inf>span {
+        margin: 5px 0;
         font-size: 14px;
         color: rgba(186, 182, 175, 0.712);
     }
@@ -617,7 +612,10 @@
         right: 10px;
         color: rgba(186, 182, 175, 0.712);
     }
-
+    .contain-slider>.slider>.content-inf>.inf>a{
+        margin: 5px 0;
+        color: #fff;
+    }
     .swiper-button-next,
     .swiper-button-prev {
         width: 20px;
@@ -708,16 +706,6 @@
         filter: grayscale(1);
     }
 
-    /*scroll*/
-    ::-webkit-scrollbar {
-        width: 5px;
-        background-color: #474747;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background-color: #bab6af;
-        border-radius: 5px;
-    }
 </style>
 
 
