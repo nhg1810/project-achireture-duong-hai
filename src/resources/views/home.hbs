@@ -79,7 +79,6 @@
 
                                 html += ` <p class="nameProject">- Tên dự án: ` + item.nameProject.trim() + `</p>
                                     <p class="descriptProject">- Mô tả dự án: `+ item.descriptionProject + `</p>
-
                                     <p class="cateProject">- Dự án này thuộc danh mục: `+ item.cateProject.nameProject + `</p>
                                 <p class="descriptCateProject">- Mô tả danh mục này: `+ item.cateProject.descriptionProject + `</p>`;
 
@@ -134,38 +133,43 @@
     }
 
     .img-relative-project {
-        width: 95%;
-        height: 200px;
-        overflow-y: scroll;
-        display: flex;
-        flex-wrap: wrap;
+        width: 100%%;
     }
 
-     .img-relative-project>img {
+    .img-relative-project>img {
         object-fit: cover;
-        margin-left: 20px;
-        margin-bottom: 20px;
-        width: 200px;
+        width: 100%;
         height: auto;
     }
 
     .contain-item-image {
         width: 80%;
-        height: auto;
+        height: 100%;
         overflow: hidden;
         background-color: #474747;
         position: fixed;
-        z-index: 11;
+        z-index: 100;
         left: 50%;
         top: 50%;
         display: none;
         transform: translate(-50%, -50%);
         flex-wrap: wrap;
         align-items: center;
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        /* cho Internet Explorer, Edge */
+        scrollbar-width: none;
+        /* cho Firefox */
+        overflow-y: scroll;
+    }
+
+    .contain-item-image::-webkit-scrollbar {
+        display: none;
+        /* cho Chrome, Safari, and Opera */
     }
 
     .contain-item-image>.contain-image {
-        width: 49%;
+        width: 100%;
         min-height: 500px;
         position: relative;
         padding-bottom: 2px;
@@ -173,7 +177,7 @@
     }
 
     .contain-item-image>.inf-image {
-        width: 49%;
+        width: 100%;
         background-color: #474747;
         margin-top: 10px;
         margin-bottom: 16px;
@@ -182,7 +186,6 @@
 
     .contain-item-image>.contain-image>img {
         object-fit: cover;
-        padding-top: 10px;
         width: 100%;
         height: auto;
     }
@@ -216,55 +219,12 @@
         background-color: #181818;
         color: #f1f1f1;
     }
-
-    @media (max-width:1263px) {
-        .contain-item-image>.contain-image {
-            width: 100%;
-            min-height: auto;
-            position: relative;
-            padding-bottom: 2px;
-            overflow: hidden;
-        }
-
-        .contain-item-image>.inf-image {
-            width: 100%;
-            background-color: #474747;
-            margin-top: 10px;
-            margin-bottom: 16px;
-            margin-left: 10px;
-        }
-
-        .contain-item-image {
-            width: 80%;
-            height: 500px;
-            overflow-y: scroll;
-            background-color: #474747;
-            position: fixed;
-            z-index: 11;
-            left: 50%;
-            top: 50%;
-            display: none;
-            transform: translate(-50%, -50%);
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .contain-item-image>.contain-image>img {
-            object-fit: cover;
-            padding-top: 10px;
-            width: 100%;
-            height: auto;
-            padding: 10px 10px 0 10px;
-        }
-    }
 </style>
 <div class="layout"
-    style="position: absolute; width: 100%; height: 100%; position: fixed; top: 0; left:  0; background-color: rgb(40, 40, 40); opacity: 0.8; z-index: 10; display: none;">
+    style="position: absolute; width: 100%; height: 100%; position: fixed; top: 0; left:  0; background-color: rgb(40, 40, 40); opacity: 0.8; z-index: 99; display: none;">
 </div>
 <div class="contain-item-image">
-    <div class="contain-image">
-        <img src="" alt="" class="image-detail">
-    </div>
+
     <div class="inf-image">
         <div class="inf-image-title">
             <p>Thông tin chi tiết về ảnh dự án này</p>
@@ -272,20 +232,14 @@
         <div class="inf-project">
         </div>
 
-        <div class="inf-image-describe">
-            <p
-                style="margin-top: 20px; color: white; font-size: 18px; padding: 10px; border-bottom: solid 3px #b19023; margin-bottom: 30px;">
-                Các ảnh liên quan thuộc dự án này</p>
-        </div>
-        <div class="img-relative-project">
-        </div>
         {{!-- 1 chuỗi các ảnh --}}
         <div class="inf-image-a">
-
-
         </div>
-
-
+    </div>
+    <div class="contain-image">
+        <img src="" alt="" class="image-detail">
+        <div class="img-relative-project">
+        </div>
     </div>
 </div>
 <div class="mainContentText">
