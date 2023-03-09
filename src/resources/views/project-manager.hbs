@@ -27,214 +27,214 @@
       $(".btn-cancel-choose-image[data-id-image=" + idImage + "]").show();
       let urlImage = 'https://drive.google.com/uc?id=' + $(this).attr('data-url-image') + '';
       arr_choose_image.push({ idImage, urlImage })
-    $(".contain-image-choosen").append('<img class="image-choosen" data-id-image= ' + idImage + ' src=' + urlImage + '>')
-    //console.log(arr_choose_image)
+      $(".contain-image-choosen").append('<img class="image-choosen" data-id-image= ' + idImage + ' src=' + urlImage + '>')
+      //console.log(arr_choose_image)
 
-  })
-  $(".btn-cancel-choose-image").click(function () {
-    $(this).hide();
-    let idImage = $(this).attr('data-id-image');
-    $(".btn-choose-image[data-id-image=" + idImage + "]").show();
+    })
+    $(".btn-cancel-choose-image").click(function () {
+      $(this).hide();
+      let idImage = $(this).attr('data-id-image');
+      $(".btn-choose-image[data-id-image=" + idImage + "]").show();
 
-    $(".image-from-driver[data-id-image=" + idImage + "]").css({ 'border': "solid 0px green" })
-    $(".image-choosen[data-id-image=" + idImage + "]").remove();
-    for (let i = 0; i < arr_choose_image.length; i++) {
-      if (arr_choose_image[i].idImage === idImage) {
-        arr_choose_image.splice(i, 1);
+      $(".image-from-driver[data-id-image=" + idImage + "]").css({ 'border': "solid 0px green" })
+      $(".image-choosen[data-id-image=" + idImage + "]").remove();
+      for (let i = 0; i < arr_choose_image.length; i++) {
+        if (arr_choose_image[i].idImage === idImage) {
+          arr_choose_image.splice(i, 1);
+        }
       }
-    }
-    //console.log(arr_choose_image)
-  })
+      //console.log(arr_choose_image)
+    })
 
-  //call ajax to add new project
-  $(".btn-add-project").click(function () {
-    let nameProject = $(".name-project").val()
-    let description_project = $(".description-project").val();
-    let cate_project = $(".cate-project").val();
-    if (nameProject == "" || description_project == "" || cate_project == "" || arr_choose_image.length == 0) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Đang điền thiếu thông tin cần thiết của một dự án!',
-        footer: '<a href="">Thử lại và nếu không được liên hệ 0868617603?</a>'
-      })
-    } else {
-      var form_project = new FormData();
-      form_project = {
-        'nameProject': nameProject,
-        'imageProject': arr_choose_image,
-        'descriptionProject': description_project,
-        'cateProject': cate_project,
-        'status': 'live'
-      };
-      $.ajax({
-        url: '/admin/store-project',
-        type: 'POST',
-        data: form_project,
-        dataType: "json",
-        encode: true,
-      }).done(function (data) {
-        if (data == 'success') {
-          getInformationAjax()
-          Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Thêm dự án ' + nameProject + ' thành công',
-            showConfirmButton: false,
-            timer: 1500
-          })
-          $(".name-project").val("")
-          $(".description-project").val("");
-          $(".cate-project").val("");
-        }
-      });
-    }
-  })
-
-  // function ajax delete cate project
-  function deleteCateProject() {
-    $(".btn-del-cate-project").click(function () {
-      //check valid cateproject
-      let idCate = $(this).attr('data-id-cate');
-      $.ajax({
-        url: '/admin/get-project-by-id-cate',
-        type: 'POST',
-        async: false,
-        data: { 'idCate': idCate },
-        dataType: "json",
-        encode: true,
-      }).done(function (data) {
-        console.log(data.length);
-        if (data.length != 0) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Lỗi, không thể xoá danh mục này',
-            text: 'Danh mục này đang chứa các dự án, hãy kiểm tra các dự án rồi quay lại!',
-            footer: '<a href="">Vẫn đang gặp lỗi này, liên hệ 0866817603?</a>'
-          })
-          return;
-        }
+    //call ajax to add new project
+    $(".btn-add-project").click(function () {
+      let nameProject = $(".name-project").val()
+      let description_project = $(".description-project").val();
+      let cate_project = $(".cate-project").val();
+      if (nameProject == "" || description_project == "" || cate_project == "" || arr_choose_image.length == 0) {
         Swal.fire({
-          title: 'Bạn có chắc chắn muốn xóa loại doanh mục này?',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Đang điền thiếu thông tin cần thiết của một dự án!',
+          footer: '<a href="">Thử lại và nếu không được liên hệ 0868617603?</a>'
+        })
+      } else {
+        var form_project = new FormData();
+        form_project = {
+          'nameProject': nameProject,
+          'imageProject': arr_choose_image,
+          'descriptionProject': description_project,
+          'cateProject': cate_project,
+          'status': 'live'
+        };
+        $.ajax({
+          url: '/admin/store-project',
+          type: 'POST',
+          data: form_project,
+          dataType: "json",
+          encode: true,
+        }).done(function (data) {
+          if (data == 'success') {
+            getInformationAjax()
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Thêm dự án ' + nameProject + ' thành công',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            $(".name-project").val("")
+            $(".description-project").val("");
+            $(".cate-project").val("");
+          }
+        });
+      }
+    })
+
+    // function ajax delete cate project
+    function deleteCateProject() {
+      $(".btn-del-cate-project").click(function () {
+        //check valid cateproject
+        let idCate = $(this).attr('data-id-cate');
+        $.ajax({
+          url: '/admin/get-project-by-id-cate',
+          type: 'POST',
+          async: false,
+          data: { 'idCate': idCate },
+          dataType: "json",
+          encode: true,
+        }).done(function (data) {
+          console.log(data.length);
+          if (data.length != 0) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Lỗi, không thể xoá danh mục này',
+              text: 'Danh mục này đang chứa các dự án, hãy kiểm tra các dự án rồi quay lại!',
+              footer: '<a href="">Vẫn đang gặp lỗi này, liên hệ 0866817603?</a>'
+            })
+            return;
+          }
+          Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa loại doanh mục này?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Chắc chắn',
+            denyButtonText: `Hủy bỏ`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              let id_cate_project = new FormData();
+              let var_cate_project = $(this).attr('data-id-cate');
+              id_cate_project = { '_id': idCate };
+              $.ajax({
+                url: '/admin/delete-category-project',
+                type: 'POST',
+                async: false,
+                data: id_cate_project,
+                dataType: "json",
+                encode: true,
+              }).done(function (data) {
+                if (data == 'success') {
+                  $(".tr-cate-gory-project[data-id-cate =" + var_cate_project + "]").remove();
+                  Swal.fire('Xóa thành công!', '', 'success')
+                  getInformationAjax()
+                } else {
+                  console.log(data)
+                }
+              });
+            } else if (result.isDenied) {
+              Swal.fire('Chưa thực hiện thao tác', '', 'info')
+            }
+          })
+
+        })
+      })
+    }
+
+    //ajax add new cate project 
+    $(".btn-add-new-cate-project").click(function () {
+      let nameCateProject = $(".nameCateProject").val()
+      let descriptionCate = $(".descriptionProject").val();
+      if (nameCateProject == "" || descriptionCate == "") {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Tên danh mục hoặc mô tả danh mục đang thiếu, vui lòng kiếm tra lại!',
+          footer: '<a href="">Nếu thử lại mà không được vui lòng liên hệ 0868617603?</a>'
+        })
+      } else {
+        let formDataCateProject = new FormData();
+        formDataCateProject = { 'nameProject': nameCateProject, 'descriptionProject': descriptionCate }
+        $.ajax({
+          url: '/admin/store-category-project',
+          type: 'POST',
+          data: formDataCateProject,
+          dataType: "json",
+          encode: true,
+        }).done(function (data) {
+          if (data == 'success') {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Tạo danh mục dự án thành công !',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            $(".nameCateProject").val("")
+            $(".descriptionProject").val("");
+            location.reload(3000);
+          } else {
+            console.log(data)
+          }
+        });
+      }
+    })
+    //ajax delete project
+    function deleteProject() {
+      $(".btn-delete-project").click(function () {
+        Swal.fire({
+          title: 'Bạn có chắc là muốn xoá loại dự án này không?',
           showDenyButton: true,
           showCancelButton: true,
           confirmButtonText: 'Chắc chắn',
-          denyButtonText: `Hủy bỏ`,
+          denyButtonText: `Huỷ bỏ`,
         }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            let id_cate_project = new FormData();
-            let var_cate_project = $(this).attr('data-id-cate');
-            id_cate_project = { '_id': idCate };
+            let idProject = new FormData();
+            idProject = { '_id': $(this).attr('data-id-project') }
             $.ajax({
-              url: '/admin/delete-category-project',
+              url: '/admin/delete-project',
               type: 'POST',
-              async: false,
-              data: id_cate_project,
+              data: idProject,
               dataType: "json",
               encode: true,
             }).done(function (data) {
               if (data == 'success') {
-                $(".tr-cate-gory-project[data-id-cate =" + var_cate_project + "]").remove();
-                Swal.fire('Xóa thành công!', '', 'success')
+                Swal.fire('Xóa thành công!', '', 'success');
                 getInformationAjax()
               } else {
                 console.log(data)
               }
             });
           } else if (result.isDenied) {
-            Swal.fire('Chưa thực hiện thao tác', '', 'info')
+            Swal.fire('Thao tác chưa được thực hiện', '', 'info')
           }
         })
 
       })
-    })
-  }
-
-  //ajax add new cate project 
-  $(".btn-add-new-cate-project").click(function () {
-    let nameCateProject = $(".nameCateProject").val()
-    let descriptionCate = $(".descriptionProject").val();
-    if (nameCateProject == "" || descriptionCate == "") {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Tên danh mục hoặc mô tả danh mục đang thiếu, vui lòng kiếm tra lại!',
-        footer: '<a href="">Nếu thử lại mà không được vui lòng liên hệ 0868617603?</a>'
-      })
-    } else {
-      let formDataCateProject = new FormData();
-      formDataCateProject = { 'nameProject': nameCateProject, 'descriptionProject': descriptionCate }
-      $.ajax({
-        url: '/admin/store-category-project',
-        type: 'POST',
-        data: formDataCateProject,
-        dataType: "json",
-        encode: true,
-      }).done(function (data) {
-        if (data == 'success') {
-          Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Tạo danh mục dự án thành công !',
-            showConfirmButton: false,
-            timer: 1500
-          })
-          $(".nameCateProject").val("")
-          $(".descriptionProject").val("");
-          location.reload(3000);
-        } else {
-          console.log(data)
-        }
-      });
     }
-  })
-  //ajax delete project
-  function deleteProject() {
-    $(".btn-delete-project").click(function () {
-      Swal.fire({
-        title: 'Bạn có chắc là muốn xoá loại dự án này không?',
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'Chắc chắn',
-        denyButtonText: `Huỷ bỏ`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          let idProject = new FormData();
-          idProject = { '_id': $(this).attr('data-id-project') }
-          $.ajax({
-            url: '/admin/delete-project',
-            type: 'POST',
-            data: idProject,
-            dataType: "json",
-            encode: true,
-          }).done(function (data) {
-            if (data == 'success') {
-              Swal.fire('Xóa thành công!', '', 'success');
-              getInformationAjax()
-            } else {
-              console.log(data)
-            }
-          });
-        } else if (result.isDenied) {
-          Swal.fire('Thao tác chưa được thực hiện', '', 'info')
-        }
-      })
 
-    })
-  }
-
-  //function ajax edit cate project
-  function editCateProject() {
-    $(".btn-edit-cate-project").click(function () {
-      let formUpdateCateProject = new FormData();
-      let idCateProject = $(this).attr('data-id-cate');
-      let vlNameCate = $(".vl-name-project[data-id-cate=" + idCateProject + "]").text()
-      let vlDescriptionCate = $(".vl-description-cate-project[data-id-cate=" + idCateProject + "]").text()
-      Swal.fire({
-        title: 'Chi tiết dự án',
-        html: `  <div class="form-group">
+    //function ajax edit cate project
+    function editCateProject() {
+      $(".btn-edit-cate-project").click(function () {
+        let formUpdateCateProject = new FormData();
+        let idCateProject = $(this).attr('data-id-cate');
+        let vlNameCate = $(".vl-name-project[data-id-cate=" + idCateProject + "]").text()
+        let vlDescriptionCate = $(".vl-description-cate-project[data-id-cate=" + idCateProject + "]").text()
+        Swal.fire({
+          title: 'Chi tiết dự án',
+          html: `  <div class="form-group">
               <label>Tên Loại Dự Án</label>
               <input type="text" name="nameCateProject" class="form-control editNameCateProject" value="`+ vlNameCate + `" placeholder="Tên dự án" />
             </div>
@@ -243,87 +243,87 @@
               <textarea class="form-control editDescriptionProject" name="descriptionProject" id="exampleTextarea1"
                 rows="44" style="height: 100px; width: 300px">`+ vlDescriptionCate + `</textarea>
             </div>`,
-        confirmButtonText: 'Cập nhật',
-        focusConfirm: false,
-        preConfirm: () => {
-          const editNameCateProject = Swal.getPopup().querySelector('.editNameCateProject').value
-          const editDescriptionProject = Swal.getPopup().querySelector('.editDescriptionProject').value
-          if (!editNameCateProject || !editDescriptionProject) {
-            Swal.showValidationMessage(`Vui lòng nhập 2 trường này !!!`)
-          } else {
-            formUpdateCateProject = {
-              '_id': idCateProject,
-              'obj': {
-                'nameProject': editNameCateProject,
-                'descriptionProject': editDescriptionProject
-              },
-            }
-            $.ajax({
-              url: '/admin/edit-cate-project',
-              type: 'POST',
-              data: formUpdateCateProject,
-              dataType: "json",
-              encode: true,
-            }).done(function (data) {
-              if (data == "success") {
-                Swal.fire({
-                  position: 'top-end',
-                  icon: 'success',
-                  title: 'Cập nhật danh mục thành công',
-                  showConfirmButton: false,
-                  timer: 1500
-                })
-                getInformationAjax()
-                return "success"
-              } else {
-                return data;
+          confirmButtonText: 'Cập nhật',
+          focusConfirm: false,
+          preConfirm: () => {
+            const editNameCateProject = Swal.getPopup().querySelector('.editNameCateProject').value
+            const editDescriptionProject = Swal.getPopup().querySelector('.editDescriptionProject').value
+            if (!editNameCateProject || !editDescriptionProject) {
+              Swal.showValidationMessage(`Vui lòng nhập 2 trường này !!!`)
+            } else {
+              formUpdateCateProject = {
+                '_id': idCateProject,
+                'obj': {
+                  'nameProject': editNameCateProject,
+                  'descriptionProject': editDescriptionProject
+                },
               }
-            });
+              $.ajax({
+                url: '/admin/edit-cate-project',
+                type: 'POST',
+                data: formUpdateCateProject,
+                dataType: "json",
+                encode: true,
+              }).done(function (data) {
+                if (data == "success") {
+                  Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Cập nhật danh mục thành công',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+                  getInformationAjax()
+                  return "success"
+                } else {
+                  return data;
+                }
+              });
+            }
           }
-        }
-      }).then((result) => {
-        //cập nhật thành công
-        if (result == "success") {
+        }).then((result) => {
+          //cập nhật thành công
+          if (result == "success") {
 
-        } else {
-          console.log(result);
-        }
+          } else {
+            console.log(result);
+          }
+        })
       })
-    })
-  }
+    }
 
 
-  // function ajax edit project
-  var arr_edit_img_project = [];
-  var idProject;
-  function editProject() {
-    $(".btn-edit-project").click(function () {
-      idProject = $(this).attr('data-id-project');
-      let loader = true;
-      //get detail information project
-      $.ajax({
-        async: false,
-        url: '/admin/detail-project',
-        type: 'POST',
-        data: { '_id': idProject },
-        dataType: "json",
-        encode: true,
-      }).done(function (data) {
-        if (data != 'error' || data != "") {
-          let nameProject = data.nameProject;
-          let descriptionProject = data.descriptionProject;
-          let idCateProject = data.cateProject._id;
-          let nameCateProject = data.cateProject.nameProject;
-          arr_edit_img_project = data.imageProject;
-          $(".side-edit-project").css('display', 'block');
-          $(".vl-detail-name-project").val(nameProject)
-          $('.vl-detail-cate-project option[value=' + idCateProject + ']').attr('selected', 'selected');
-          $('.status-update option[value=' + data.status + ']').attr('selected', 'selected');
-          $(".vl-detail-descript-project").val(descriptionProject);
-          let html_arr_img_project = ""
-          for (let i = 0; i < arr_edit_img_project.length; i++) {
-            //console.log(arr_edit_img_project[i].urlImage)
-            html_arr_img_project += (`<div class="item-img update-desige-item" data-id-design=` + arr_edit_img_project[i].idImage + `>
+    // function ajax edit project
+    var arr_edit_img_project = [];
+    var idProject;
+    function editProject() {
+      $(".btn-edit-project").click(function () {
+        idProject = $(this).attr('data-id-project');
+        let loader = true;
+        //get detail information project
+        $.ajax({
+          async: false,
+          url: '/admin/detail-project',
+          type: 'POST',
+          data: { '_id': idProject },
+          dataType: "json",
+          encode: true,
+        }).done(function (data) {
+          if (data != 'error' || data != "") {
+            let nameProject = data.nameProject;
+            let descriptionProject = data.descriptionProject;
+            let idCateProject = data.cateProject._id;
+            let nameCateProject = data.cateProject.nameProject;
+            arr_edit_img_project = data.imageProject;
+            $(".side-edit-project").css('display', 'block');
+            $(".vl-detail-name-project").val(nameProject)
+            $('.vl-detail-cate-project option[value=' + idCateProject + ']').attr('selected', 'selected');
+            $('.status-update option[value=' + data.status + ']').attr('selected', 'selected');
+            $(".vl-detail-descript-project").val(descriptionProject);
+            let html_arr_img_project = ""
+            for (let i = 0; i < arr_edit_img_project.length; i++) {
+              //console.log(arr_edit_img_project[i].urlImage)
+              html_arr_img_project += (`<div class="item-img update-desige-item" data-id-design=` + arr_edit_img_project[i].idImage + `>
                   <img class="lazyload"
                    data-sizes="auto"
                     data-src="https://drive.google.com/uc?id=`+ arr_edit_img_project[i].idImage + `"
@@ -332,21 +332,21 @@
                     <i class="mdi mdi-delete"></i>
                   </button>
                 </div>`
-            );
+              );
+            }
+            $(".contain-selected-image").html(html_arr_img_project);
+            //delete update image design 
+            updateDelDesign()
           }
-          $(".contain-selected-image").html(html_arr_img_project);
-          //delete update image design 
-          updateDelDesign()
-        }
-      });
+        });
 
-    })
-  }
+      })
+    }
 
-  //function click to del choose image
-  function updateDelDesign() {
-    $(".btn-del-update-design").click(function () {
-      let html = ` <div class="pre-loading"><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    //function click to del choose image
+    function updateDelDesign() {
+      $(".btn-del-update-design").click(function () {
+        let html = ` <div class="pre-loading"><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
    width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
   <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
     s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
@@ -362,69 +362,74 @@
       repeatCount="indefinite"/>
     </path>
   </svg></div>`;
-      let idUpdateImage = $(this).attr('data-id-design');
-      $(".title-image-choos-before").html(html);
-      $(".btn-save-update-project").removeClass('btn-primary').addClass('btn-outline-secondary');
-      for (let i = 0; i < arr_edit_img_project.length; i++) {
-        if (arr_edit_img_project[i].idImage === idUpdateImage) {
-          arr_edit_img_project.splice(i, 1);
-          $(".btn-edit-arr-image-project").click();
+        let idUpdateImage = $(this).attr('data-id-design');
+        $(".title-image-choos-before").html(html);
+        $(".btn-save-update-project").removeClass('btn-primary').addClass('btn-outline-secondary');
+        for (let i = 0; i < arr_edit_img_project.length; i++) {
+          if (arr_edit_img_project[i].idImage === idUpdateImage) {
+            arr_edit_img_project.splice(i, 1);
+            $(".btn-edit-arr-image-project").click();
 
-          $(".update-desige-item[data-id-design=" + idUpdateImage + "]").remove();
-          setTimeout(function () {
-            $(".title-image-choos-before").html('Tất cả các ảnh đã chọn');
-            $(".btn-save-update-project").removeClass('btn-outline-secondary').addClass('btn-primary');
+            $(".update-desige-item[data-id-design=" + idUpdateImage + "]").remove();
+            setTimeout(function () {
+              $(".title-image-choos-before").html('Tất cả các ảnh đã chọn');
+              $(".btn-save-update-project").removeClass('btn-outline-secondary').addClass('btn-primary');
 
-          }, 2000)
+            }, 2000)
+          }
         }
-      }
-    })
-  }
+      })
+    }
 
-  //update arr image project
-  function updateImageDesign() {
-    $(".btn-edit-arr-image-project").click(function () {
-      $.ajax({
-        async: false,
-        url: '/admin/all-image-project',
-        type: 'GET',
-        dataType: "json",
-        encode: true,
-      }).done(function (data) {
-        let html = ``;
-        for (let i = 0; i < data.length; i++) {
-          let same = false;
-          for (let j = 0; j < arr_edit_img_project.length; j++) {
-            if (arr_edit_img_project[j].idImage == data[i].id) {
-              same = true
-            }
-          };
-          if (same == true) {
-            html += ` <div class="item-design n-choose-design design-active" data-id-design= ` + data[i].id + `>
+    //update arr image project
+    function updateImageDesign() {
+      $(".btn-edit-arr-image-project").click(function () {
+        $(".contain-all-design").html('<span class="loader"></span>')
+
+
+        $.ajax({
+          async: false,
+          url: '/admin/all-image-project',
+          type: 'GET',
+          dataType: "json",
+          encode: true,
+        }).done(async function (data) {
+          let html = ``;
+          for (let i = 0; i < data.length; i++) {
+            let same = false;
+            for (let j = 0; j < arr_edit_img_project.length; j++) {
+              if (arr_edit_img_project[j].idImage == data[i].id) {
+                same = true
+              }
+            };
+            if (same == true) {
+              html += ` <div class="item-design n-choose-design design-active" data-id-design= ` + data[i].id + `>
                   <img data-sizes="auto" class="lazyload" data-src="`+ data[i].thumbnailLink + `" alt="">
                 </div>`;
-          } else {
-            html += ` <div class="item-design n-choose-design" data-id-design= ` + data[i].id + `>
+            } else {
+              html += ` <div class="item-design n-choose-design" data-id-design= ` + data[i].id + `>
                   <img  data-sizes="auto" class="lazyload" data-src="`+ data[i].thumbnailLink + `" alt="">
                 </div>`;
+            }
+
           }
 
-        }
-        $(".contain-all-design").html(html)
-        $(".n-choose-design").click(function () {
-          let idDesign = $(this).attr('data-id-design');
-          let appear = false;
-          for (let j = 0; j < arr_edit_img_project.length; j++) {
-            if (arr_edit_img_project[j].idImage == idDesign) {
-              appear = true
-            }
-          };
-          if (appear == true) {
-            Swal.fire('Ảnh này đã được chọn từ lúc trước !!!');
+          setTimeout(async function () {
+            await $(".contain-all-design").html(html);
+            $(".n-choose-design").click(function () {
+              let idDesign = $(this).attr('data-id-design');
+              let appear = false;
+              for (let j = 0; j < arr_edit_img_project.length; j++) {
+                if (arr_edit_img_project[j].idImage == idDesign) {
+                  appear = true
+                }
+              };
+              if (appear == true) {
+                Swal.fire('Ảnh này đã được chọn từ lúc trước !!!');
 
-          } else {
-            $(this).addClass('design-active');
-            let html_img_project = (`<div class="item-img update-desige-item" data-id-design=` + idDesign + `>
+              } else {
+                $(this).addClass('design-active');
+                let html_img_project = (`<div class="item-img update-desige-item" data-id-design=` + idDesign + `>
                   <img
                     data-src="https://drive.google.com/uc?id=`+ idDesign + `" loading="lazy"  data-sizes="auto" class="lazyload"
                     alt="">
@@ -432,56 +437,109 @@
                     <i class="mdi mdi-delete"></i>
                   </button>
                 </div>`
-            );
-            $(".contain-selected-image").append(html_img_project);
-            arr_edit_img_project.push({
-              idImage: idDesign,
-              urlImage: `https://drive.google.com/uc?id=` + idDesign + ` `
+                );
+                $(".contain-selected-image").append(html_img_project);
+                arr_edit_img_project.push({
+                  idImage: idDesign,
+                  urlImage: `https://drive.google.com/uc?id=` + idDesign + ` `
+                })
+
+                updateDelDesign();
+
+              }
             })
+          }, 2000);
 
-            updateDelDesign();
 
-          }
+
         })
-
       })
+
+    }
+
+    //get new value next to update
+    $(".btn-save-update-project").click(function () {
+      let formUpdateProject = new FormData();
+      let n_name_project = $(".vl-detail-name-project").val();
+      let n_id_cate_project = $(".vl-detail-cate-project").val();
+      let n_detail_project = $(".vl-detail-descript-project").val();
+      let n_status = $('.status-update').val();
+      formUpdateProject = {
+        '_id': idProject,
+        'obj': {
+          'nameProject': n_name_project,
+          'descriptionProject': n_detail_project,
+          'cateProject': n_id_cate_project,
+          'imageProject': arr_edit_img_project,
+          'status': n_status
+        }
+      }
+      if (arr_edit_img_project.length == 0) {
+        Swal.fire({
+          icon: 'Lỗi',
+          title: 'Chưa có ảnh design',
+          text: 'Phải có ít nhất một ảnh trong 1 dự án!',
+        })
+      }
+      else if (n_name_project == "" || n_detail_project == "" || n_id_cate_project == "") {
+        Swal.fire({
+          icon: 'Lỗi',
+          title: 'Các thông tin chưa được điền đầy đủ',
+          text: 'Kiểm tra lại!',
+        })
+      } else {
+        Swal.fire({
+          title: 'Bạn có chắc muốn cập nhật sản phẩm này?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Chắc chắn',
+          denyButtonText: `Huỷ bỏ`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            //layout loadingon
+            $(".side-edit-project").css('display', 'none');
+            console.log(123);
+            $(".layout-loading").css('display', 'flex');
+            $.ajax({
+              async: false,
+              url: '/admin/edit-project',
+              type: 'POST',
+              data: formUpdateProject,
+              dataType: "json",
+              encode: true,
+            }).done(function (data) {
+              if (data == 'success') {
+                //update data
+                getInformationAjax();
+              } else {
+                Swal.fire('Lỗi!', '', 'info');
+              }
+              //layout loading off
+
+              console.log(1234);
+            })
+          } else if (result.isDenied) {
+            Swal.fire('Thao tác chưa được thực hiện', '', 'info')
+          }
+        }).then(() => {
+
+          setTimeout(
+
+            async function () {
+              await $(".layout-loading").hide();
+              await Swal.fire('Cập nhật thành công !', '', 'info');
+            }
+            , 2000)
+        }).then(() => {
+          ;
+        })
+      }
     })
 
-  }
-
-  //get new value next to update
-  $(".btn-save-update-project").click(function () {
-    let formUpdateProject = new FormData();
-    let n_name_project = $(".vl-detail-name-project").val();
-    let n_id_cate_project = $(".vl-detail-cate-project").val();
-    let n_detail_project = $(".vl-detail-descript-project").val();
-    let n_status = $('.status-update').val();
-    formUpdateProject = {
-      '_id': idProject,
-      'obj': {
-        'nameProject': n_name_project,
-        'descriptionProject': n_detail_project,
-        'cateProject': n_id_cate_project,
-        'imageProject': arr_edit_img_project,
-        'status': n_status
-      }
-    }
-    if (arr_edit_img_project.length == 0) {
+    $(".btn-close-side-eidt-project").click(function () {
       Swal.fire({
-        icon: 'Lỗi',
-        title: 'Chưa có ảnh design',
-        text: 'Phải có ít nhất một ảnh trong 1 dự án!',
-      })
-    }
-    else if (n_name_project == "" || n_detail_project == "" || n_id_cate_project == "") {
-      Swal.fire({
-        icon: 'Lỗi',
-        title: 'Các thông tin chưa được điền đầy đủ',
-        text: 'Kiểm tra lại!',
-      })
-    } else {
-      Swal.fire({
-        title: 'Bạn có chắc muốn cập nhật sản phẩm này?',
+        title: 'Khi thoát mọi thay đổi chưa lưu sẽ biến mất, bạn có chắc muốn thoát?',
         showDenyButton: true,
         showCancelButton: true,
         confirmButtonText: 'Chắc chắn',
@@ -489,62 +547,174 @@
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
+          $(".side-edit-project").hide();
+          $(".contain-all-design").html('')
+          Swal.fire('Chưa được cập nhật', '', 'info')
+        } else if (result.isDenied) {
+        }
+      })
+    })
+
+    //function get by ajax
+    function getInformationAjax() {
+      //get all project
+      $.ajax({
+        async: false,
+        url: '/admin/get-all-project',
+        type: 'GET',
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+        let html = ``;
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].status == 'live') {
+            html += `<tr>
+                        <td class="ed-name-project" value='`+ data[i].nameProject + `'>
+                          `+ data[i].nameProject + `
+                        </td>
+
+                        <td class="ed-cate-project" value=`+ data[i].cateProject._id + `>
+                          `+ data[i].cateProject.nameProject + `
+                        </td>
+                        <td>
+                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
+                            `+ data[i].createdAt + `
+                          </p>
+                        </td>
+                        <td>
+                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
+                            `+ data[i].updatedAt + `</p>
+                        </td>
+                        <td>
+                          <button type="button" data-id-project=`+ data[i]._id + `
+                            class="btn btn-delete-project btn-danger btn-sm btn-icon-text"><i
+                              class="mdi mdi-delete"></i></button>
+                          <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
+                            data-id-project=`+ data[i]._id + `><i class="mdi mdi-lead-pencil"></i></button>
+                        </td>
+                        <td><button type="button"  data-id-project=`+ data[i]._id + ` data-value='draft' class="btn btn-outline-info btn-rounded btn-sm btn-fw btn-live-status btn-change-status">Live</button></td>
+                       
+                      </tr>`;
+          } else {
+            html += `<tr>
+                        <td class="ed-name-project" value='`+ data[i].nameProject + `'>
+                          `+ data[i].nameProject + `
+                        </td>
+
+                        <td class="ed-cate-project" value=`+ data[i].cateProject._id + `>
+                          `+ data[i].cateProject.nameProject + `
+                        </td>
+                        <td>
+                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
+                            `+ data[i].createdAt + `
+                          </p>
+                        </td>
+                        <td>
+                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
+                            `+ data[i].updatedAt + `</p>
+                        </td>
+                        <td>
+                          <button type="button" data-id-project=`+ data[i]._id + `
+                            class="btn btn-delete-project btn-danger btn-sm btn-icon-text"><i
+                              class="mdi mdi-delete"></i></button>
+                          <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
+                            data-id-project=`+ data[i]._id + `><i class="mdi mdi-lead-pencil"></i></button>
+                        </td>
+                        <td><button type="button" data-value='live' class="btn btn-outline-warning btn-rounded btn-sm btn-fw btn-change-status" data-id-project=`+ data[i]._id + `>Bản thảo(draft)</button></td>
+                       
+                      </tr>`;
+          }
+        }
+
+        $(".tbl-all-project").html(html);
+        $(".btn-change-status").click(function () {
           $.ajax({
             async: false,
             url: '/admin/edit-project',
             type: 'POST',
-            data: formUpdateProject,
+            data: {
+              '_id': $(this).attr('data-id-project'),
+              'obj': {
+                status: $(this).attr('data-value')
+              }
+            },
             dataType: "json",
             encode: true,
           }).done(function (data) {
-            if (data == 'success') {
-              Swal.fire('Cập nhật thành công!', '', 'success');
-              //update data
-              getInformationAjax();
-              $(".side-edit-project").css('display', 'none');
-            } else {
-              Swal.fire('Lỗi!', '', 'info');
-            }
+            getInformationAjax()
+
           })
-        } else if (result.isDenied) {
-          Swal.fire('Thao tác chưa được thực hiện', '', 'info')
+        })
+        //ajax delete project
+        deleteProject();
+        //edit project
+        editProject();
+        //edit image project
+        updateImageDesign();
+      })
+
+      //get all cateProject
+      $.ajax({
+        async: false,
+        url: '/admin/get-all-cate-project',
+        type: 'GET',
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+        let html = ``;
+        for (let i = 0; i < data.length; i++) {
+          html += `<tr class="tr-cate-gory-project" data-id-cate=` + data[i]._id + `>
+            <td>
+              `+ data[i].nameProject + `
+            </td>
+            <td style="display: none;" class="vl-name-project" data-id-cate=`+ data[i]._id + `>
+              `+ data[i].nameProject + `</td>
+
+            <td style="display: none;" class="vl-description-cate-project" data-id-cate=`+ data[i]._id + `>
+              `+ data[i].descriptionProject + `</td>
+
+            <td>
+              $ 77.99
+            </td>
+            <td>
+              <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;"> `+ data[i].createdAt + `</p>
+             
+            </td>
+            <td>
+              <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;"> `+ data[i].updatedAt + `</p>
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm btn-icon-text"><i
+                  class="mdi mdi-delete btn-del-cate-project" data-id-cate=`+ data[i]._id + `></i></button>
+              <button type=" button" data-id-cate=`+ data[i]._id + `
+                class="btn btn-edit-cate-project btn-success btn-sm btn-icon-text"><i
+                  class="mdi mdi-lead-pencil"></i></button>
+            </td>
+        </tr>`;
         }
+        $(".tbl-all-cate-project").html(html);
+        //delete project
+        deleteCateProject();
+        //edit cate project
+        editCateProject();
       })
     }
-  })
-
-  $(".btn-close-side-eidt-project").click(function () {
-    Swal.fire({
-      title: 'Khi thoát mọi thay đổi chưa lưu sẽ biến mất, bạn có chắc muốn thoát?',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Chắc chắn',
-      denyButtonText: `Huỷ bỏ`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        $(".side-edit-project").hide();
-        $(".contain-all-design").html('')
-        Swal.fire('Chưa được cập nhật', '', 'info')
-      } else if (result.isDenied) {
-      }
-    })
-  })
-
-  //function get by ajax
-  function getInformationAjax() {
-    //get all project
-    $.ajax({
-      async: false,
-      url: '/admin/get-all-project',
-      type: 'GET',
-      dataType: "json",
-      encode: true,
-    }).done(function (data) {
-      let html = ``;
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].status == 'live') {
-          html += `<tr>
+    //first data
+    getInformationAjax()
+    $("#search-project-input").keyup(function () {
+      let search = $(this).val();
+      $.ajax({
+        async: false,
+        url: '/admin/get-project-by-name',
+        type: 'POST',
+        data: { 'vlSearch': search },
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+        let html = ``;
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].status === 'live') {
+            html += `<tr>
                         <td class="ed-name-project" value='`+ data[i].nameProject + `'>
                           `+ data[i].nameProject + `
                         </td>
@@ -568,11 +738,11 @@
                           <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
                             data-id-project=`+ data[i]._id + `><i class="mdi mdi-lead-pencil"></i></button>
                         </td>
-                        <td><button type="button" class="btn btn-outline-info btn-rounded btn-sm btn-fw btn-live-status">Live</button></td>
+                        <td><button type="button"  data-id-project=`+ data[i]._id + ` data-value='draft' class="btn btn-info btn-rounded btn-sm btn-fw btn-change-status">Live</button></td>
                        
                       </tr>`;
-        } else {
-          html += `<tr>
+          } else {
+            html += `<tr>
                         <td class="ed-name-project" value='`+ data[i].nameProject + `'>
                           `+ data[i].nameProject + `
                         </td>
@@ -596,32 +766,51 @@
                           <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
                             data-id-project=`+ data[i]._id + `><i class="mdi mdi-lead-pencil"></i></button>
                         </td>
-                        <td><button type="button" class="btn btn-outline-warning btn-rounded btn-sm btn-fw" data-id-project=`+ data[i]._id + `>Bản thảo(draft)</button></td>
+                        <td><button type="button"  data-value='live'  data-id-project=`+ data[i]._id + ` class="btn  btn-warning btn-rounded btn-sm btn-fw btn-change-status">Bản thảo(draft)</button></td>
                        
                       </tr>`;
+          }
+
         }
-      }
+        $(".tbl-all-project").html(html);
+        $(".btn-change-status").click(function () {
+          $.ajax({
+            async: false,
+            url: '/admin/edit-project',
+            type: 'POST',
+            data: {
+              '_id': $(this).attr('data-id-project'),
+              'obj': {
+                status: $(this).attr('data-value')
+              }
+            },
+            dataType: "json",
+            encode: true,
+          }).done(function (data) {
+            getInformationAjax()
 
-      $(".tbl-all-project").html(html);
-      //ajax delete project
-      deleteProject();
-      //edit project
-      editProject();
-      //edit image project
-      updateImageDesign();
+          })
+        })
+        deleteProject();
+        //edit project
+        editProject();
+        //edit image project
+        updateImageDesign();
+      })
     })
-
-    //get all cateProject
-    $.ajax({
-      async: false,
-      url: '/admin/get-all-cate-project',
-      type: 'GET',
-      dataType: "json",
-      encode: true,
-    }).done(function (data) {
-      let html = ``;
-      for (let i = 0; i < data.length; i++) {
-        html += `<tr class="tr-cate-gory-project" data-id-cate=` + data[i]._id + `>
+    $("#search-cate-project-input").keyup(function () {
+      let search = $(this).val();
+      $.ajax({
+        async: false,
+        url: '/admin/get-cate-project-by-name-cate',
+        type: 'POST',
+        data: { 'vlSearch': search },
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+        let html = ``;
+        for (let i = 0; i < data.length; i++) {
+          html += `<tr class="tr-cate-gory-project" data-id-cate=` + data[i]._id + `>
             <td>
               `+ data[i].nameProject + `
             </td>
@@ -649,150 +838,100 @@
                   class="mdi mdi-lead-pencil"></i></button>
             </td>
         </tr>`;
-      }
-      $(".tbl-all-cate-project").html(html);
-      //delete project
-      deleteCateProject();
-      //edit cate project
-      editCateProject();
-    })
-  }
-  //first data
-  getInformationAjax()
-  $("#search-project-input").keyup(function () {
-    let search = $(this).val();
-    $.ajax({
-      async: false,
-      url: '/admin/get-project-by-name',
-      type: 'POST',
-      data: { 'vlSearch': search },
-      dataType: "json",
-      encode: true,
-    }).done(function (data) {
-      let html = ``;
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].status === 'live') {
-          html += `<tr>
-                        <td class="ed-name-project" value='`+ data[i].nameProject + `'>
-                          `+ data[i].nameProject + `
-                        </td>
-
-                        <td class="ed-cate-project" value=`+ data[i].cateProject._id + `>
-                          `+ data[i].cateProject.nameProject + `
-                        </td>
-                        <td>
-                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
-                            `+ data[i].createdAt + `
-                          </p>
-                        </td>
-                        <td>
-                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
-                            `+ data[i].updatedAt + `</p>
-                        </td>
-                        <td>
-                          <button type="button" data-id-project=`+ data[i]._id + `
-                            class="btn btn-delete-project btn-danger btn-sm btn-icon-text"><i
-                              class="mdi mdi-delete"></i></button>
-                          <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
-                            data-id-project=`+ data[i]._id + `><i class="mdi mdi-lead-pencil"></i></button>
-                        </td>
-                        <td><button type="button" class="btn btn-info btn-rounded btn-sm btn-fw">Live</button></td>
-                       
-                      </tr>`;
-        } else {
-          html += `<tr>
-                        <td class="ed-name-project" value='`+ data[i].nameProject + `'>
-                          `+ data[i].nameProject + `
-                        </td>
-
-                        <td class="ed-cate-project" value=`+ data[i].cateProject._id + `>
-                          `+ data[i].cateProject.nameProject + `
-                        </td>
-                        <td>
-                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
-                            `+ data[i].createdAt + `
-                          </p>
-                        </td>
-                        <td>
-                          <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;">
-                            `+ data[i].updatedAt + `</p>
-                        </td>
-                        <td>
-                          <button type="button" data-id-project=`+ data[i]._id + `
-                            class="btn btn-delete-project btn-danger btn-sm btn-icon-text"><i
-                              class="mdi mdi-delete"></i></button>
-                          <button type="button" class="btn btn-success btn-edit-project  btn-sm btn-icon-text"
-                            data-id-project=`+ data[i]._id + `><i class="mdi mdi-lead-pencil"></i></button>
-                        </td>
-                        <td><button type="button" class="btn btn-warning btn-rounded btn-sm btn-fw">Bản thảo(draft)</button></td>
-                       
-                      </tr>`;
         }
-
-      }
-      $(".tbl-all-project").html(html);
-      deleteProject();
-      //edit project
-      editProject();
-      //edit image project
-      updateImageDesign();
+        $(".tbl-all-cate-project").html(html);
+        //delete project
+        deleteCateProject();
+        //edit cate project
+        editCateProject();
+      })
     })
-  })
-  $("#search-cate-project-input").keyup(function () {
-    let search = $(this).val();
-    $.ajax({
-      async: false,
-      url: '/admin/get-cate-project-by-name-cate',
-      type: 'POST',
-      data: { 'vlSearch': search },
-      dataType: "json",
-      encode: true,
-    }).done(function (data) {
-      let html = ``;
-      for (let i = 0; i < data.length; i++) {
-        html += `<tr class="tr-cate-gory-project" data-id-cate=` + data[i]._id + `>
-            <td>
-              `+ data[i].nameProject + `
-            </td>
-            <td style="display: none;" class="vl-name-project" data-id-cate=`+ data[i]._id + `>
-              `+ data[i].nameProject + `</td>
-
-            <td style="display: none;" class="vl-description-cate-project" data-id-cate=`+ data[i]._id + `>
-              `+ data[i].descriptionProject + `</td>
-
-            <td>
-              $ 77.99
-            </td>
-            <td>
-              <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;"> `+ data[i].createdAt + `</p>
-             
-            </td>
-            <td>
-              <p style=" width: 100px; overflow: hidden ;  text-overflow: ellipsis ;white-space: nowrap;"> `+ data[i].updatedAt + `</p>
-            </td>
-            <td>
-              <button type="button" class="btn btn-danger btn-sm btn-icon-text"><i
-                  class="mdi mdi-delete btn-del-cate-project" data-id-cate=`+ data[i]._id + `></i></button>
-              <button type=" button" data-id-cate=`+ data[i]._id + `
-                class="btn btn-edit-cate-project btn-success btn-sm btn-icon-text"><i
-                  class="mdi mdi-lead-pencil"></i></button>
-            </td>
-        </tr>`;
-      }
-      $(".tbl-all-cate-project").html(html);
-      //delete project
-      deleteCateProject();
-      //edit cate project
-      editCateProject();
-    })
-  })
   });
 </script>
+<style>
+  .loader {
+    width: 55px;
+    height: 55px;
+    border: 3px dotted #0969a9;
+    border-style: solid solid dotted dotted;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    box-sizing: border-box;
+    animation: rotation 2s linear infinite;
+  }
+
+  .loader::after {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border: 3px dotted #FF3D00;
+    border-style: solid solid dotted;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    animation: rotationBack 1s linear infinite;
+    transform-origin: center center;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rotationBack {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+</style>
+<div class="layout-loading"
+  style="width: 100%; height: 100%; z-index: 1111111; background-color: rgb(255, 255, 255, 0.5); position: fixed; z-index: 1; display: none; justify-content: center; align-items: center;">
+  <span class="loader"></span>
+
+</div>
 <div class="content-wrapper">
   <div class="row">
     <div class="col-md-8 grid-margin stretch-card">
       <div class="card">
         <div class="row">
+          <div class="card" style="margin-bottom: 20px;">
+            <div class="card-body">
+              <h4 class="card-title">Thêm, cập nhật, xóa dự án và loại dự an (danh mục dự án).</h4>
+              <p class="card-description">
+                Một số<code>&lt;lưu ý&gt;</code> khi thực hiện các thao tác
+              </p>
+              <p>
+                - Khi xóa một <mark class="bg-warning text-white">Loại dự án</mark>, nếu loại dự án đó nằm trong một
+                <mark class="bg-warning text-white">Dự án nào đó</mark> thì KHÔNG THỂ XÓA được.
+
+              </p>
+              <p>
+                - Trạng thái <mark class="bg-warning text-white">Live</mark> của một Dự án là trạng thái mà bạn publish
+                hoàn toàn dự án đó,
+                và người dùng truy cập vào website sẽ xem được rõ chi tiết của dự án đó.
+                -Trạng thái <mark class="bg-warning text-white">Draft</mark> là trạng thái khi một dự án chưa hoàn
+                thiện, chưa được publish và người
+                dùng truy cập vào trang web sẽ không thấy được rõ chi tiết của dự án đó.
+
+              </p>
+            </div>
+
+          </div>
           <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
@@ -847,6 +986,11 @@
         <form action="">
           <div class="card-body">
             <h4 class="card-title">Thêm Dự Án</h4>
+            <b>Lưu ý khi thêm 1 dự án vào hệ thống</b>
+            <p>Chọn nút Thư Viện drive để có thể chọn ảnh cho dự án muốn tạo.</p>
+            <mark class="bg-warning text-white">Nếu khi chưa chọn hoặc điền đủ các thông tin trong bảng thì không thể tạo 1 dự án !</mark>
+            <p>Các ảnh phải nằm trong kho lưu trữ Drive, Tải lên các ảnh đó !! <a target="_blank" href="project-photo-manager">tại đây</a> </p>
+            <p>Nên soạn thảo  <mark class="bg-warning text-white">Mô tả dự án</mark> ở Word HOẶC một số trình soạn thảo chuyên biệt khác sau đó copy paste bỏ vào !</p>
             <div class="form-group">
               <label>Tên Dự Án</label>
               <input type="text" class="form-control name-project" placeholder="Tên dự án" />
@@ -887,6 +1031,9 @@
         <form method="POST" action="">
           <div class="card-body">
             <h4 class="card-title">Thêm Loại Dự Án</h4>
+            <p>Thêm đầy đủ các thông tin trong bảng</p>
+            <p>Mỗi loại dự án sẽ chứa nhiều dự án</p>
+             <mark class="bg-warning text-white">Đảm bảo các thông tin chính xác để show ra cho người dùng !</mark>
             <div class="form-group">
               <label>Tên Loại Dự Án</label>
               <input type="text" name="nameCateProject" class="form-control nameCateProject" placeholder="Tên dự án" />

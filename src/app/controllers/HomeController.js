@@ -64,5 +64,11 @@ class HomeController {
     async getAllCateProject(request, response, next) {
         response.render('cateProject', { layout: 'layout-user.hbs' })
     }
+    async getCateProject(request, response, next) {
+        let res = await userManagerService.getAllCateProject(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
+    }
 }
 module.exports = new HomeController;
