@@ -13,6 +13,7 @@ const ID_FOLDER_DESIGN = process.env.ID_FOLDER_DESIGN;
 const curdHelper = require('../helpers/crud');
 const CateProject = require('../model/CateProject');
 const Project = require('../model/ProjectModel');
+const RoleModel = require('../model/RoleModel');
 class AdminController {
     async index(request, response, next) {
         let res = await projectManagerService.test(request);
@@ -320,6 +321,31 @@ class AdminController {
         response.setHeader("Access-Control-Allow-Origin", "*");
         // console.log(res)
         response.json(res);
+    }
+    async addCatePersonal(request, response, next) {
+        const res = await projectManagerService.addCatePersonal(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        // console.log(request.body)
+        response.json(res);
+    }
+    async getAllRolePersonal(request, response, next) {
+        const res = await projectManagerService.getAllRolePersonal(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        // console.log(res)
+        response.json(res);
+    }
+    async deleteRole(request, response, next) {
+        console.log(12312312,request.body.idRole)
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        RoleModel.deleteOne(request.body.idRole).then(() => {
+
+            response.json('success')
+        }).catch(function (e) {
+            response.json(e);
+        })
     }
 }
 module.exports = new AdminController;

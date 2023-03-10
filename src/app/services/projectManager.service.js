@@ -288,5 +288,33 @@ class ProjectManagerService {
             return 'error';
         }
     }
+    //add a cate personnal
+    async addCatePersonal(request, response, next) {
+        try {
+            if (request) {
+                let data = await curdHelper.create({
+                    model: 'role',
+                    obj: request.body
+                });
+                return data;
+            } else {
+                return 'error'
+            }
+        } catch (error) {
+            return 'error'
+        }
+    }
+    async getAllRolePersonal(request, response, next) {
+        try {
+            let data = await curdHelper.getAll({
+                model: 'role',
+                query: request.query,
+            })
+            data = data.map(data => data.toObject());
+            return data;
+        } catch (error) {
+            return 'error';
+        }
+    }
 }
 module.exports = new ProjectManagerService();

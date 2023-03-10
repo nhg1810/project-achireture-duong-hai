@@ -6,7 +6,7 @@ const Role = new Schema({
     nameRole: { type: String },
     descriptionRole: { type: String },
     company: {
-        type: ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Company'
     }
 })

@@ -23,6 +23,12 @@ router.post('/get-cate-project-by-name-cate', AdminController.getCateProjectByNa
 router.post('/get-project-by-id-cate', AdminController.getProjectByCate);
 router.post('/bulk-upload-design', AdminController.bulkUploadDesign);
 router.get('/get-inf-company', AdminController.getAllInfCompany);
+//add a cate of personal
+router.post('/add-cate-personal', AdminController.addCatePersonal);
+//get all role of personal
+router.get('/get-all-role-personal', AdminController.getAllRolePersonal);
+//detele role personal
+router.post('/delete-role-personal', AdminController.deleteRole);
 //update logo company
 router.post('/update-inf-company', AdminController.updateInfCompany);
 
