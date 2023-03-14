@@ -111,8 +111,55 @@
         })
       })
     }
+    // Example POST method implementation:
 
-
+    async function postData(url = "", data = {}) {
+      // Default options are marked with *
+      const response = await fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: "follow", // manual, *follow, error
+        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: data, // body data type must match "Content-Type" header
+      });
+      return response.json(); // parses JSON response into native JavaScript objects
+    }
+    //get all personal inf
+    //add personal inf
+    $(".btn-add-personal").click(function () {
+      let descriptPersonal = $(".descript-personal").val();
+      let catePersonal = $(".cate-personal").val();
+      let namePersonal = $(".name-personal").val();
+      let fileImgPersonal = $(".file-img-personal").prop('files');
+      console.log(fileImgPersonal);
+      if (descriptPersonal == "" || catePersonal == "" || namePersonal == "") {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          text: 'Chưa điền đủ thông tin nhân sự!',
+          footer: '<a href="">?</a>'
+        })
+      } else {
+        let form = new FormData();
+        form = {
+          descriptPersonal: descriptPersonal,
+          catePersonal: catePersonal,
+          namePersonal: namePersonal,
+          fileImgPersonal: fileImgPersonal
+        }
+        postData("add-personal-inf", {
+          form
+        }).then((data) => {
+          console.log(data); // JSON data parsed by `data.json()` call
+        });
+      }
+    })
 
   })
 
@@ -202,11 +249,11 @@
             <h4 class="card-title">Thêm Nhân Sự</h4>
             <div class="form-group">
               <label>Tên Nhân Sự</label>
-              <input type="text" class="form-control" placeholder="Tên dự án" />
+              <input type="text" class="form-control name-personal" placeholder="Tên dự án" />
             </div>
             <div class="form-group">
               <label>Chọn Loại Dự Án</label>
-              <select class="js-example-basic-single w-100">
+              <select class="js-example-basic-single w-100 cate-personal">
                 <option value="AL">Alabama</option>
                 <option value="WY">Wyoming</option>
                 <option value="AM">America</option>
@@ -215,20 +262,16 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Chọn Ảnh</label>
-              <select class="js-example-basic-multiple w-90" multiple="multiple">
-                <option value="AL">Alabama</option>
-                <option value="WY">Wyoming</option>
-                <option value="AM">America</option>
-                <option value="CA">Canada</option>
-                <option value="RU">Russia</option>
-              </select>
+              <label>Thêm ảnh</label>
+
+              <input type="file" class="file-img-personal">
             </div>
             <div class="form-group">
               <label for="exampleTextarea1">Mô Tả Dự Án</label>
-              <textarea class="form-control" id="exampleTextarea1" rows="44" style="height: 100px;"></textarea>
+              <textarea class="form-control descript-personal" id="exampleTextarea1" rows="44"
+                style="height: 100px;"></textarea>
             </div>
-            <button type="button" class="btn btn-success btn-icon-text">
+            <button type="button" class="btn btn-success btn-icon-text btn-add-personal">
               <i class="ti-upload btn-icon-prepend"></i>
               Đăng
             </button>

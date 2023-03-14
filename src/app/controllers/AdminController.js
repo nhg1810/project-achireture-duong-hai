@@ -337,7 +337,7 @@ class AdminController {
         response.json(res);
     }
     async deleteRole(request, response, next) {
-        console.log(12312312,request.body.idRole)
+        // console.log(12312312,request.body.idRole)
         response.setHeader("Content-Type", "text/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
         RoleModel.deleteOne(request.body.idRole).then(() => {
@@ -346,6 +346,16 @@ class AdminController {
         }).catch(function (e) {
             response.json(e);
         })
+    }
+    async getAllPersonalInf(request, response, next) {
+        const res = await projectManagerService.getAllPersonalInf(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+    }
+    async addPersonalInf(request, response, next) {
+        response.json.JSON.parse({ 'đas': request.body, '123': request.file });
+
     }
 }
 module.exports = new AdminController;

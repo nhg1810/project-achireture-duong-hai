@@ -32,6 +32,11 @@ router.post('/delete-role-personal', AdminController.deleteRole);
 //update logo company
 router.post('/update-inf-company', AdminController.updateInfCompany);
 
+//add personal inf
+router.post('/add-personal-inf', AdminController.addPersonalInf);
+//get all personal
+router.get('/get-all-personal',AdminController.getAllPersonalInf);
+
 //get all information of user page
 router.get('/all-inf-user-page', AdminController.getAllInformationUserPage);
 //update inf home page use

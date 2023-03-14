@@ -316,5 +316,8 @@ class ProjectManagerService {
             return 'error';
         }
     }
+    async getAllPersonalInf(request, response, next) {
+        //chưa làms
+    }
 }
 module.exports = new ProjectManagerService();
