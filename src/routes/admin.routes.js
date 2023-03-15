@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const AdminController = require("../app/controllers/AdminController");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const process = require('process');
+const upload = multer({ dest: `${process.cwd()}` + `/src/public/img-personal` });
 
 router.get('/project-manager', AdminController.projectManager);
 router.get('/project-personnel-manager', AdminController.projectPersonnelManager);
@@ -35,16 +36,17 @@ router.post('/delete-role-personal', AdminController.deleteRole);
 router.post('/update-inf-company', AdminController.updateInfCompany);
 
 //add personal inf
-router.post('/add-personal-inf',upload.single("files"), AdminController.addPersonalInf);
+router.post('/add-personal-inf', upload.single("files"), AdminController.addPersonalInf);
 //get all personal
-router.get('/get-all-personal',AdminController.getAllPersonalInf);
+router.get('/get-all-personal', AdminController.getAllPersonalInf);
+//delete personal
+router.post('/delete-personal', AdminController.delPersonalById);
 
 //get all information of user page
 router.get('/all-inf-user-page', AdminController.getAllInformationUserPage);
 //update inf home page use
 router.post('/update-inf-home-page', AdminController.updateInfHomePge);
 // router.get('/create-inf', AdminController.createInf);
-
 router.get('/', AdminController.projectManager);
 
 

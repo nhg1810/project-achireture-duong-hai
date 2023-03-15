@@ -207,32 +207,6 @@ class ProjectManagerService {
         }
 
     }
-    //create new information of homepage
-    // async createINFHomePage(request, response, next) {
-    //     try {
-    //         let obj = {
-    //             nameCompany: "ádd",
-    //             addressCompany: "ádd",
-    //             emailCompany: "ádd",
-    //             phoneCompany: "ádd",
-    //             description: "ádd",
-    //             logoCompany: "ádd",
-    //             imageReview: "ádd"
-    //         }
-    //         if (request) {
-    //             let data = await curdHelper.create({
-    //                 model: 'company',
-    //                 obj: obj
-    //             });
-    //             return data;
-    //         } else {
-    //             return 'error'
-    //         }
-    //     } catch (error) {
-    //         return 'error'
-    //     }
-    // }
-
     //update inf home page
     async updateInfHomePage(request, response, next) {
         try {
@@ -317,7 +291,36 @@ class ProjectManagerService {
         }
     }
     async getAllPersonalInf(request, response, next) {
-        //chưa làms
+        try {
+            let data = await curdHelper.getAll({
+                model: 'account',
+                query: request.query,
+                populate: [{ path: 'role', strictPopulate: false }],
+            })
+            data = data.map(data => data.toObject());
+            return data;
+        } catch (error) {
+            return error;
+        }
+
+    }
+    async addPersonalInf(obj) {
+        try {
+            if (obj) {
+                let data = await curdHelper.create({
+                    model: 'account',
+                    obj: obj
+                });
+                return data;
+            } else {
+                return 'error'
+            }
+        } catch (error) {
+            return 'error'
+        }
+    }
+    async delPersonalById(){
+        
     }
 }
 module.exports = new ProjectManagerService();
