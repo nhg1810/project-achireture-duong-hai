@@ -41,6 +41,8 @@ router.post('/add-personal-inf', upload.single("files"), AdminController.addPers
 router.get('/get-all-personal', AdminController.getAllPersonalInf);
 //delete personal
 router.post('/delete-personal', AdminController.delPersonalById);
+//get personal by roles
+router.post('/getPersonalByRole', AdminController.getPersonalByRule);
 
 //get all information of user page
 router.get('/all-inf-user-page', AdminController.getAllInformationUserPage);

@@ -319,8 +319,11 @@ class ProjectManagerService {
             return 'error'
         }
     }
-    async delPersonalById(){
-        
+    async getPersonalById(request) {
+        console.log(request.body.idRole)
+        let rs = await AccountModel.find({ role: request.body.idRole }).populate([{ path: 'role', strictPopulate: false }]).exec();
+        rs = rs.slice(0, 10);
+        return rs;
     }
 }
 module.exports = new ProjectManagerService();

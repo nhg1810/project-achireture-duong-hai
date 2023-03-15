@@ -70,5 +70,14 @@ class HomeController {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.json(res);
     }
+    async getPeople(request, response, next) {
+        response.render('people', { layout: 'layout-user.hbs' })
+    }
+    async getAllPersonal(request, response, next){
+        let res = await userManagerService.getAllPersonal(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
+    }
 }
 module.exports = new HomeController;

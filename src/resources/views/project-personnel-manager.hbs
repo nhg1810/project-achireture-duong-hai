@@ -4,6 +4,7 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   $(document).ready(function () {
+    //add new cate personal
     $(".btn-add-cate-role").click(function () {
       let nameRole = $(".name-role").val();
       let desRole = $(".descript-role").val();
@@ -79,6 +80,7 @@
         })
         $(".cate-personal").html(option_html);
         $(".all-role-personal").html(html);
+        //delete cate role
         $(".btn-del-role").click(function () {
           Swal.fire({
             title: 'Bạn có chắc muốn xoá loại nhân sự này?',
@@ -91,6 +93,7 @@
           }).then((result) => {
             if (result.isConfirmed) {
               let dataId = $(this).attr('data-id-role');
+              //check coi cate này có tồn tại trong các nhân sự hiện tại không
               if (dataId) {
                 fetch("delete-role-personal", {
                   method: "POST", // or 'PUT'
@@ -106,6 +109,7 @@
                   .then((data) => {
                     if (data == 'success') {
                       showAllCateRole()
+                      showAllPersonalInf()
                       Swal.fire({
                         position: 'top-end',
                         icon: 'success',
@@ -124,7 +128,9 @@
             }
           })
 
-        })
+        }
+
+        )
       })
     }
 
@@ -149,8 +155,16 @@
 
                         <td>
                            `+ item.birth + `
-                        </td>
-                        <td>
+                        </td>`;
+          if (item.role) {
+            html += ` <td>
+                              `+ item.role.nameRole + `
+                        </td>`
+          } else {
+            html += `<td>không thuộc vị trí nào</td>`
+          }
+
+          html += `<td>
                           `+ item.contact + `
                         </td>
                         <td>
@@ -213,7 +227,9 @@
 
       })
     }
-    //check submit form
+
+
+    //add new personal
     $(".btn-add-personal").click(function () {
       let descript_personal = $(".descript-personal").val();
       let file_img_personal = $(".file-img-personal").val();
@@ -230,16 +246,18 @@
           'Vui lòng kiếm tra lại',
           'question'
         )
-      }else{
+      } else {
         $("#f-add-personal").submit();
       }
     })
   })
 
-
-
-
 </script>
+<div class="layout-edit"
+  style="z-index: 11;position: absolute; width: 100%; height: 100%; position: fixed; 
+  top: 0; left: 0; background-color: rgb(49 ,49, 49, 0.5); display: none;">
+
+</div>
 <div class="content-wrapper">
   <div class="row">
     <div class="col-md-8 grid-margin stretch-card">
@@ -259,7 +277,7 @@
                       <tr>
 
                         <th>
-                          ID
+                          Ảnh đại diện
                         </th>
                         <th>
                           Họ và tên
@@ -268,6 +286,7 @@
                         <th>
                           Ngày sinh
                         </th>
+                        <th>Vị trí</th>
                         <th>
                           Liên lạc
                         </th>

@@ -392,5 +392,13 @@ class AdminController {
 
         })
     }
+    async getPersonalByRule(request, response, next) {
+        const res = await projectManagerService.getPersonalById(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
+        console.log(res)
+
+    }
 }
 module.exports = new AdminController;
