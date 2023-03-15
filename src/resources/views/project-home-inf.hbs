@@ -105,7 +105,7 @@
                                 html += ` <div class="gallery-item" >
                      <div class="content image-design image-design-`+ item.id + `" data-id-image='0' >
                           <img data-sizes="auto" class = 'lazyload target target-` + item.id + `'  
-                          data-src="`+item.thumbnailLink+`" 
+                          data-src="`+ item.thumbnailLink + `" 
                           style=" filter: grayscale(100%);" data-id-image="` + item.id + `"   alt="">
                          <div class ="inf-image"></div>
                      </div>
@@ -114,7 +114,7 @@
                                 html += ` <div class="gallery-item" >
                      <div class="content image-design target-drop image-design-`+ item.id + `" data-id-image=` + item.id + ` >
                          <img data-sizes="auto" class = 'lazyload target target-`+ item.id + `'  
-                         data-src="`+item.thumbnailLink+`"
+                         data-src="`+ item.thumbnailLink + `"
                           data-id-image="` + item.id + `"   alt="">
                          <div class ="inf-image"></div>
                      </div>
@@ -285,7 +285,7 @@
 </style>
 <div class="content-wrapper">
     <div class="row">
-        <div class="col-12 grid-margin stretch-card">
+        <div class="col-6 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Thông tin trên TRANG CHỦ</h4>
@@ -335,6 +335,59 @@
 
 
                     </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Thông tin này là gì ?</h4>
+                    <p class="card-description">
+                        Một số <code>&lt;cân nhắc&gt;</code> khi sử dụng trang
+                    </p>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <address>
+                                <p class="fw-bold">Chỉ có admin mới có thể chỉnh các thông tin này !</p>
+                                <p>
+                                    Đây là các thông tin khi show ra ở ngoài trang chủ người dùng, chúng ta có thể chỉnh
+                                    các thông tin sao cho
+                                    phù hợp nhất, để có thể tiếp cận và khách hàng dễ tiếp thu thông tin.
+                                </p>
+
+                            </address>
+                        </div>
+                        <div class="col-md-6">
+                            <address class="text-primary">
+                                <p class="fw-bold">
+                                    E-mail (là thông tin quan trọng, kiểm tra và sửa đổi kĩ)
+                                </p>
+                                <p class="mb-2">
+                                    abc@gmail.com
+                                </p>
+                                <p class="fw-bold">
+                                    Các thông tin liên quan khác
+                                </p>
+                                <p>
+                                    Ví dụ như Facebook, Youtube,Tiktok, ..., nên điền đầy đủ để có thể tiếp cận khách hàng
+                                </p>
+                            </address>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Lưu ý khi sử dụng tool kéo và thay đổi bố cục ảnh ở trang chủ.</h4>
+                    <p class="card-description">
+                        Chỉ có <code>Admin</code> mới có thể sử dụng quyền này.
+                    </p>
+                    <p class="lead">
+                        Trước khi muốn thêm một ảnh nào đó vào giao diện trang chủ, hãy kiểm tra xem ảnh đó đã nằm trong kho 
+                        drive hay chưa, kiểm tra <a href="project-photo-manager">Tại đây !</a>
+                    </p>
+                    <p>- Các ảnh đã chọn thì sẽ hiện màu ĐEN TRẮNG(và ảnh này không thể chọn được)</p>
+                    <p>- Click chọn ảnh ở bảng bên phải sao cho ảnh đó có viền MÀU XANH, sau đó kéo ảnh vừa chọn sang khu vực trống bên trái</p>
+                    <p>- Chỉ thêm được ảnh khi khu vực đó đang trống, chưa có ảnh nào trong vị trí đó.</p>
+                    <p>- Muốn làm tróng một vị tri nào đó ở khu vực bên trái, thì chỉ cần click chuột vào vị trí đó.</p>
                 </div>
             </div>
         </div>

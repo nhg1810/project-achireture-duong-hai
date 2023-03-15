@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const AdminController = require("../app/controllers/AdminController");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 router.get('/project-manager', AdminController.projectManager);
 router.get('/project-personnel-manager', AdminController.projectPersonnelManager);
@@ -23,8 +25,19 @@ router.post('/get-cate-project-by-name-cate', AdminController.getCateProjectByNa
 router.post('/get-project-by-id-cate', AdminController.getProjectByCate);
 router.post('/bulk-upload-design', AdminController.bulkUploadDesign);
 router.get('/get-inf-company', AdminController.getAllInfCompany);
+//add a cate of personal
+router.post('/add-cate-personal', AdminController.addCatePersonal);
+//get all role of personal
+router.get('/get-all-role-personal', AdminController.getAllRolePersonal);
+//detele role personal
+router.post('/delete-role-personal', AdminController.deleteRole);
 //update logo company
 router.post('/update-inf-company', AdminController.updateInfCompany);
+
+//add personal inf
+router.post('/add-personal-inf',upload.single("files"), AdminController.addPersonalInf);
+//get all personal
+router.get('/get-all-personal',AdminController.getAllPersonalInf);
 
 //get all information of user page
 router.get('/all-inf-user-page', AdminController.getAllInformationUserPage);

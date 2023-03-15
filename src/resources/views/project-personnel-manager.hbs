@@ -1,3 +1,165 @@
+{{!-- js for this page --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{!-- sweet alert --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  $(document).ready(function () {
+    $(".btn-add-cate-role").click(function () {
+      let nameRole = $(".name-role").val();
+      let desRole = $(".descript-role").val();
+      if (nameRole == "" || desRole == "") {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi...',
+          text: 'Chưa điền đủ thông tin trong form!',
+        })
+      } else {
+        $(this).html('Đang tải...')
+        $(this).addClass('btn-outline-secondary').removeClass('btn-add-cate-role').removeClass('btn-success');
+
+        //fetch api post all cate role
+        fetch("add-cate-personal", {
+          method: "POST", // or 'PUT'
+          headers: {
+            Accept: 'application.json',
+            'Content-Type': 'application/json'
+          },
+          //data;
+          body: JSON.stringify({
+            'nameRole': nameRole,
+            'descriptionRole': desRole,
+          })
+        })
+          .then((response) => response.json())
+
+          .then((data) => {
+            $(this).removeClass('btn-outline-secondary').addClass('btn-add-cate-role').addClass('btn-success');
+            $(this).html('Đăng')
+            Swal.fire({
+              position: 'top-end',
+              icon: 'Thành công',
+              title: 'Thêm vị trí trong công ty thành công !',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            showAllCateRole();
+          })
+          .catch((error) => {
+            console.log("Error:", error);
+          });
+      }
+    })
+    showAllCateRole()
+    function showAllCateRole() {
+      $.ajax({
+        url: 'get-all-role-personal',
+        type: 'GET',
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+        console.log(data);
+        let html = ``;
+        data.map((item) => {
+          html += ` <tr>
+                        <td>
+                          `+ item.nameRole + `
+                        </td>
+
+                        <td>
+                          `+ item.descriptionRole + `
+                        </td>
+                        <td>
+                          <button type="button" data-id-role="`+ item._id + `" class="btn btn-danger btn-sm btn-icon-text btn-del-role"><i
+                              class="mdi mdi-delete"></i></button>
+                          <button type="button" class="btn btn-success btn-sm btn-icon-text"><i
+                              class="mdi mdi-lead-pencil"></i></button>
+                        </td>
+                      </tr>`;
+        })
+        $(".all-role-personal").html(html);
+        $(".btn-del-role").click(function () {
+          let dataId = $(this).attr('data-id-role');
+          if (dataId) {
+            fetch("delete-role-personal", {
+              method: "POST", // or 'PUT'
+              headers: {
+                Accept: 'application.json',
+                'Content-Type': 'application/json'
+              },
+              //data;
+              body: JSON.stringify({ '_id': dataId })
+            })
+              .then((response) => response.json())
+
+              .then((data) => {
+                if (data == 'success') {
+                  showAllCateRole()
+                  Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Xoá thành công 1 dự án !',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+                }
+              })
+              .catch((error) => {
+                console.log("Error:", error);
+              });
+
+          }
+        })
+      })
+    }
+    // Example POST method implementation:
+
+    async function postData(url = "", formData = {}) {
+      let formdt = new FormData();
+      formdt = formData;
+      console.log(formData);
+      // Default options are marked with *
+      const response = await fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify(formdt), // body data type must match "Content-Type" header
+      });
+      return response.json(); // parses JSON response into native JavaScript objects
+    }
+    //get all personal inf
+    //add personal inf
+    $(".btn-add-personal").click(function () {
+      let descriptPersonal = $(".descript-personal").val();
+      let catePersonal = $(".cate-personal").val();
+      let namePersonal = $(".name-personal").val();
+      let fileImgPersonal = $(".file-img-personal").prop('files')[0];
+      console.log(fileImgPersonal)
+      if (descriptPersonal == "" || catePersonal == "" || namePersonal == "") {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          text: 'Chưa điền đủ thông tin nhân sự!',
+          footer: '<a href="">?</a>'
+        })
+      } else {
+        postData("add-personal-inf", {
+          descriptPersonal: descriptPersonal,
+          catePersonal: catePersonal,
+          namePersonal: namePersonal,
+          files : fileImgPersonal
+        }).then((data) => {
+          console.log(data); // JSON data parsed by `data.json()` call
+        });
+      }
+    })
+
+  })
+
+
+
+</script>
 <div class="content-wrapper">
   <div class="row">
     <div class="col-md-8 grid-margin stretch-card">
@@ -56,18 +218,12 @@
                           May 15, 2015
                         </td>
                         <td>
-                          <button
-                            type="button"
-                            class="btn btn-danger btn-sm btn-icon-text"
-                          ><i class="mdi mdi-delete"></i></button>
-                          <button
-                            type="button"
-                            class="btn btn-success btn-sm btn-icon-text"
-                          ><i class="mdi mdi-lead-pencil"></i></button>
-                          <button
-                            type="button"
-                            class="btn btn-warning btn-sm btn-icon-text"
-                          ><i class="mdi mdi-eye"></i></button>
+                          <button type="button" class="btn btn-danger btn-sm btn-icon-text"><i
+                              class="mdi mdi-delete"></i></button>
+                          <button type="button" class="btn btn-success btn-sm btn-icon-text"><i
+                              class="mdi mdi-lead-pencil"></i></button>
+                          <button type="button" class="btn btn-warning btn-sm btn-icon-text"><i
+                              class="mdi mdi-eye"></i></button>
                         </td>
                       </tr>
 
@@ -87,11 +243,11 @@
             <h4 class="card-title">Thêm Nhân Sự</h4>
             <div class="form-group">
               <label>Tên Nhân Sự</label>
-              <input type="text" class="form-control" placeholder="Tên dự án" />
+              <input type="text" class="form-control name-personal" placeholder="Tên dự án" />
             </div>
             <div class="form-group">
               <label>Chọn Loại Dự Án</label>
-              <select class="js-example-basic-single w-100">
+              <select class="js-example-basic-single w-100 cate-personal">
                 <option value="AL">Alabama</option>
                 <option value="WY">Wyoming</option>
                 <option value="AM">America</option>
@@ -100,28 +256,84 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Chọn Ảnh</label>
-              <select
-                class="js-example-basic-multiple w-90"
-                multiple="multiple"
-              >
-                <option value="AL">Alabama</option>
-                <option value="WY">Wyoming</option>
-                <option value="AM">America</option>
-                <option value="CA">Canada</option>
-                <option value="RU">Russia</option>
-              </select>
+              <label>Thêm ảnh</label>
+
+              <input type="file" name="files" class="file-img-personal">
             </div>
             <div class="form-group">
               <label for="exampleTextarea1">Mô Tả Dự Án</label>
-              <textarea
-                class="form-control"
-                id="exampleTextarea1"
-                rows="44"
-                style="height: 100px;"
-              ></textarea>
+              <textarea class="form-control descript-personal" id="exampleTextarea1" rows="44"
+                style="height: 100px;"></textarea>
             </div>
-            <button type="button" class="btn btn-success btn-icon-text">
+            <button type="button" class="btn btn-success btn-icon-text btn-add-personal">
+              <i class="ti-upload btn-icon-prepend"></i>
+              Đăng
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="row">
+    <div class="col-md-8 grid-margin stretch-card">
+      <div class="card">
+        <div class="row">
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Chức vụ Nhân Sự</h4>
+                <p class="card-description">
+                  Đây là bảng:
+                  <code>Quản lý thông tin các vị trí chức vụ trong công ty.</code>
+                </p>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+
+
+                        <th>
+                          Tên chức vụ
+                        </th>
+
+                        <th>
+                          Mô tả chức vụ
+                        </th>
+
+                        <th>
+                          Thao tác
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="all-role-personal">
+
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 grid-margin stretch-card">
+      <div class="card">
+        <form action="">
+          <div class="card-body">
+            <h4 class="card-title">Thêm Chức Vụ Nhân Sự</h4>
+            <div class="form-group">
+              <label>Tên Chức Vụ</label>
+              <input type="text" class="form-control name-role" placeholder="Tên chức vụ " />
+            </div>
+            <div class="form-group">
+              <label for="exampleTextarea1">Mô Tả Vị trí</label>
+              <textarea class="form-control descript-role" id="exampleTextarea1" rows="44"
+                style="height: 100px;"></textarea>
+            </div>
+            <button type="button" class="btn  btn-icon-text btn-success btn-add-cate-role">
               <i class="ti-upload btn-icon-prepend"></i>
               Đăng
             </button>

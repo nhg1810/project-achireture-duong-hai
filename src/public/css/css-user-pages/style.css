@@ -1,5 +1,16 @@
+@font-face {
+    font-family: "Material Design Icons";
+    src: url("../fonts/materialdesignicons-webfont.eot?v=3.9.97");
+    src: url("../fonts/materialdesignicons-webfont.eot?#iefix&v=3.9.97") format("embedded-opentype"), url("../fonts/materialdesignicons-webfont.woff2?v=3.9.97") format("woff2"), url("../fonts/materialdesignicons-webfont.woff?v=3.9.97") format("woff"), url("../fonts/materialdesignicons-webfont.ttf?v=3.9.97") format("truetype");
+    font-weight: normal;
+    font-style: normal
+}
 * {
+    font-family: "Manrope", sans-serif;
+    font: normal normal normal 24px/1 "Material Design Icons";
+    font-size: inherit;
     margin: 0;
+    font-weight: initial;
     padding: 0;
     box-sizing: border-box;
 }
