@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const AdminController = require("../app/controllers/AdminController");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 router.get('/project-manager', AdminController.projectManager);
 router.get('/project-personnel-manager', AdminController.projectPersonnelManager);
@@ -33,7 +35,7 @@ router.post('/delete-role-personal', AdminController.deleteRole);
 router.post('/update-inf-company', AdminController.updateInfCompany);
 
 //add personal inf
-router.post('/add-personal-inf', AdminController.addPersonalInf);
+router.post('/add-personal-inf',upload.single("files"), AdminController.addPersonalInf);
 //get all personal
 router.get('/get-all-personal',AdminController.getAllPersonalInf);
 

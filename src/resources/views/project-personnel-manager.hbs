@@ -113,20 +113,18 @@
     }
     // Example POST method implementation:
 
-    async function postData(url = "", data = {}) {
+    async function postData(url = "", formData = {}) {
+      let formdt = new FormData();
+      formdt = formData;
+      console.log(formData);
       // Default options are marked with *
       const response = await fetch(url, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
         headers: {
           "Content-Type": "application/json",
           // 'Content-Type': 'application/x-www-form-urlencoded',
         },
-        redirect: "follow", // manual, *follow, error
-        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: data, // body data type must match "Content-Type" header
+        body: JSON.stringify(formdt), // body data type must match "Content-Type" header
       });
       return response.json(); // parses JSON response into native JavaScript objects
     }
@@ -136,8 +134,8 @@
       let descriptPersonal = $(".descript-personal").val();
       let catePersonal = $(".cate-personal").val();
       let namePersonal = $(".name-personal").val();
-      let fileImgPersonal = $(".file-img-personal").prop('files');
-      console.log(fileImgPersonal);
+      let fileImgPersonal = $(".file-img-personal").prop('files')[0];
+      console.log(fileImgPersonal)
       if (descriptPersonal == "" || catePersonal == "" || namePersonal == "") {
         Swal.fire({
           icon: 'error',
@@ -146,15 +144,11 @@
           footer: '<a href="">?</a>'
         })
       } else {
-        let form = new FormData();
-        form = {
+        postData("add-personal-inf", {
           descriptPersonal: descriptPersonal,
           catePersonal: catePersonal,
           namePersonal: namePersonal,
-          fileImgPersonal: fileImgPersonal
-        }
-        postData("add-personal-inf", {
-          form
+          files : fileImgPersonal
         }).then((data) => {
           console.log(data); // JSON data parsed by `data.json()` call
         });
@@ -264,7 +258,7 @@
             <div class="form-group">
               <label>Thêm ảnh</label>
 
-              <input type="file" class="file-img-personal">
+              <input type="file" name="files" class="file-img-personal">
             </div>
             <div class="form-group">
               <label for="exampleTextarea1">Mô Tả Dự Án</label>

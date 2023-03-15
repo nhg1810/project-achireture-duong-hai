@@ -5,6 +5,7 @@ const formidable = require('formidable');
 const path = require('path');
 const sharp = require("sharp")
 const fs = require('fs');
+
 const ID_FOLDER_DESIGN = process.env.ID_FOLDER_DESIGN;
 
 
@@ -354,7 +355,10 @@ class AdminController {
 
     }
     async addPersonalInf(request, response, next) {
-        response.json.JSON.parse({ 'đas': request.body, '123': request.file });
+
+        console.log('1230', request.body);
+        console.log(request.files);
+        response.json({ 'ád': 123 });
 
     }
 }

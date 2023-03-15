@@ -33,8 +33,10 @@ app.engine('.hbs', hbs.engine({
   extname: 'hbs'
 }
 ));
+app.use(express.json());
+
 //body parser
-app.use(bodyParser.urlencoded({
+app.use(express.urlencoded({
   extends: true
 }))
 
