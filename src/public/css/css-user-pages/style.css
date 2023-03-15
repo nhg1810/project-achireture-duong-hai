@@ -6,11 +6,7 @@
     font-style: normal
 }
 * {
-    font-family: "Manrope", sans-serif;
-    font: normal normal normal 24px/1 "Material Design Icons";
-    font-size: inherit;
     margin: 0;
-    font-weight: initial;
     padding: 0;
     box-sizing: border-box;
 }
