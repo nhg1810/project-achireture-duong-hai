@@ -75,23 +75,19 @@
                         let linkDetail = '';
                         if (data != "") {
                             data.map((item) => {
-                                linkDetail += ` <a target="_blank" href="detailproject/` + item._id + `" id="a-link-detail">Xem chi tiết >></a>`;
+                                linkDetail += ` <a target="_blank" href="detailproject/` + item._id + `" id="a-link-detail">Xem chi tiết</a>`;
 
-                                html += ` <p class="nameProject">- Tên dự án: ` + item.nameProject.trim() + `</p>
-                                    <p class="descriptProject">- Mô tả dự án: `+ item.descriptionProject + `</p>
-                                    <p class="cateProject">- Dự án này thuộc danh mục: `+ item.cateProject.nameProject + `</p>
-                                <p class="descriptCateProject">- Mô tả danh mục này: `+ item.cateProject.descriptionProject + `</p>`;
+                                html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
+                                    <p class="descriptProject"><strong>Mô tả dự án</strong>: `+ item.descriptionProject + `</p>
+                                    <p class="cateProject"><strong>Dự án này thuộc danh mục</strong>: `+ item.cateProject.nameProject + `</p>
+                                <p class="descriptCateProject"><strong>Mô tả danh mục này</strong>: `+ item.cateProject.descriptionProject + `</p>`;
 
                                 for (let i = 0; i < item.imageProject.length; i++) {
                                     arr_img += `<img src="` + item.imageProject[i].urlImage + `"/>`;
                                 }
                             })
                         } else {
-                            html = ` <p class="nameProject">- Tên dự án: Dự án này chưa được công bố chi tiết</p>
-                                    <p class="descriptProject">- Mô tả dự án: Dự án này chưa được công bố chi tiết</p>
-
-                                    <p class="cateProject">- Dự án này thuộc danh mục: Chuẩn bị cập nhật...</p>
-                                <p class="descriptCateProject">- Mô tả danh mục này: Chuẩn bị cập nhật...</p>`;
+                            html = ` <p class="nameProject">Dự án này chưa được công bố chi tiết</p>`;
                         }
                         $(".inf-image-a").html(linkDetail)
                         $(".inf-project").html(html)
@@ -110,30 +106,32 @@
     /*chưa làm responesive*/
 
     .inf-project>p {
-        margin-left: 30px;
+        margin: 0 30px;
     }
 
     .inf-project>.nameProject {
         margin-top: 20px;
-        font-size: 30px;
-        color: #b19023;
+        font-size: 25px;
+        color: #bab6af;
         font-weight: 800;
 
     }
 
     .inf-project>.descriptProject {
-        font-size: 20px;
-        color: white
+        padding-top: 10px;
+        font-size: 15px;
+        color: #bab6af
     }
 
     .inf-project>.cateProject,
     .descriptCateProject {
-        font-size: 20px;
-        color: white
+        padding-top: 10px;
+        font-size: 15px;
+        color: #bab6af
     }
 
     .img-relative-project {
-        width: 100%%;
+        width: 100%;
     }
 
     .img-relative-project>img {
@@ -179,9 +177,7 @@
     .contain-item-image>.inf-image {
         width: 100%;
         background-color: #474747;
-        margin-top: 10px;
         margin-bottom: 16px;
-        margin-left: 10px;
     }
 
     .contain-item-image>.contain-image>img {
@@ -207,33 +203,38 @@
     }
 
     .inf-image-a>a {
-        text-decoration: none;
+
         color: #181818;
-        padding: 15px;
-        float: right;
-        font-size: 20px;
+        float: left;
+        padding-left: 15px;
+        font-size: 17px;
     }
 
     .inf-image-a>a:hover {
         transition: 0.4s ease-in-out;
-        background-color: #181818;
         color: #f1f1f1;
+    }
+
+    .inf-image-logo {
+        width: 100%;
+    }
+
+    .inf-image-logo>img {
+        width: 100%;
+
     }
 </style>
 <div class="layout"
     style="position: absolute; width: 100%; height: 100%; position: fixed; top: 0; left:  0; background-color: rgb(40, 40, 40); opacity: 0.8; z-index: 99; display: none;">
 </div>
 <div class="contain-item-image">
-
     <div class="inf-image">
-        <div class="inf-image-title">
-            <p>Thông tin chi tiết về ảnh dự án này</p>
-        </div>
         <div class="inf-project">
         </div>
 
         {{!-- 1 chuỗi các ảnh --}}
         <div class="inf-image-a">
+            {{!-- xem dự án cùng loại --}}
         </div>
     </div>
     <div class="contain-image">
