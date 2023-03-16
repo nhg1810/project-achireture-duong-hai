@@ -149,14 +149,14 @@ body {
 }
 
 .iconMedia .hr {
-    width: 300px;
+    width: 350px;
     color: #bab6af;
     padding-top: 20px;
 }
 
 /* gallery */
 .mainContentGallery {
-    padding-top: 20px;
+    padding-top: 25px;
 }
 
 .gallery {
