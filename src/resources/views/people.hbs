@@ -1,0 +1,143 @@
+{{!-- js for this page --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{!-- sweet alert --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: 'get-all-personal',
+            type: 'GET',
+            dataType: "json",
+            encode: true,
+        }).done(function (data) {
+            console.log(data);
+            let html = "";
+            data.map((item) => {
+                html += ` <div class="mainPersonnel">
+            <div class="namePersonnel">
+                <p>Tên: `+ item.name + `</p>
+                <p>Email: `+ item.email + `</p>
+                <p>Ngày sinh: `+ item.birth + `</p>
+                <p>Số điện thoại: `+ item.contact + `</p>
+                <p>Tên: `+ item.name + `</p>
+                <img src="`+item.imageAvata+`" style="width: 100px; height: 100px">
+            </div>
+            <div class="jobPosition">Vị trí 
+
+                `;
+                if (!item.role) {
+                    html += ' :Đang cập nhật...'
+                } else {
+                    html += item.role.nameRole;
+                }
+                html += `
+            </div>
+        </div>`;
+            })
+            $(".textContent").html(html)
+        })
+    })
+</script>
+
+<style>
+    /* MAINCONTENT */
+    .mainContent {
+        position: absolute;
+        top: 80px;
+        width: 100%;
+        height: auto;
+    }
+
+    .mainContentMedia,
+    .mainContentContact,
+    .mainContentAbout {
+        width: 1200px;
+        margin: 0 auto;
+        color: #bab6af;
+    }
+
+    .textTitle p {
+        font-size: 35px;
+    }
+
+    .textContent {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        column-gap: 10px;
+    }
+
+    .mainPersonnel {
+        padding-bottom: 20px;
+    }
+
+    .mainPersonnel .namePersonnel>p {
+        font-size: 20px;
+    }
+
+    .textTitle-1 {
+        padding-top: 20px;
+    }
+
+    .textTitle-1>p {
+        font-size: 25px;
+    }
+
+    .textMedia,
+    .textContent {
+        font-size: 17px;
+        width: 99%;
+        padding-top: 20px;
+    }
+
+    .iconMedia ul {
+        display: flex;
+        list-style: none;
+    }
+
+    .iconMedia ul li {
+        padding-left: 15px;
+        padding-top: 10px;
+    }
+
+    .mainContentContact .hr,
+    .mainContentAbout .hr {
+        width: 300px;
+        color: #bab6af;
+        padding-top: 30px;
+    }
+
+    .mainContentContact {
+        padding-top: 20px;
+    }
+
+    .contact {
+        padding-top: 17px;
+    }
+
+    .email a {
+        text-decoration: none;
+        color: #bab6af;
+        font-size: 17px;
+    }
+
+    .Address p,
+    .phoneNumber p {
+        font-size: 17px;
+        color: #bab6af;
+    }
+
+    .mainContentMedia {
+        padding-bottom: 50px;
+    }
+</style>
+<div class="mainContentAbout">
+    <div class="textTitle">
+        <p>Nhân sự</p>
+    </div>
+    <div class="textContent">
+
+    </div>
+    <div class="hr">
+        <hr size="0.7px" />
+    </div>
+</div>

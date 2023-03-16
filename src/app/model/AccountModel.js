@@ -5,7 +5,7 @@ const Account = new Schema(
     {
         _id: Schema.Types.ObjectId,
         name: { type: String },
-        birth: { type: Date },
+        birth: { type: String },
         email: { type: String },
         role: {
             type:  Schema.Types.ObjectId,

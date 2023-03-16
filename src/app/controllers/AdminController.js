@@ -15,6 +15,7 @@ const curdHelper = require('../helpers/crud');
 const CateProject = require('../model/CateProject');
 const Project = require('../model/ProjectModel');
 const RoleModel = require('../model/RoleModel');
+const AccountModel = require('../model/AccountModel');
 class AdminController {
     async index(request, response, next) {
         let res = await projectManagerService.test(request);
@@ -352,13 +353,51 @@ class AdminController {
         const res = await projectManagerService.getAllPersonalInf(request);
         response.setHeader("Content-Type", "text/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
 
     }
     async addPersonalInf(request, response, next) {
+        sharp(request.file.path)
+            .webp()
+            .toFile(`${process.cwd()}` + `/src/public/img-personal/` + request.file.filename + '.webp')
+            .then(async (data) => {
+                if (data) {
+                    let obj = {
+                        name: request.body.name_personal,
+                        birth: request.body.birth_personal,
+                        email: request.body.email_personal,
+                        role: request.body.cate_personal,
+                        address: request.body.address_personal,
+                        contact: request.body.contact_personal,
+                        byMySelf: request.body.descript_personal,
+                        imageAvata: `img-personal/` + request.file.filename + '.webp'
+                    };
+                    //save in db
+                    const res = await projectManagerService.addPersonalInf(obj);
+                    if (res == 'success') {
+                        response.redirect('/admin/project-personnel-manager');
+                    }
+                }
+            })
+            .catch(function (err) {
+                console.log(err)
+            })
+    }
+    async delPersonalById(request, response, next) {
+        AccountModel.deleteOne(request.body).then(() => {
+            response.setHeader("Content-Type", "text/json");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.json('success')
+        }).catch(function () {
 
-        console.log('1230', request.body);
-        console.log(request.files);
-        response.json({ 'ád': 123 });
+        })
+    }
+    async getPersonalByRule(request, response, next) {
+        const res = await projectManagerService.getPersonalById(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
+        console.log(res)
 
     }
 }

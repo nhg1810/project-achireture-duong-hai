@@ -94,6 +94,19 @@ class UserManager {
         }
 
     }
+    async getAllPersonal(request, response, next) {
+        try {
+            let data = await curdHelper.getAll({
+                model: 'account',
+                query: request.query,
+                populate: [{ path: 'role', strictPopulate: false }],
+            })
+            data = data.map(data => data.toObject());
+            return data;
+        } catch (error) {
+            return error;
+        }
+    }
 
 }
 module.exports = new UserManager();
