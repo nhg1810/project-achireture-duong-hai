@@ -75,7 +75,7 @@
                         let linkDetail = '';
                         if (data != "") {
                             data.map((item) => {
-                                linkDetail += ` <a target="_blank" href="detailproject/` + item._id + `" id="a-link-detail">Xem chi tiết</a>`;
+                                linkDetail += ` <a target="_blank" href="detailproject/` + item._id + `" id="a-link-detail">Xem thêm</a>`;
 
                                 html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
                                     <p class="descriptProject"><strong>Mô tả dự án</strong>: `+ item.descriptionProject + `</p>
@@ -203,8 +203,8 @@
     }
 
     .inf-image-a>a {
-
-        color: #181818;
+        text-decoration: none;
+        color: #bab6af;
         float: left;
         padding-left: 15px;
         font-size: 17px;
