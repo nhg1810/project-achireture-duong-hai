@@ -39,11 +39,17 @@ router.post('/update-inf-company', AdminController.updateInfCompany);
 router.post('/add-personal-inf', upload.single("files"), AdminController.addPersonalInf);
 //get all personal
 router.get('/get-all-personal', AdminController.getAllPersonalInf);
+//get personal by id
+router.post('/get-personal-by-id', AdminController.getPersonalById);
 //delete personal
 router.post('/delete-personal', AdminController.delPersonalById);
 //get personal by roles
 router.post('/getPersonalByRole', AdminController.getPersonalByRule);
 
+//edit personal by roles(img avata update)
+router.post('/edit-personal-by-id', upload.single("vl_edit_avata"), AdminController.editPersonalById);
+//edit personal by roles(no img)
+router.post('/edit-personal-by-id-no-image', AdminController.editPersonalByIdNoAvata);
 //get all information of user page
 router.get('/all-inf-user-page', AdminController.getAllInformationUserPage);
 //update inf home page use

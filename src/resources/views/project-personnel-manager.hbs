@@ -73,12 +73,12 @@
                         <td>
                           <button type="button" data-id-role="`+ item._id + `" class="btn btn-danger btn-sm btn-icon-text btn-del-role"><i
                               class="mdi mdi-delete"></i></button>
-                          <button type="button" class="btn btn-success btn-sm btn-icon-text"><i
-                              class="mdi mdi-lead-pencil"></i></button>
+                        
                         </td>
                       </tr>`;
         })
         $(".cate-personal").html(option_html);
+        $(".vl-role-personal").html(option_html);
         $(".all-role-personal").html(html);
         //delete cate role
         $(".btn-del-role").click(function () {
@@ -173,7 +173,7 @@
                         <td>
                           <button type="button" data-id-personal= "`+ item._id + `" class="btn btn-danger btn-del-personal btn-sm btn-icon-text"><i
                               class="mdi mdi-delete" ></i></button>
-                          <button type="button" class="btn btn-success btn-sm btn-icon-text"><i
+                          <button type="button"  data-id-personal= "`+ item._id + `" class="btn btn-success btn-edit-personal btn-sm btn-icon-text"><i
                               class="mdi mdi-lead-pencil"></i></button>
                         </td>
                       </tr>`
@@ -225,9 +225,47 @@
 
         })
 
+        //edit personal
+        $(".btn-edit-personal").click(function () {
+          let dataId = $(this).attr('data-id-personal');
+          $(".layout-edit").css('display', 'block')
+          $(".form-data-edit-personal").css('display', 'block')
+          //get personal by id
+          $.ajax({
+            url: 'get-personal-by-id',
+            type: 'POST',
+            dataType: "json",
+            data: { idPersonal: dataId },
+            encode: true,
+          }).done(function (data) {
+
+            //get all detail personal
+            let item = data[0];
+            console.log(item);
+            $(".id_personal").val(item._id);
+            $(".vl-descript-personal").val(item.byMySelf);
+            $(".vl-address-personal").val(item.address);
+            $(".vl-email-personal").val(item.email);
+            $(".vl-birth-personal").val(item.birth);
+            $(".vl-name-personal").val(item.name);
+            $(".vl-phone-personal").val(item.contact);
+            $(".avata-personal").attr('src', item.imageAvata);
+            if (item.role._id) {
+              $('.vl-role-personal option[value=' + item.role._id + ']').attr('selected', 'selected');
+            }
+
+
+            //
+          })
+
+        })
       })
     }
+    $(".layout-edit").click(function () {
+      $(this).hide();
+      $(".form-data-edit-personal").hide();
 
+    })
 
     //add new personal
     $(".btn-add-personal").click(function () {
@@ -250,13 +288,106 @@
         $("#f-add-personal").submit();
       }
     })
+
+    $(".btn-edit-personal").click(function () {
+      let vl_descript_personal = $(".vl-descript-personal").val();
+      let vl_address_personal = $(".vl-address-personal").val();
+      let vl_email_personal = $(".vl-email-personal").val();
+      let vl_birth_personal = $(".vl-birth-personal").val();
+      let vl_name_personal = $(".vl-name-personal").val();
+      let vl_phone_personal = $(".vl-phone-personal").val();
+      let vl_upload_avata = $(".upload-avata").val();
+      let vl_role_personal = $(".vl-role-personal").val();
+      alert(vl_upload_avata)
+      if (vl_upload_avata == "") {
+        $("#f-edit-personal").submit();
+      } else {
+        if (vl_descript_personal == "" || vl_address_personal == "" || vl_email_personal == "" ||
+          vl_birth_personal == "" || vl_name_personal == "" || vl_phone_personal == "" ||
+          vl_role_personal == "") {
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi chưa đủ thông tin để cập nhật',
+            text: 'Vui lòng kiểm tra các trường!'
+          })
+        } else {
+          //form submit
+          $("#f-edit-personal").attr('action', 'edit-personal-by-id')
+          $("#f-edit-personal").submit();
+        }
+      }
+    })
+    //end
   })
 
 </script>
-<div class="layout-edit"
-  style="z-index: 11;position: absolute; width: 100%; height: 100%; position: fixed; 
+<div class="layout-edit" style="z-index: 11;position: absolute; width: 100%; height: 100%; position: fixed; 
   top: 0; left: 0; background-color: rgb(49 ,49, 49, 0.5); display: none;">
+</div>
+<div class="form-data-edit-personal" style="z-index: 12;position: absolute; width: 90%; height: 70%;  left: 50%; top: 50%;
+    transform: translate(-50%,-50%); display: none;">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Thông tin chi tiết nhân sự</h4>
+        <p class="card-description">
+          thông tin chi tiết và chỉnh sửa
+        </p>
+        <form class="forms-sample" id="f-edit-personal" action="edit-personal-by-id-no-image" enctype="multipart/form-data" method="post">
+          <img src="" id="avata-personal" class="avata-personal" style="width: 70px; height: auto;" alt="">
+          <div class="form-group">
+            <label>Chỉnh sửa ảnh</label>
+            <input type="hidden" class="id_personal" name="id_personal">
+            <div class="input-group col-xs-12">
+              <input type="file" class="form-control upload-avata" name="vl_edit_avata"
+                onchange="document.getElementById('avata-personal').src = window.URL.createObjectURL(this.files[0])"
+                placeholder="Up load ảnh nhân sự">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputName1">Tên nhân sự</label>
+            <input type="text" class="form-control vl-name-personal" name="vl_name_personal" id="exampleInputName1"
+              placeholder="Tên nhân sự">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail3">Ngày sinh</label>
+            <input type="text" class="form-control vl-birth-personal" name="vl_birth_personal" id="exampleInputEmail3"
+              placeholder="dd/mm/yyyy">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect3">Vị trí</label>
+            <select class="form-control form-control-sm vl-role-personal" name="vl_role_personal"
+              id="exampleFormControlSelect3">
 
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword4">Email</label>
+            <input type="text" class="form-control vl-email-personal" name="vl_email_personal"
+              id="exampleInputPassword4" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword4">Số điện thoại</label>
+            <input type="text" class="form-control vl-phone-personal" name="vl_phone_personal"
+              id="exampleInputPassword4" placeholder="Số điện thoại">
+          </div>
+
+          <div class="form-group">
+            <label for="exampleInputCity1">Địa chỉ</label>
+            <input type="text" class="form-control vl-address-personal" name="vl_address_personal"
+              id="exampleInputCity1" placeholder="Địa chỉ">
+          </div>
+          <div class="form-group">
+            <label for="exampleTextarea1">Giới thiệu</label>
+            <textarea class="form-control vl-descript-personal" name="vl_descript_personal" id="exampleTextarea1"
+              rows="4" style="height: 300px"></textarea>
+          </div>
+          <button type="button" class="btn btn-primary me-2 btn-edit-personal">Cập nhật</button>
+          <button class="btn btn-light">Huỷ bỏ</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="content-wrapper">
   <div class="row">

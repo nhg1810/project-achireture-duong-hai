@@ -397,8 +397,69 @@ class AdminController {
         response.setHeader("Content-Type", "text/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.json(res);
-        console.log(res)
+        // console.log(res)
 
+    }
+    async getPersonalById(request, response, next) {
+        const res = await projectManagerService.getPersonalByIdPersonal(request);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
+        console.log(res)
+    }
+    //edit personal
+    async editPersonalById(request, response, next) {
+        sharp(request.file.path)
+            .webp()
+            .toFile(`${process.cwd()}` + `/src/public/img-personal/` + request.file.filename + '.webp')
+            .then(async (data) => {
+                if (data) {
+                    let id = request.body.id_personal;
+                    let obj = {
+                        name: request.body.vl_name_personal,
+                        birth: request.body.vl_birth_personal,
+                        email: request.body.vl_email_personal,
+                        role: request.body.vl_role_personal,
+                        address: request.body.vl_address_personal,
+                        contact: request.body.vl_phone_personal,
+                        byMySelf: request.body.vl_descript_personal,
+                        imageAvata: `img-personal/` + request.file.filename + '.webp'
+                    };
+                    //save in db
+                    const res = await projectManagerService.editPersonalById(obj, id);
+                    if (res == 'success') {
+                        // response.redirect('/admin/project-personnel-manager');
+                    } else {
+                        console.log('res', res);
+                    }
+                }
+            })
+            .catch(function (err) {
+                console.log(err)
+            })
+
+        console.log(request.file, request.body)
+    }
+    //edit personal no img
+    async editPersonalByIdNoAvata(request, response, next) {
+        let id = request.body.id_personal;
+        let obj = {
+            name: request.body.vl_name_personal,
+            birth: request.body.vl_birth_personal,
+            email: request.body.vl_email_personal,
+            role: request.body.vl_role_personal,
+            address: request.body.vl_address_personal,
+            contact: request.body.vl_phone_personal,
+            byMySelf: request.body.vl_descript_personal,
+        };
+        console.log('id', id);
+        console.log('obj', obj);
+        const res = await projectManagerService.editPersonalById(obj, id);
+        if (res == 'success') {
+            // response.redirect('/admin/project-personnel-manager');
+        } else {
+            console.log('res', res);
+        }
     }
 }
 module.exports = new AdminController;

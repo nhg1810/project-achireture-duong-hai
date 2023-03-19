@@ -325,5 +325,26 @@ class ProjectManagerService {
         rs = rs.slice(0, 10);
         return rs;
     }
+    async getPersonalByIdPersonal(request) {
+        try {
+            let rs = await AccountModel.find({ _id: request.body.idPersonal }).populate([{ path: 'role', strictPopulate: false }]).exec();
+            rs = rs.slice(0, 10);
+            return rs;
+        } catch (error) {
+            return error
+        }
+    }
+    async editPersonalById(obj, id) {
+        try {
+            let data = await curdHelper.update({
+                model: 'account',
+                id: id,
+                obj: obj
+            });
+            return data;
+        } catch (error) {
+            return 'error';
+        }
+    }
 }
 module.exports = new ProjectManagerService();
