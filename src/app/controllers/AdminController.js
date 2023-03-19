@@ -405,7 +405,7 @@ class AdminController {
         response.setHeader("Content-Type", "text/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.json(res);
-        console.log(res)
+        // console.log(res)
     }
     //edit personal
     async editPersonalById(request, response, next) {
@@ -428,7 +428,7 @@ class AdminController {
                     //save in db
                     const res = await projectManagerService.editPersonalById(obj, id);
                     if (res == 'success') {
-                        // response.redirect('/admin/project-personnel-manager');
+                        response.redirect('/admin/project-personnel-manager');
                     } else {
                         console.log('res', res);
                     }
@@ -442,6 +442,7 @@ class AdminController {
     }
     //edit personal no img
     async editPersonalByIdNoAvata(request, response, next) {
+        // console.log(request.body);
         let id = request.body.id_personal;
         let obj = {
             name: request.body.vl_name_personal,
@@ -456,7 +457,7 @@ class AdminController {
         console.log('obj', obj);
         const res = await projectManagerService.editPersonalById(obj, id);
         if (res == 'success') {
-            // response.redirect('/admin/project-personnel-manager');
+            response.redirect('/admin/project-personnel-manager');
         } else {
             console.log('res', res);
         }

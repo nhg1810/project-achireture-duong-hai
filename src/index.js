@@ -38,8 +38,8 @@ app.use(express.json());
 //body parser
 app.use(express.urlencoded({
   extends: true
-}))
-
+})) 
+ 
 app.set('view engine', 'hbs');
 app.set('views', './src/resources/views')
 

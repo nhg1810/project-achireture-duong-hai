@@ -289,7 +289,8 @@
       }
     })
 
-    $(".btn-edit-personal").click(function () {
+    $(".btn-update-personal").click(function () {
+
       let vl_descript_personal = $(".vl-descript-personal").val();
       let vl_address_personal = $(".vl-address-personal").val();
       let vl_email_personal = $(".vl-email-personal").val();
@@ -298,8 +299,9 @@
       let vl_phone_personal = $(".vl-phone-personal").val();
       let vl_upload_avata = $(".upload-avata").val();
       let vl_role_personal = $(".vl-role-personal").val();
-      alert(vl_upload_avata)
+
       if (vl_upload_avata == "") {
+        $("#f-edit-personal").attr('action', 'edit-personal-by-id-no-image')
         $("#f-edit-personal").submit();
       } else {
         if (vl_descript_personal == "" || vl_address_personal == "" || vl_email_personal == "" ||
@@ -333,7 +335,8 @@
         <p class="card-description">
           thông tin chi tiết và chỉnh sửa
         </p>
-        <form class="forms-sample" id="f-edit-personal" action="edit-personal-by-id-no-image" enctype="multipart/form-data" method="post">
+
+        <form class="forms-sample" id="f-edit-personal" action="" enctype="multipart/form-data" method="post">
           <img src="" id="avata-personal" class="avata-personal" style="width: 70px; height: auto;" alt="">
           <div class="form-group">
             <label>Chỉnh sửa ảnh</label>
@@ -382,9 +385,10 @@
             <textarea class="form-control vl-descript-personal" name="vl_descript_personal" id="exampleTextarea1"
               rows="4" style="height: 300px"></textarea>
           </div>
-          <button type="button" class="btn btn-primary me-2 btn-edit-personal">Cập nhật</button>
+          <button type="submit" class="btn btn-primary me-2 btn-update-personal">Cập nhật</button>
           <button class="btn btn-light">Huỷ bỏ</button>
         </form>
+
       </div>
     </div>
   </div>

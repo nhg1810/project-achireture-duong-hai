@@ -49,7 +49,7 @@ router.post('/getPersonalByRole', AdminController.getPersonalByRule);
 //edit personal by roles(img avata update)
 router.post('/edit-personal-by-id', upload.single("vl_edit_avata"), AdminController.editPersonalById);
 //edit personal by roles(no img)
-router.post('/edit-personal-by-id-no-image', AdminController.editPersonalByIdNoAvata);
+router.post('/edit-personal-by-id-no-image',upload.none(), AdminController.editPersonalByIdNoAvata);
 //get all information of user page
 router.get('/all-inf-user-page', AdminController.getAllInformationUserPage);
 //update inf home page use
