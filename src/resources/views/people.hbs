@@ -2,6 +2,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 {{!-- sweet alert --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     $(document).ready(function () {
         $.ajax({
@@ -13,28 +14,26 @@
             console.log(data);
             let html = "";
             data.map((item) => {
-                html += ` <div class="mainPersonnel">
-            <div class="namePersonnel">
-                <p>Tên: `+ item.name + `</p>
-                <p>Email: `+ item.email + `</p>
-                <p>Ngày sinh: `+ item.birth + `</p>
-                <p>Số điện thoại: `+ item.contact + `</p>
-                <p>Tên: `+ item.name + `</p>
-                <img src="`+item.imageAvata+`" style="width: 100px; height: 100px">
-            </div>
-            <div class="jobPosition">Vị trí 
-
-                `;
-                if (!item.role) {
-                    html += ' :Đang cập nhật...'
-                } else {
-                    html += item.role.nameRole;
-                }
                 html += `
+                    <div class="card mb-3" style="max-width: 540px; min-width: 40%;  margin-top: 20px;">
+            <div class="row g-0" style="display: flex; align-items: top; justify-content: space-evenly; ">
+                <div class="col-md-4" style="margin-right: 30px">
+                    <img src="`+ item.imageAvata + `" style="width: 70%; height: auto;" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8" style="width: 100%;">
+                    <div class="card-body">
+                        <h3 class="card-title" style="padding-bottom: 10px; margin-bottom: 10px; border-bottom: solid 1px white">Tên: `+ item.name + `</h5>
+                        <p>Email: `+ item.email + `</p>
+                        <p>Ngày sinh: `+ item.birth + `</p>
+                        <p>Số điện thoại: `+ item.contact + `</p>
+                        <b>Chức vụ: `+item.role.nameRole+`</b>
+                    </div>
+                </div>
             </div>
-        </div>`;
+        </div>  
+        `;
             })
-            $(".textContent").html(html)
+            $(".contain-inf-people").html(html)
         })
     })
 </script>
@@ -51,6 +50,7 @@
     .mainContentMedia,
     .mainContentContact,
     .mainContentAbout {
+        height: auto;
         width: 1200px;
         margin: 0 auto;
         color: #bab6af;
@@ -132,12 +132,22 @@
 </style>
 <div class="mainContentAbout">
     <div class="textTitle">
-        <p>Nhân sự</p>
+        <p>About me </p>
     </div>
-    <div class="textContent">
+    <div class="row contain-inf-people"
+        style="width: 100%; height: auto;display: flex; flex-wrap: wrap; justify-content: space-between;">
 
     </div>
-    <div class="hr">
-        <hr size="0.7px" />
-    </div>
+
+
+    {{!-- <div class="textContent">
+
+    </div> --}}
+
 </div>
+<div class="hr">
+    <hr size="0.7px" />
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
