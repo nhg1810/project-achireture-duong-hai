@@ -1,118 +1,5 @@
 <style>
-  .mainHeader {
-    width: 1200px;
-    display: flex;
-    margin: 0 auto;
-  }
-
-  .logo {
-    width: 10%;
-  }
-
-  .logo img {
-    width: 90px;
-  }
-
-  .nav {
-    width: 90%;
-  }
-
-  .nav #navUl {
-    display: flex;
-    list-style: none;
-  }
-
-  .nav>ul>li {
-    margin-left: 21.2%;
-    position: relative;
-    height: 32px;
-  }
-
-  #navUl>li>a:hover {
-    color: #ffff;
-    transition: 1s;
-  }
-
-  .nav ul li a {
-    text-decoration: none;
-    color: #bab6af;
-    font-size: 15px;
-  }
-
-  .nav ul li:hover #subNavProject {
-
-    display: block;
-    border: 1px;
-  }
-
-  #subNavProject {
-    position: absolute;
-    list-style: none;
-    top: 32.2px;
-    background-color: rgba(50, 50, 50, 0.747);
-    width: 150px;
-    border-radius: 0 0 5px 5px;
-    display: none;
-    border: #bab6af;
-    border: 0 1px 1px 1px;
-  }
-
-  #subNavProject>a>li {
-    padding: 5px 0 5px 10px;
-    width: 100%;
-    border-radius: 5px;
-  }
-
-  #subNavProject>a>li:hover {
-    color: #5c5757;
-    transition: .3s;
-    background-color: rgb(230, 226, 226);
-
-
-  }
-
-  /* MAINCONTENT */
-  .mainContent {
-    position: absolute;
-    width: 100%;
-    height: auto;
-  }
-
-  .mainContentText {
-    width: 1200px;
-    margin: 0 auto;
-    color: #bab6af;
-  }
-
-  .textTitle p {
-    font-size: 30px;
-  }
-
-  .textMedia,
-  .textContent {
-    font-size: 15px;
-    width: 99%;
-    padding-top: 40px;
-  }
-
-  .iconMedia ul {
-    display: flex;
-    list-style: none;
-  }
-
-  .iconMedia ul li {
-    padding-left: 15px;
-    padding-top: 10px;
-  }
-
-  .iconMedia .hr {
-    width: 300px;
-    color: #bab6af;
-    padding-top: 20px;
-  }
-
   /* mainContentCategories */
-
   .mainContentCategories {
     padding-top: 20px;
     width: 95%;
@@ -122,6 +9,7 @@
 
   .categoryItem {
     width: 100%;
+    height: 350px;
     display: flex;
     background-color: #444444;
     margin-bottom: 30px;
@@ -135,7 +23,7 @@
 
   .categoryItemImage img {
     width: 100%;
-    height: 100%;
+    object-fit: cover;
     margin: auto;
   }
 
@@ -180,6 +68,7 @@
 
     .categoryItem {
       display: block;
+      height: auto;
     }
 
     .categoryItemImage {
@@ -297,7 +186,7 @@
     <p>Loading...</p>
   </div>
   <div class="textContent">
-    <p >
+    <p>
       Loading...
     </p>
   </div>

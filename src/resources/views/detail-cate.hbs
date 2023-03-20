@@ -15,14 +15,14 @@
         }).done(function (data) {
             let html = "";
             if (data == "") {
-                html+= `  <div class="item">
+                html += `  <div class="item">
                     <p>Chưa có dự án nào thuộc loại dự án này !</p>
                     </div>`;
             } else {
                 data.map((item) => {
                     html += `
                   <div class="item">
-                        <img src="`+ item.imageProject[0].urlImage + `" style="width: 300px; height: auto" alt="">
+                        <img src="`+ item.imageProject[0].urlImage + `" alt="">
                     </div>`;
                 })
             }
@@ -59,20 +59,22 @@
         height: 100%;
         filter: grayscale(0.7);
         margin: auto;
+        padding-bottom: 50px;
     }
 
     /* banner */
     .mainContentBanner-img {
         width: 100%;
         position: relative;
-        height: 500px;
+        min-height: 500px;
+        overflow: hidden;
     }
 
     .mainContentBanner-img>img {
         position: absolute;
         width: 100%;
         object-fit: cover;
-        height: 100%;
+        height: auto;
         padding-bottom: 10%;
     }
 
@@ -98,6 +100,32 @@
         display: block;
         z-index: 2;
     }
+
+    .gallery {
+        display: grid;
+        grid-template-columns: 33% 33% 33%;
+        column-gap: 5px;
+    }
+
+    .gallery .item {
+        min-height: 279px;
+        overflow: hidden;
+    }
+
+    .gallery .item>img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+     @media (max-width:1263px) {
+        .gallery{
+            display: block;
+            padding: 0 10px;
+        }
+        .gallery .item{
+            padding-bottom: 10px;
+        }
+    }
 </style>
 <div class="mainContentBanner">
     <div class="mainContentBanner-p">
@@ -109,8 +137,5 @@
 </div>
 <div class="mainContentProjectDetail">
     <div class="gallery">
-
-
-
     </div>
 </div>
