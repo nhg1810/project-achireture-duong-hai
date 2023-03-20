@@ -1,0 +1,210 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{{!-- js for this page --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{!-- sweet alert --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: 'get-all-cate-project',
+            type: 'GET',
+            dataType: "json",
+            encode: true,
+        }).done(function (data) {
+            console.log(data)
+            let html = '';
+            data.map((item) => {
+                html += ` <div class="col-md-12 grid-margin stretch-card">
+                 
+            <div class="card mb-3">
+                   <form id="form-edit-banner-`+ item._id + `" action="edit-banner-cate" enctype="multipart/form-data" method="post" >
+                   `;
+                if (item.imageBanner) {
+                    html += `<img id="img-banner-cate-` + item._id + `" class="card-img-top" src="` + item.imageBanner + `" alt="Ảnh banner danh mục">`;
+                } else {
+                    html += `<img id="img-banner-cate-` + item._id + `" class="card-img-top"  alt="Chưa có banner cho danh mục này ! ">`;
+                }
+                html += ` 
+                <div class="card-body">
+                    <h5 class="card-title">`+ item.nameProject + `</h5>
+                    <p class="card-text">`+ item.descriptionProject + `</p>
+                    <p class="card-text"><small class="text-muted">`+ item.updatedAt + `</small></p>
+                    <div class="custom-file">
+                    <input type = 'hidden' name='idCateProject' value = '`+ item._id + `'>
+
+                    <input type="file" name='banner-cate-project' class="custom-file-input file-img-banner-cate-`+ item._id + `"  onchange="document.getElementById('img-banner-cate-` + item._id + `').src = window.URL.createObjectURL(this.files[0])">
+                    <label class="custom-file-label" for="customFile">Chỉnh banner danh mục</label>
+                    </div>
+                  
+
+                </div>
+                  <button type="button" class="btn btn-success btn-update-banner-cate" data-id-cate=`+ item._id + `>Cập nhật</button>
+                  <button type="button" class="btn btn-primary btn-view-all-project" data-id-cate=`+ item._id + `>Xem  tất cả dự án thuộc</button>
+                     </form>
+                     <div class="card-group all-project-cate-`+ item._id + `" style="display: none">
+                        <div class="card" style="display: flex; flex-wrap: wrap">
+                            <img class="card-img-top" src="..." alt="Card image cap">
+                            <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            </div>
+                            <div class="card-footer">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                            </div>
+                        </div>
+                    
+                        </div>
+            </div>
+            
+       
+
+        </div>`;
+            })
+            $("#contain-all-cate").html(html)
+            $(".btn-update-banner-cate").click(function () {
+                let idCate = $(this).attr('data-id-cate');
+                let imgBannerCate = $(".file-img-banner-cate-" + idCate + "").val();
+                if (imgBannerCate) {
+                    $("#form-edit-banner-" + idCate + "").submit();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Chưa có sự thay đổi',
+                        text: 'Kiểm tra lại đã chọn ảnh banner để cập nhật chưa!',
+                    })
+                }
+            })
+            $(".btn-view-all-project").click(function () {
+                let idCate = $(this).attr('data-id-cate');
+
+                $.ajax({
+                    url: 'get-project-by-id-cate',
+                    type: 'POST',
+                    data: { idCate: idCate },
+                    dataType: "json",
+                    encode: true,
+                }).done(function (data) {
+                    console.log(data);
+                    let html_all_project_by_id = "";
+                    if (data.length == 0) {
+                        html_all_project_by_id += `   <div class="card">
+                            <img class="card-img-top" src="..." alt="Card image cap">
+                            <div class="card-body">
+                            <h5 class="card-title">Không có dự án nào thuộc loại dự án này</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                            </div>
+                            <div class="card-footer">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                            </div>
+                        </div>`;
+                    } else {
+                        data.map((project) => {
+                            html_all_project_by_id += `  <div class="card" style="display: flex; flex-wrap: wrap">
+                            <img class="card-img-top" src="`+ project.imageProject[0].urlImage + `" alt="Card image cap">
+                            <div class="card-body">
+                            <h5 class="card-title">`+ project.nameProject + `</h5>
+                            <p class="card-text">`+ project.descriptionProject + `</p>
+                            </div>
+                            <div class="card-footer">
+                            <small class="text-muted">Lần cập nhật cuối cùng `+ project.updatedAt + `</small>
+                              <small class="text-muted">Trạng thái:  `+ project.status + `</small>
+                            </div>
+                        </div>`;
+                        })
+                    }
+
+                    $(".all-project-cate-" + idCate + "").html(html_all_project_by_id)
+                })
+
+                $(".all-project-cate-" + idCate + "").show()
+            })
+        })
+        //edit ìnf
+        function allInfInfoPge() {
+            $.ajax({
+                url: 'all-inf-user-page',
+                type: 'GET',
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                let infInfo = data[0].project;
+                $(".vl-title-inf").val(infInfo.title);
+                $(".vl-content-inf").val(infInfo.content);
+            })
+        }
+        allInfInfoPge();
+        $(".btn-update-content-inf").click(function () {
+            let formData = new FormData();
+            let vlTitle = $(".vl-title-inf").val();
+            let vlContent = $(".vl-content-inf").val();
+            formData = {
+                _id: '63fee9a39ddfe2c3942acb63',
+                obj: {
+                    project: {
+                        title: vlTitle,
+                        content: vlContent
+                    }
+                }
+            }
+            $.ajax({
+                url: 'update-inf-home-page',
+                type: 'POST',
+                data: formData,
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                if (data == 'success') {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Cập nhật thành công !',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    allInfInfoPge();
+                }
+            })
+        })
+    })
+</script>
+<div class="content-wrapper">
+    <div class="row" id="contain-all-cate">
+
+    </div>
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Chỉnh sửa thông tin trên trang người dùng</h4>
+                <p class="card-description">
+                    Thông tin được show ra cho người dùng, chỉ có admin mới có quyền chỉnh sửa
+                </p>
+                <form class="forms-sample">
+                    <div class="form-group">
+                        <label for="exampleInputName1">Tiêu đề</label>
+                        <input type="text" class="form-control vl-title-inf" id="exampleInputName1"
+                            placeholder="Danh mục các dự án">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleTextarea1">Chi tiết bài viết</label>
+                        <textarea class="form-control vl-content-inf" id="exampleTextarea1" style="height: 200px;"
+                            rows="4"></textarea>
+                    </div>
+
+
+                    <button type="button" class="btn btn-primary me-2 btn-update-content-inf">Cập nhật</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>

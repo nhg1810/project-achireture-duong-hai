@@ -462,5 +462,33 @@ class AdminController {
             console.log('res', res);
         }
     }
+
+    async inforProject(request, response, next) {
+        response.render('project-descript-manager')
+    }
+    async editBannerCate(request, response, next) {
+        sharp(request.file.path)
+            .webp()
+            .toFile(`${process.cwd()}` + `/src/public/banner-cate/` + request.file.filename + '.webp')
+            .then(async (data) => {
+                if (data) {
+                    let id = request.body.idCateProject;
+                    let obj = {
+                        imageBanner: `banner-cate/` + request.file.filename + '.webp'
+                    };
+                    //save in db
+                    const res = await projectManagerService.editBannerCateById(obj, id);
+                    if (res == 'success') {
+                        response.redirect('/admin/infor-project');
+                    } else {
+                        console.log('res', res);
+                    }
+                }
+            })
+            .catch(function (err) {
+                console.log(err)
+            })
+
+    }
 }
 module.exports = new AdminController;

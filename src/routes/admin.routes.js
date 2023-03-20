@@ -3,12 +3,15 @@ const AdminController = require("../app/controllers/AdminController");
 const multer = require("multer");
 const process = require('process');
 const upload = multer({ dest: `${process.cwd()}` + `/src/public/img-personal` });
+const uploadBannerCate = multer({ dest: `${process.cwd()}` + `/src/public/banner-cate` });
+
 
 router.get('/project-manager', AdminController.projectManager);
 router.get('/project-personnel-manager', AdminController.projectPersonnelManager);
 router.get('/project-photo-manager', AdminController.projectPhotoManager);
 router.get('/mana-inf-home-user', AdminController.manaInfHomeUser);
 router.get('/infor-company', AdminController.inforCompany)
+router.get('/infor-project',AdminController.inforProject);
 
 //api data
 router.post('/store-category-project', AdminController.createCategoryProject)
@@ -23,6 +26,7 @@ router.get('/get-all-project', AdminController.getAllProject);
 router.get('/get-all-cate-project', AdminController.getAllCateProject);
 router.post('/get-project-by-name', AdminController.getProjectByName);
 router.post('/get-cate-project-by-name-cate', AdminController.getCateProjectByName);
+
 router.post('/get-project-by-id-cate', AdminController.getProjectByCate);
 router.post('/bulk-upload-design', AdminController.bulkUploadDesign);
 router.get('/get-inf-company', AdminController.getAllInfCompany);
@@ -45,7 +49,8 @@ router.post('/get-personal-by-id', AdminController.getPersonalById);
 router.post('/delete-personal', AdminController.delPersonalById);
 //get personal by roles
 router.post('/getPersonalByRole', AdminController.getPersonalByRule);
-
+//update banner cate
+router.post('/edit-banner-cate',uploadBannerCate.single("banner-cate-project"), AdminController.editBannerCate);
 //edit personal by roles(img avata update)
 router.post('/edit-personal-by-id', upload.single("vl_edit_avata"), AdminController.editPersonalById);
 //edit personal by roles(no img)

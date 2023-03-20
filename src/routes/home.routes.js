@@ -8,6 +8,7 @@ router.get('/get-all-inf-user-page', HomeController.getAllInfUserPage);
 router.get('/detailproject/:idProject', HomeController.detailProject);
 router.get("/cate-project",HomeController.getAllCateProject);
 router.get("/people",HomeController.getPeople);
+router.get("/info",HomeController.infoComany);
 // api
 router.post('/getDetailProject',HomeController.getDetailProject)
 router.post('/findProjectByName', HomeController.findProjectByIdImage);

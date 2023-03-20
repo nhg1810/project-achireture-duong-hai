@@ -346,5 +346,17 @@ class ProjectManagerService {
             return 'error';
         }
     }
+    async editBannerCateById(obj, id) {
+        try {
+            let data = await curdHelper.update({
+                model: 'cateProject',
+                id: id,
+                obj: obj
+            });
+            return data;
+        } catch (error) {
+            return 'error';
+        }
+    }
 }
 module.exports = new ProjectManagerService();

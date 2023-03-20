@@ -18,10 +18,14 @@ const UserPage = new Schema({
         images: [
             {
                 idImage: { type: String },
-                thumbnail: {type: String},
+                thumbnail: { type: String },
                 zIndex: { type: String },
             }
         ]
-    }]
+    }],
+    project: {
+        title: { type: String },
+        content: { type: String }
+    }
 })
 module.exports = mongoose.model('UserPage', UserPage)

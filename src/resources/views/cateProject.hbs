@@ -234,14 +234,16 @@
         if (i % 2 == 0) {
           $(".mainContentCategories").append(`<div class="categoryItem ">
     <div class="categoryItemImage ">
-      <img src="" alt="" />
+
+      <img src="`+ item.imageBanner + `" alt="" />
+
     </div>
     <div class="categoryItemText">
       <div class="categoryItemText-1">
-        <p>`+item.nameProject+`</p>
+        <p>`+ item.nameProject + `</p>
       </div>
       <div class="categoryItemText-2">
-        <p>`+item.descriptionProject+`</p>
+        <p>`+ item.descriptionProject + `</p>
       </div>
       <div class="categoryItemBtn">
         <a href="">Show All</a>
@@ -255,7 +257,7 @@
         <p>Beach Villa</p>
       </div>
       <div class="categoryItemText-2">
-        <p>`+item.descriptionProject+`</p>
+        <p>`+ item.descriptionProject + `</p>
       </div>
       <div class="categoryItemBtn">
         <a href="">Show All</a>
@@ -263,7 +265,7 @@
     </div>
 
     <div class="categoryItemImage ">
-      <img src="" alt="" />
+      <img src="`+ item.imageBanner + `" alt="" />
     </div>
   </div>`);
         }
@@ -271,22 +273,32 @@
         i++;
       })
     })
+
+    //get inf project
+    $.ajax({
+      url: '/get-all-inf-user-page',
+      type: 'GET',
+      dataType: "json",
+      encode: true,
+    }).done(function (data) {
+      let infInfo = data[0].project;
+      $(".textTitle p").html(infInfo.title);
+      $(".textContent p").html(infInfo.content);
+
+      console.log(infInfo);
+    })
+
+
   })
 </script>
 <div class="mainContentText">
-  
+
   <div class="textTitle">
-    <p>Danh mục các dự án</p>
+    <p>Loading...</p>
   </div>
   <div class="textContent">
-    <p>
-      Welcome to Koma Visualization! This section shows our hand-picked
-      projects that showcase our passion in visualizing architecture
-      with our signature visual style. We are proud to be trusted by our
-      clients to visualize their designs, ranging from small-scale to
-      large-scale projects. If you find our visual works interesting and
-      suitable for your needs, please do reach us through the Info page
-      for further information. Thank you!
+    <p >
+      Loading...
     </p>
   </div>
   <div class="media">
