@@ -82,5 +82,26 @@ class HomeController {
     async infoComany(request, response, next) {
         response.render('info', { layout: 'layout-user.hbs' })
     }
+    async detailCateProject(request, response, next){
+        if (request.params.idCateProject) {
+            console.log(request.params.idCateProject);
+            response.render('detail-cate', { layout: 'layout-user.hbs', data: request.params.idCateProject })
+        }
+    }
+    async getProjectByCate(request, response, next){
+        
+        let res = await userManagerService.getProjectByCate(request.body.idCate);
+        console.log('res', res);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
+    }
+    async getCateProjectById(request, response, next){
+        let res = await userManagerService.getCateProjectByCate(request.body.idCate);
+        console.log('res', res);
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.json(res);
+    }
 }
 module.exports = new HomeController;

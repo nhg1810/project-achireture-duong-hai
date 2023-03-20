@@ -9,7 +9,29 @@
     <link rel="stylesheet" href="css/css-user-pages/style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
-
+    {{!-- js for this page --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    {{!-- sweet alert --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '/all-cate-project',
+                type: 'GET',
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                console.log(data);
+                let html = "";
+                data.map((item) => {
+                    html += ` <a href="/detail-cate-project/`+item._id+`">
+                                    <li>`+item.nameProject+`</li>
+                                </a>`;
+                })
+                $("#subNavProject").html(html);
+            })
+        })
+    </script>
 </head>
 
 <body>
@@ -25,22 +47,11 @@
                         <li>
                             <a href="cate-project">Project</a>
                             <ul id="subNavProject">
-                                <a href="">
-                                    <li>Biệt thự Biển</li>
-                                </a>
-                                <a href="">
-                                    <li>Biệt thự Biển</li>
-                                </a>
-                                <a href="">
-                                    <li>Biệt thự Biển</li>
-                                </a>
-                                <a href="">
-                                    <li>Biệt thự Biển</li>
-                                </a>
+                                
                             </ul>
                         </li>
-                        <li><a href="info">Info</a></li>
-                        <li><a href="people">People</a></li>
+                        <li><a href="/info">Info</a></li>
+                        <li><a href="/people">People</a></li>
                     </ul>
                 </div>
                 <label for="nav__mobile-input" class="iconMenu">

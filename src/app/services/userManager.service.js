@@ -1,4 +1,5 @@
 const curdHelper = require('../helpers/crud');
+const CateProject = require('../model/CateProject');
 const CompanyModel = require('../model/CompanyModel');
 const ProjectModel = require('../model/ProjectModel');
 class UserManager {
@@ -107,6 +108,36 @@ class UserManager {
             return error;
         }
     }
+
+    async getProjectByCate(idCate) {
+        try {
+            console.log(idCate)
+            let rs = await ProjectModel.find({
+
+                status: "live",
+                "cateProject": idCate
+
+            }).populate([{ path: 'cateProject', strictPopulate: false }])
+            rs = rs.slice(0, 10);
+            // console.log(rs)
+            return rs;
+        } catch (error) {
+            return 'error';
+        }
+    }
+    async getCateProjectByCate(idCate) {
+        try {
+            console.log(idCate)
+            let rs = await CateProject.find({
+                "_id": idCate
+            })
+            // console.log(rs)
+            return rs;
+        } catch (error) {
+            return 'error';
+        }
+    }
+
 
 }
 module.exports = new UserManager();

@@ -13,6 +13,8 @@ require('dotenv').config();
 app.use('/admin',express.static(path.join(__dirname, '/public/')))
 app.use('/google',express.static(path.join(__dirname, '/public/')))
 app.use('/detailproject',express.static(path.join(__dirname, '/public/')))
+app.use('/detail-cate-project',express.static(path.join(__dirname, '/public/')))
+
 
 app.use(express.static(path.join(__dirname, '/public/')))
 //handle bar(template engine)
