@@ -1,0 +1,116 @@
+{{!-- js for this page --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{!-- sweet alert --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        let idCate = "{{data}}";
+
+        $.ajax({
+            url: '/getProjectByCate',
+            type: 'POST',
+            dataType: "json",
+            data: { idCate: idCate },
+            encode: true,
+        }).done(function (data) {
+            let html = "";
+            if (data == "") {
+                html+= `  <div class="item">
+                    <p>Chưa có dự án nào thuộc loại dự án này !</p>
+                    </div>`;
+            } else {
+                data.map((item) => {
+                    html += `
+                  <div class="item">
+                        <img src="`+ item.imageProject[0].urlImage + `" style="width: 300px; height: auto" alt="">
+                    </div>`;
+                })
+            }
+            $(".gallery").html(html);
+            console.log(data);
+        })
+
+        $.ajax({
+            url: '/get-cate-project-by-id',
+            type: 'POST',
+            dataType: "json",
+            data: { idCate: idCate },
+            encode: true,
+        }).done(function (data) {
+            let html = "";
+            $(".mainContentBanner-p p").html(data[0].nameProject)
+            $(".mainContentBanner-img img").attr('src', data[0].imageBanner);
+            console.log(data);
+        })
+    })
+</script>
+<style>
+    .mainContent {
+        width: 100%;
+        position: absolute;
+        top: 0px;
+        height: auto;
+        /* padding: 0 5px 0px 5px; */
+    }
+
+    .mainContent .mainContentBanner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        filter: grayscale(0.7);
+        margin: auto;
+    }
+
+    /* banner */
+    .mainContentBanner-img {
+        width: 100%;
+        position: relative;
+        height: 500px;
+    }
+
+    .mainContentBanner-img>img {
+        position: absolute;
+        width: 100%;
+        object-fit: cover;
+        height: 100%;
+        padding-bottom: 10%;
+    }
+
+    .mainContent .mainContentBanner .mainContentBanner-p {
+        position: absolute;
+        top: 50%;
+        /* position the top  edge of the element at the middle of the parent */
+        left: 50%;
+        /* position the left edge of the element at the middle of the parent */
+
+        transform: translate(-50%, -50%);
+        z-index: 2;
+    }
+
+    .mainContentBanner .mainContentBanner-p>p {
+        font-size: 75px;
+        color: #fff;
+    }
+
+    /* mainContentProjectDetail */
+    .overlayEffectImg {
+        position: fixed;
+        display: block;
+        z-index: 2;
+    }
+</style>
+<div class="mainContentBanner">
+    <div class="mainContentBanner-p">
+        <p>Beach Villa</p>
+    </div>
+    <div class="mainContentBanner-img">
+        <img src="../img/329562800_1504790936711340_5378388942636186252_n.jpg" alt="">
+    </div>
+</div>
+<div class="mainContentProjectDetail">
+    <div class="gallery">
+
+
+
+    </div>
+</div>

@@ -1,3 +1,28 @@
+{{!-- js for this page --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{!-- sweet alert --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/get-inf-company',
+            type: 'POST',
+            data: { _id: '64061f7b8a4398c824dbf196' },
+            dataType: "json",
+            encode: true,
+        }).done(function (data) {
+            console.log(data)
+            let infCompany = data[0];
+            $(".textTitle-1 p").html(infCompany.nameCompany)
+            $(".textContent").html(infCompany.description)
+            $(".img-review-company").attr('src', infCompany.imageReview)
+            $(".email a").html('Email: ' + infCompany.emailCompany)
+            $(".Address a").html('Address: '+ infCompany.addressCompany)
+            $(".phoneNumber a").html('Phone: '+infCompany.phoneCompany)
+            $(".logo-company").attr('src', infCompany.logoCompany)
+        })
+    })
+</script>
 <style>
     .mainContentMedia,
     .mainContentContact,
@@ -69,34 +94,17 @@
 </style>
 <div class="mainContentAbout">
     <div class="textTitle">
-        <p>About</p>
+        <p>About Company</p>
     </div>
     <div class="textTitle-1">
         <p>Possibilities , Portrayed</p>
     </div>
     <div class="textContent">
         <p>
-            Koma Visualization is a visual content studio, specialized in
-            Still Image, VR, and Animation for architectural and real estate
-            projects around the world. Our studio is based in Tangerang,
-            Indonesia. From 2015, we have been collaborating closely with more
-            than 100+ clients, and have finished 2000+ finished projects
-            worldwide. ​ We are proud to pioneer straight-forward rendering
-            style, which aims for honesty and realism in portraying
-            architecture / interior, opening true possibilities in seeing
-            pre-built design. Beauty is always considered by us, without
-            excessive beautification. ​ As a visual company specialized in
-            architecture and interior visualization, Koma, or comma in
-            English, acts as the separation part between the ideas and
-            realization​ of architecture, creating continuity within a
-            project. We are committed to always continue exploring the
-            creative possibilities of visualization. ​ Our works have
-            constantly been featured in Behance, Renderbox Magazine, Render
-            Awards, Render Contest, CGTop, Amazing Architecture, Architecture
-            Hunter, All of Renders, and other architecture visualization
-            publications.
+            Loading
         </p>
     </div>
+    <img class="img-review-company" style="width: 70%; height: auto; margin-top: 30px" src="" alt="">
     <div class="hr">
         <hr size="0.7px" />
     </div>
