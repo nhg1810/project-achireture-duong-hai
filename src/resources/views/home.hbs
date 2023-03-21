@@ -2,6 +2,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 {{!-- sweet alert --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <!-- jsDeliver -->
 <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.0/lazysizes.min.js" async=""></script>
@@ -9,15 +10,16 @@
 
 <script>
     $(document).ready(function () {
+        var arrImage = [];
         console.log(1);
         fetch("/get-all-inf-user-page").then(res => { return res.json() })
             .then((data) => {
-                console.log(123);
+                console.log(data);
                 let dataHome = data[0].home[0];
                 $(".textTitle p").html(dataHome.blog.title)
                 $(".textContent p").html(dataHome.blog.content)
 
-                let arrImage = data[0].home[0].images;
+                arrImage = data[0].home[0].images;
                 let minColumn = Math.floor((arrImage.length + 1) / 3);
                 console.log("minColumn", minColumn)
 
@@ -31,7 +33,7 @@
                 }).map((item) => {
                     let draft_html = `<a href="javascrip:void(0)" class="gallery__link">
                 <figure class="gallery__thumb" style="">
-                    <img style="min-height: 300px; background-color: #3d3d3d"  data-sizes="auto" data-src="https://drive.google.com/uc?id=` + item.idImage + `" data-id-image="` + item.idImage + `"
+                    <img style="min-height: 300px; background-color: #3d3d3d" z-index = '`+ item.zIndex + `'  data-sizes="auto" data-src="https://drive.google.com/uc?id=` + item.idImage + `" data-id-image="` + item.idImage + `"
                         alt="Loading..." class="gallery__image lazyload" />
                     <figcaption class="gallery__caption">
                         
@@ -55,54 +57,198 @@
             }).then(() => {
                 $(".gallery__image").click(function () {
                     $(".layout").css('display', 'block')
+                    $(".layout-option").css('display', 'flex')
                     $(".contain-item-image").css('display', 'flex')
                     let idImage = $(this).attr('data-id-image');
+                    let zIndex = $(this).attr('z-index');
                     $(".image-detail").attr('src', `https://drive.google.com/uc?id=` + idImage + ``);
+                    $(".image-detail").attr('z-index', zIndex);
 
 
-                    $.ajax({
-                        url: '/findProjectByName',
-                        type: 'POST',
-                        data: { idImage: idImage },
-                        dataType: "json",
-                        encode: true,
-                    }).done(function (data) {
-                        console.log(data);
-                        $(".inf-project").html('')
-                        $(".img-relative-project").html('')
-                        let html = '';
-                        let arr_img = '';
-                        let linkDetail = '';
-                        if (data != "") {
-                            data.map((item) => {
-                                linkDetail += ` <a target="_blank" href="detailproject/` + item._id + `" id="a-link-detail">Xem thêm</a>`;
-
-                                html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
-                                    <p class="descriptProject"><strong>Mô tả dự án</strong>: `+ item.descriptionProject + `</p>
-                                    <p class="cateProject"><strong>Dự án này thuộc danh mục</strong>: `+ item.cateProject.nameProject + `</p>
-                                <p class="descriptCateProject"><strong>Mô tả danh mục này</strong>: `+ item.cateProject.descriptionProject + `</p>`;
-
-                                for (let i = 0; i < item.imageProject.length; i++) {
-                                    arr_img += `<img src="` + item.imageProject[i].urlImage + `"/>`;
-                                }
-                            })
-                        } else {
-                            html = ` <p class="nameProject">Dự án này chưa được công bố chi tiết</p>`;
-                        }
-                        $(".inf-image-a").html(linkDetail)
-                        $(".inf-project").html(html)
-                        $(".img-relative-project").html(arr_img)
-                    })
+                    getProjectByIdImage(idImage);
                 })
             })
         $(".layout").click(function () {
             $(this).hide();
             $('.contain-item-image').hide()
+            $(".layout-option").hide();
         })
+        function getProjectByIdImage(idImage) {
+            $(".lds-ellipsis").hide(500);
+            $(".image-detail").attr('src', `https://drive.google.com/uc?id=` + idImage + ``);
+            $.ajax({
+                url: '/findProjectByName',
+                type: 'POST',
+                data: { idImage: idImage },
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                console.log(data);
+                $(".inf-project").html('')
+                $(".img-relative-project").html('')
+                let html = '';
+                let arr_img = '';
+                let linkDetail = '';
+                $(".inf-image-a").html('')
+                $(".inf-project").html('')
+                $(".img-relative-project").html('')
+                if (data != "") {
+                    data.map((item) => {
+                        linkDetail += ` <a target="_blank" href="detailproject/` + item._id + `" id="a-link-detail">Xem thêm</a>`;
+
+                        html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
+                                    <p class="descriptProject"><strong>Mô tả dự án</strong>: `+ item.descriptionProject + `</p>
+                                    <p class="cateProject"><strong>Dự án này thuộc danh mục</strong>: `+ item.cateProject.nameProject + `</p>
+                                <p class="descriptCateProject"><strong>Mô tả danh mục này</strong>: `+ item.cateProject.descriptionProject + `</p>`;
+
+                        for (let i = 0; i < item.imageProject.length; i++) {
+                            arr_img += `<img src="` + item.imageProject[i].urlImage + `"/>`;
+                        }
+                    })
+                } else {
+                    html = ` <p class="nameProject">Dự án này chưa được công bố chi tiết</p>`;
+                }
+                $(".inf-image-a").html(linkDetail)
+                $(".inf-project").html(html)
+                $(".img-relative-project").html(arr_img)
+                console.log(123);
+            })
+        }
+        $(".btn-right").click(function () {
+            $(".inf-image-a").html('')
+            $(".inf-project").html('')
+            $(".img-relative-project").html('')
+            $(".image-detail").attr('src', '');
+            $(".lds-ellipsis").css('display', 'inline-block')
+
+            let zIndex = $(".image-detail").attr('z-index');
+            console.log(arrImage);
+            let index = arrImage.findIndex(object => {
+                return object.zIndex === zIndex;
+            });
+            for (let i = 0; i < arrImage.length; i++) {
+                if (zIndex == arrImage[i].zIndex) {
+
+                    if (arrImage[i + 1]) {
+                        $(".image-detail").attr('z-index', arrImage[i + 1].zIndex);
+                        let idNextProject = arrImage[i + 1].idImage;
+                        setTimeout(function () {
+                            getProjectByIdImage(idNextProject);
+                        }, 1000)
+                    } else {
+                        Swal.fire('Waiting for update !')
+                    }
+                }
+            }
+        })
+
+        $(".btn-left").click(function () {
+            let zIndex = $(".image-detail").attr('z-index');
+            $(".inf-image-a").html('')
+            $(".inf-project").html('')
+            $(".img-relative-project").html('')
+            $(".image-detail").attr('src', '');
+            $(".lds-ellipsis").css('display', 'inline-block')
+
+            console.log(arrImage);
+            let index = arrImage.findIndex(object => {
+                return object.zIndex === zIndex;
+            });
+            for (let i = 0; i < arrImage.length; i++) {
+                if (zIndex == arrImage[i].zIndex) {
+                    if (arrImage[i - 1]) {
+                        $(".image-detail").attr('z-index', arrImage[i - 1].zIndex);
+                        let idNextProject = arrImage[i - 1].idImage;
+                        setTimeout(function () {
+                            getProjectByIdImage(idNextProject);
+                        }, 1000)
+                    } else {
+                        Swal.fire('Waiting for update !')
+                    }
+                }
+            }
+        })
+
     })
 </script>
 
 <style>
+    .btn-route {
+        background-color: rgb(133, 132, 132);
+    }
+
+    .btn-route:hover {
+        background-color: aliceblue;
+    }
+
+    .lds-ellipsis {
+        margin: auto;
+        display: none;
+        position: relative;
+        width: 80px;
+        height: 80px;
+    }
+
+    .lds-ellipsis div {
+        position: absolute;
+        top: 33px;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: #fff;
+        animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+
+    .lds-ellipsis div:nth-child(1) {
+        left: 8px;
+        animation: lds-ellipsis1 0.6s infinite;
+    }
+
+    .lds-ellipsis div:nth-child(2) {
+        left: 8px;
+        animation: lds-ellipsis2 0.6s infinite;
+    }
+
+    .lds-ellipsis div:nth-child(3) {
+        left: 32px;
+        animation: lds-ellipsis2 0.6s infinite;
+    }
+
+    .lds-ellipsis div:nth-child(4) {
+        left: 56px;
+        animation: lds-ellipsis3 0.6s infinite;
+    }
+
+    @keyframes lds-ellipsis1 {
+        0% {
+            transform: scale(0);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    @keyframes lds-ellipsis3 {
+        0% {
+            transform: scale(1);
+        }
+
+        100% {
+            transform: scale(0);
+        }
+    }
+
+    @keyframes lds-ellipsis2 {
+        0% {
+            transform: translate(0, 0);
+        }
+
+        100% {
+            transform: translate(24px, 0);
+        }
+    }
+
     /*chưa làm responesive*/
 
     .inf-project>p {
@@ -225,9 +371,31 @@
     }
 </style>
 <div class="layout"
-    style="position: absolute; width: 100%; height: 100%; position: fixed; top: 0; left:  0; background-color: rgb(40, 40, 40); opacity: 0.8; z-index: 99; display: none;">
+    style="position: absolute; width: 100%; height: 100%; position: fixed; top: 50%; transform: translate(-50%, -50%); left:  50%; background-color: rgb(40, 40, 40); opacity: 0.8; z-index: 99; display: none;">
+    <div class="" style="display: flex;     justify-content: center; align-items: center; width: 50px; float: right; height: 50px; border-radius: 50px; background-color: #575757; margin-top: 5px; margin-right: 5px;">
+        <img src="icon-user-page/close.png" width="20px" height="20px" alt="">
+    </div>
+</div>
+<div class="layout-option"
+    style="position: absolute; align-items: center; justify-content: space-between; width: 100%; height: 100px; position: fixed; top: 50%; transform: translate(-50%, -50%); left:  50%; display: none; opacity: 0.8; z-index: 99;">
+    <div class="btn-route btn-left"
+        style="display: flex;     justify-content: center; align-items: center; width: 50px; margin-left: 20px; cursor: pointer; border-radius: 50%; height:50px; ">
+        <img style="width: 20px; height: 20px;" src="icon-user-page/left-arrow.png" alt="">
+    </div>
+    <div class="btn-route btn-right"
+        style="display: flex;     justify-content: center; align-items: center; width: 50px; margin-right: 20px; height: 50px;  cursor: pointer; border-radius: 50%; ">
+        <img style="width: 20px; height: 20px;" src="icon-user-page/right-arrow.png" alt="">
+
+    </div>
+
 </div>
 <div class="contain-item-image">
+    <div class="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
     <div class="inf-image">
         <div class="inf-project">
         </div>
@@ -238,9 +406,9 @@
         </div>
     </div>
     <div class="contain-image">
-        <img src="" alt="" class="image-detail">
         <div class="img-relative-project">
         </div>
+        <img src="" alt="" class="image-detail">
     </div>
 </div>
 <div class="mainContentText">
