@@ -5,7 +5,7 @@
 <script>
     $(document).ready(function () {
         let idCate = "{{data}}";
-
+        var arrProject = [];
         $.ajax({
             url: '/getProjectByCate',
             type: 'POST',
@@ -13,21 +13,33 @@
             data: { idCate: idCate },
             encode: true,
         }).done(function (data) {
+            arrProject = data;
+            console.log(data);
             let html = "";
             if (data == "") {
                 html += `  <div class="item">
                     <p>Chưa có dự án nào thuộc loại dự án này !</p>
                     </div>`;
             } else {
+
                 data.map((item) => {
                     html += `
-                  <div class="item">
+                  <div class="item" data-id-project="`+ item._id + `">
                         <img src="`+ item.imageProject[0].urlImage + `" alt="">
                     </div>`;
                 })
             }
             $(".gallery").html(html);
-            console.log(data);
+            $(".item").click(function () {
+                $(".layout").css('display', 'block')
+                $(".layout-option").css('display', 'flex')
+                $(".contain-item-image").css('display', 'flex')
+                let idProject = $(this).attr('data-id-project');
+                $(".vl-id-detail-project").val(idProject)
+                getProjectByIdProject(idProject);
+            })
+
+
         })
 
         $.ajax({
@@ -40,48 +52,33 @@
             let html = "";
             $(".mainContentBanner-p p").html(data[0].nameProject)
             $(".mainContentBanner-img img").attr('src', data[0].imageBanner);
-            console.log(data);
-        }).then(() => {
-                $(".gallery").click(function () {
-                    $(".layout").css('display', 'block')
-                    $(".layout-option").css('display', 'flex')
-                    $(".contain-item-image").css('display', 'flex')
-                    let idImage = $(this).attr('data-id-image');
-                    let zIndex = $(this).attr('z-index');
-                    $(".image-detail").attr('src', `https://drive.google.com/uc?id=` + idImage + ``);
-                    $(".image-detail").attr('z-index', zIndex);
-
-
-                    getProjectByIdImage(idImage);
-                })
-            })
+        })
         $(".layout").click(function () {
             $(this).hide();
             $('.contain-item-image').hide()
             $(".layout-option").hide();
         })
-        function getProjectByIdImage(idImage) {
+
+        function getProjectByIdProject(idProject) {
             $(".lds-ellipsis").hide(500);
-            $(".image-detail").attr('src', `https://drive.google.com/uc?id=` + idImage + ``);
+
             $.ajax({
-                url: '/findProjectByName',
+                url: '/getDetailProject',
                 type: 'POST',
-                data: { idImage: idImage },
+                data: { idProject: idProject },
                 dataType: "json",
                 encode: true,
             }).done(function (data) {
-                console.log(data);
                 $(".inf-project").html('')
                 $(".img-relative-project").html('')
                 let html = '';
                 let arr_img = '';
                 let linkDetail = '';
-                $(".inf-image-a").html('')
                 $(".inf-project").html('')
                 $(".img-relative-project").html('')
+                console.log('detail', data);
                 if (data != "") {
                     data.map((item) => {
-                        linkDetail += ` <a target="_blank" href="detailproject/` + item._id + `" id="a-link-detail">Xem thêm</a>`;
 
                         html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
                                     <p class="descriptProject"><strong>Mô tả dự án</strong>: `+ item.descriptionProject + `</p>
@@ -95,65 +92,52 @@
                 } else {
                     html = ` <p class="nameProject">Dự án này chưa được công bố chi tiết</p>`;
                 }
-                $(".inf-image-a").html(linkDetail)
                 $(".inf-project").html(html)
                 $(".img-relative-project").html(arr_img)
-                console.log(123);
             })
         }
+
+
         $(".btn-right").click(function () {
             $(".inf-image-a").html('')
             $(".inf-project").html('')
             $(".img-relative-project").html('')
-            $(".image-detail").attr('src', '');
             $(".lds-ellipsis").css('display', 'inline-block')
-
-            let zIndex = $(".image-detail").attr('z-index');
-            console.log(arrImage);
-            let index = arrImage.findIndex(object => {
-                return object.zIndex === zIndex;
-            });
-            for (let i = 0; i < arrImage.length; i++) {
-                if (zIndex == arrImage[i].zIndex) {
-
-                    if (arrImage[i + 1]) {
-                        $(".image-detail").attr('z-index', arrImage[i + 1].zIndex);
-                        let idNextProject = arrImage[i + 1].idImage;
-                        setTimeout(function () {
-                            getProjectByIdImage(idNextProject);
-                        }, 1000)
+            let idProject = $(".vl-id-detail-project").val();
+            for (let i = 0; i < arrProject.length; i++) {
+                if (idProject == arrProject[i]._id) {
+                    if (arrProject[i + 1]) {
+                        getProjectByIdProject(arrProject[i + 1]._id)
+                        $(".vl-id-detail-project").val(arrProject[i + 1]._id)
                     } else {
-                        Swal.fire('Waiting for update !')
+                        $('.contain-item-image').hide()
+                        $(".layout-option").hide();
+                         $(".layout").hide()
                     }
                 }
             }
         })
 
         $(".btn-left").click(function () {
-            let zIndex = $(".image-detail").attr('z-index');
             $(".inf-image-a").html('')
             $(".inf-project").html('')
             $(".img-relative-project").html('')
-            $(".image-detail").attr('src', '');
             $(".lds-ellipsis").css('display', 'inline-block')
+            let idProject = $(".vl-id-detail-project").val();
+            for (let i = 0; i < arrProject.length; i++) {
+                if (idProject == arrProject[i]._id) {
+                    if (arrProject[i - 1]) {
+                        getProjectByIdProject(arrProject[i - 1]._id)
+                        $(".vl-id-detail-project").val(arrProject[i - 1]._id)
 
-            console.log(arrImage);
-            let index = arrImage.findIndex(object => {
-                return object.zIndex === zIndex;
-            });
-            for (let i = 0; i < arrImage.length; i++) {
-                if (zIndex == arrImage[i].zIndex) {
-                    if (arrImage[i - 1]) {
-                        $(".image-detail").attr('z-index', arrImage[i - 1].zIndex);
-                        let idNextProject = arrImage[i - 1].idImage;
-                        setTimeout(function () {
-                            getProjectByIdImage(idNextProject);
-                        }, 1000)
                     } else {
-                        Swal.fire('Waiting for update !')
+                        $('.contain-item-image').hide()
+                        $(".layout-option").hide();
+                         $(".layout").hide()
                     }
                 }
             }
+
         })
 
     })
@@ -444,7 +428,7 @@
 <div class="layout"
     style="position: absolute; width: 100%; height: 100%; position: fixed; top: 50%; transform: translate(-50%, -50%); left:  50%; background-color: rgb(40, 40, 40); opacity: 0.8; z-index: 99; display: none;">
     <div class=""
-        style="display: flex;     justify-content: center; align-items: center; width: 30px; float: right; height: 30px; border-radius: 50px; background-color: #575757; margin-top: 5px; margin-right: 5px;">
+        style="display: flex;     justify-content: center; align-items: center; width: 40px; float: right; height: 40px; border-radius: 50px; background-color: #575757; margin-top: 5px; margin-right: 5px;">
         <img src="icon-user-page/close.png" width="20px" height="20px" alt="">
     </div>
 </div>
@@ -452,11 +436,11 @@
     style="position: absolute; align-items: center; justify-content: space-between; width: 100%; height: 100px; position: fixed; top: 50%; transform: translate(-50%, -50%); left:  50%; display: none; opacity: 0.8; z-index: 99;">
     <div class="btn-route btn-left"
         style="display: flex;     justify-content: center; align-items: center; width: 30px; margin-left: 20px; cursor: pointer; border-radius: 50%; height:30px; ">
-        <img style="width: 20px; height: 20px;" src="icon-user-page/left-arrow.png" alt="">
+        <img style="width: 15px; height: 15px;" src="icon-user-page/left-arrow.png" alt="">
     </div>
     <div class="btn-route btn-right"
         style="display: flex;     justify-content: center; align-items: center; width: 30px; margin-right: 20px; height: 30px;  cursor: pointer; border-radius: 50%; ">
-        <img style="width: 20px; height: 20px;" src="icon-user-page/right-arrow.png" alt="">
+        <img style="width: 15px; height: 15px;" src="icon-user-page/right-arrow.png" alt="">
 
     </div>
 
@@ -483,6 +467,7 @@
     <div class="contain-image">
         <div class="img-relative-project">
         </div>
+        <input type="hidden" class="vl-id-detail-project">
         <img src="" alt="" class="image-detail">
     </div>
 </div>
@@ -496,5 +481,6 @@
 </div>
 <div class="mainContentProjectDetail">
     <div class="gallery">
+
     </div>
 </div>

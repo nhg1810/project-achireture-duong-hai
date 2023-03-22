@@ -13,6 +13,183 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {{!-- sweet alert --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* footer */
+        #footer {
+            background-color: rgb(44 44 44)
+            width: 100%;
+            margin-top: 50px;
+            height: auto;
+        }
+
+        footer {
+            width: 90%;
+            height: auto;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        footer>.ft-inf {
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        .p1 {
+            width: 25%;
+            align-items: flex-start;
+        }
+
+        .p1>b,
+        .p1>p {
+            color: rgb(109, 107, 107);
+            margin: 0;
+        }
+
+        .p1>h1 {
+            color: rgb(43, 52, 49);
+        }
+
+        .contain-logo {
+            width: 100%;
+            height: auto;
+            margin: 0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-evenly;
+            margin-bottom: 10px;
+        }
+
+        .contain-logo>img {
+            margin: 0;
+            padding: 10px;
+            background-color: rgb(235, 191, 135);
+            border-radius: 10px;
+            width: 50px;
+            height: auto;
+        }
+
+        .contain-logo>h2 {
+            color: rgb(44, 50, 50);
+            font-weight: 500;
+        }
+
+        .border {
+            margin: 5px;
+            width: 1px;
+            height: 100px;
+            background-color: black;
+        }
+
+        .p2 {
+            margin: 0;
+            width: 10%;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 20px;
+
+        }
+
+        .p2>b,
+        .p2>a {
+            margin: 0;
+            text-decoration: none;
+            color: rgb(107, 103, 103);
+        }
+
+        .p2>b {
+            margin-bottom: 10px;
+        }
+
+        .p3 {
+            width: 20%;
+        }
+
+        .p3>b {
+            margin-bottom: 10px;
+            color: rgb(161, 161, 161);
+        }
+
+        .p3>.social {
+            display: flex;
+            width: 50%;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        .p3>.social>a>i {
+            padding: 10px;
+            background-color: rgb(156, 197, 210);
+            border-radius: 20px;
+            color: white;
+        }
+
+        .p3>form {
+            width: 100%;
+            padding: 15px;
+        }
+
+        .p3>form>input[type='text'] {
+            padding: 10px;
+            border-radius: 10px;
+            border: solid 1px rgb(222, 222, 222);
+        }
+
+        .p3>form>input[type='button'] {
+            padding: 3px;
+            border: 0;
+            background-color: white;
+            color: rgb(135, 147, 157);
+        }
+
+        .p3>p {
+            color: rgb(188, 187, 187);
+        }
+
+        .conpany {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background-color: rgb(126 126 118);
+            height: auto;
+        }
+
+        .conpany>.author {
+            width: 100%;
+        }
+
+        .conpany>.author>p {
+            color: aliceblue;
+            width: 100%;
+            font-size: 12px;
+            text-align: right;
+            border-right: solid 2px rgb(219, 219, 219);
+            padding: 5px;
+        }
+
+        .conpany>.applycation {
+            width: 30%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .conpany>.applycation>p {
+            width: 100px;
+            height: 30px;
+            margin-top: 10px;
+            background-color: rgb(25, 28, 31);
+            border-radius: 5px;
+            color: white;
+            line-height: 30px;
+        }
+    </style>
     <script>
         $(document).ready(function () {
             $.ajax({
@@ -24,8 +201,8 @@
                 console.log(data);
                 let html = "";
                 data.map((item) => {
-                    html += ` <a href="/detail-cate-project/`+item._id+`">
-                                    <li>`+item.nameProject+`</li>
+                    html += ` <a href="/detail-cate-project/` + item._id + `">
+                                    <li>`+ item.nameProject + `</li>
                                 </a>`;
                 })
                 $("#subNavProject").html(html);
@@ -39,7 +216,8 @@
         <div class="header">
             <div class="mainHeader">
                 <div class="logo">
-                    <a href=""><img src="../img/KOMA Logo 01 - Gold Transparent.png" alt="" /></a>
+                    
+                    <a href=""><img src="" alt="" /></a>
                 </div>
                 <div class="nav">
                     <ul id="navUl">
@@ -47,7 +225,7 @@
                         <li>
                             <a href="/cate-project">Project</a>
                             <ul id="subNavProject">
-                                
+
                             </ul>
                         </li>
                         <li><a href="/info">Info</a></li>
@@ -67,7 +245,7 @@
                     <ul id="navUl__mobile">
                         <li><a href="">Home</a></li>
                         <li>
-                            <a href="/project">Project</a>
+                            <a href="/cate-project">Project</a>
                         </li>
                         <li><a href="/info">Info</a></li>
                         <li><a href="/people">People</a></li>
@@ -78,7 +256,75 @@
 
         <div class="mainContent">
             {{{body}}}
+
+
+            <section id="footer">
+                <footer>
+                    <div class="ft-inf p1">
+                        <div class="contain-logo">
+                            <img src="./img/coding.png" alt="">
+                            <h2>MURAD logo</h2>
+                        </div>
+                        <b>Lorem ipsum dolor sit amet</b>
+                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur saepe magni at nisi
+                            tempora
+                        </p>
+                    </div>
+                    <span class="border"></span>
+                    <div class="ft-inf p2">
+                        <b>Danh mục</b>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                    </div>
+                    <div class="ft-inf p2">
+                        <b>Danh mục</b>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                    </div>
+                    <div class="ft-inf p2">
+                        <b>Danh mục</b>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                        <a href="">danh mục 1</a>
+                    </div>
+                    <span class="border">
+                    </span>
+                    <div class="ft-inf p3">
+                        <b>Tìm thông tin</b>
+                        <div class="social">
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                        <form class="form-footer">
+                            <input type="text" placeholder="Tìm kiếm ở đây..." name="search">
+                            <input type="button" value="gửi">
+                        </form>
+                        <p>Thanks you</p>
+                    </div>
+                </footer>
+                <div class="conpany">
+                    <div class="author">
+                        <p>Create by @Hduong </br> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Autem,
+                            necessitatibus fugit mollitia maxime similique dignissimos praesentium atque sint illo
+                            reprehenderit
+                        </p>
+                    </div>
+                </div>
+            </section>
         </div>
+
+
     </div>
 </body>
 

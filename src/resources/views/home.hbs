@@ -94,7 +94,7 @@
                 $(".img-relative-project").html('')
                 if (data != "") {
                     data.map((item) => {
-                        linkDetail += ` <a target="_blank" href="detailproject/` + item._id + `" id="a-link-detail">Xem thêm</a>`;
+                        linkDetail += ` <a target="_blank" href="detail-cate-project/` + item.cateProject._id + `" id="a-link-detail">Xem thêm</a>`;
 
                         html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
                                     <p class="descriptProject"><strong>Mô tả dự án</strong>: `+ item.descriptionProject + `</p>
@@ -114,7 +114,7 @@
                 console.log(123);
             })
         }
-        
+
         $(".btn-right").click(function () {
             $(".inf-image-a").html('')
             $(".inf-project").html('')
@@ -135,8 +135,11 @@
                         let idNextProject = arrImage[i + 1].idImage;
                         setTimeout(function () {
                             getProjectByIdImage(idNextProject);
-                        }, 1000)
+                        }, 300)
                     } else {
+                        $('.layout').hide();
+                        $('.contain-item-image').hide()
+                        $(".layout-option").hide();
                         Swal.fire('Waiting for update !')
                     }
                 }
@@ -162,8 +165,11 @@
                         let idNextProject = arrImage[i - 1].idImage;
                         setTimeout(function () {
                             getProjectByIdImage(idNextProject);
-                        }, 1000)
+                        }, 300)
                     } else {
+                        $('.layout').hide();
+                        $('.contain-item-image').hide()
+                        $(".layout-option").hide();
                         Swal.fire('Waiting for update !')
                     }
                 }
@@ -374,7 +380,8 @@
 
 <div class="layout"
     style="position: absolute; width: 100%; height: 100%; position: fixed; top: 50%; transform: translate(-50%, -50%); left:  50%; background-color: rgb(40, 40, 40); opacity: 0.8; z-index: 99; display: none;">
-    <div class="" style="display: flex;     justify-content: center; align-items: center; width: 30px; float: right; height: 30px; border-radius: 50px; background-color: #575757; margin-top: 5px; margin-right: 5px;">
+    <div class=""
+        style="display: flex;     justify-content: center; align-items: center; width: 40px; float: right; height: 40px; border-radius: 50px; background-color: #575757; margin-top: 5px; margin-right: 5px;">
         <img src="icon-user-page/close.png" width="20px" height="20px" alt="">
     </div>
 </div>
@@ -382,11 +389,11 @@
     style="position: absolute; align-items: center; justify-content: space-between; width: 100%; height: 100px; position: fixed; top: 50%; transform: translate(-50%, -50%); left:  50%; display: none; opacity: 0.8; z-index: 99;">
     <div class="btn-route btn-left"
         style="display: flex;     justify-content: center; align-items: center; width: 30px; margin-left: 20px; cursor: pointer; border-radius: 50%; height:30px; ">
-        <img style="width: 20px; height: 20px;" src="icon-user-page/left-arrow.png" alt="">
+        <img style="width: 15px; height: 15px;" src="icon-user-page/left-arrow.png" alt="">
     </div>
     <div class="btn-route btn-right"
         style="display: flex;     justify-content: center; align-items: center; width: 30px; margin-right: 20px; height: 30px;  cursor: pointer; border-radius: 50%; ">
-        <img style="width: 20px; height: 20px;" src="icon-user-page/right-arrow.png" alt="">
+        <img style="width: 15px; height: 15px;" src="icon-user-page/right-arrow.png" alt="">
 
     </div>
 
