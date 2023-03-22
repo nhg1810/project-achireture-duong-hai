@@ -16,18 +16,19 @@
     <style>
         /* footer */
         #footer {
-            background-color: rgb(44 44 44)
-            width: 100%;
+            background-color: rgb(44 44 44) width: 100%;
             margin-top: 50px;
             height: auto;
         }
 
         footer {
-            width: 90%;
+            width: 100%;
             height: auto;
             display: flex;
             justify-content: space-evenly;
             align-items: center;
+            padding-bottom: 30px;
+
         }
 
         footer>.ft-inf {
@@ -65,14 +66,12 @@
         .contain-logo>img {
             margin: 0;
             padding: 10px;
-            background-color: rgb(235, 191, 135);
-            border-radius: 10px;
-            width: 50px;
             height: auto;
         }
 
         .contain-logo>h2 {
-            color: rgb(44, 50, 50);
+            padding-top: 14px;
+            color: rgb(87, 87, 87);
             font-weight: 500;
         }
 
@@ -80,13 +79,12 @@
             margin: 5px;
             width: 1px;
             height: 100px;
-            background-color: black;
+            background-color: rgb(68, 68, 68);
         }
 
         .p2 {
             margin: 0;
             width: 10%;
-            flex-direction: column;
             align-items: flex-start;
             padding: 20px;
 
@@ -155,7 +153,7 @@
             width: 100%;
             text-align: center;
             padding: 10px;
-            background-color: rgb(126 126 118);
+            background-color: rgb(79, 79, 79);
             height: auto;
         }
 
@@ -216,8 +214,7 @@
         <div class="header">
             <div class="mainHeader">
                 <div class="logo">
-                    
-                    <a href=""><img src="" alt="" /></a>
+                    <a href=""><img src="icon-user-page/KOMA Logo 01 - Gold Transparent.png" alt="" /></a>
                 </div>
                 <div class="nav">
                     <ul id="navUl">
@@ -262,7 +259,7 @@
                 <footer>
                     <div class="ft-inf p1">
                         <div class="contain-logo">
-                            <img src="./img/coding.png" alt="">
+                            <img src="icon-user-page/KOMA Logo 01 - Gold Transparent.png" alt="">
                             <h2>MURAD logo</h2>
                         </div>
                         <b>Lorem ipsum dolor sit amet</b>
@@ -272,45 +269,38 @@
                     </div>
                     <span class="border"></span>
                     <div class="ft-inf p2">
-                        <b>Danh mục</b>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
+                        <a href="/">Home</a>
                     </div>
                     <div class="ft-inf p2">
-                        <b>Danh mục</b>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
+                        <a href="/cate-project">Project</a>
                     </div>
                     <div class="ft-inf p2">
-                        <b>Danh mục</b>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
-                        <a href="">danh mục 1</a>
+                        <a href="/info">Info</a>
+                    </div>
+                    <div class="ft-inf p2">
+                        <a href="/people">People</a>
                     </div>
                     <span class="border">
                     </span>
                     <div class="ft-inf p3">
-                        <b>Tìm thông tin</b>
-                        <div class="social">
-                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <div class="iconMedia">
+                            <ul>
+                                <li>
+                                    <a href=""><img src="icon-user-page/icon1.png" alt="" style="width: 35px;" /></a>
+                                </li>
+                                <li>
+                                    <a href=""><img src="icon-user-page/icon2.png" alt="" style="width: 35px;" /></a>
+                                </li>
+                                <li>
+                                    <a href=""><img src="icon-user-page/icon3.png" alt="" style="width: 35px;" /></a>
+                                </li>
+                            </ul>
                         </div>
                         <form class="form-footer">
-                            <input type="text" placeholder="Tìm kiếm ở đây..." name="search">
-                            <input type="button" value="gửi">
+                            <input type="text" placeholder="Your email ..." name="search"
+                                style="border-radius: 5px;padding: 5px;">
+                            <input type="button" value="Send" style="border-radius: 5px;padding: 5px;">
                         </form>
-                        <p>Thanks you</p>
                     </div>
                 </footer>
                 <div class="conpany">
