@@ -41,7 +41,121 @@
             $(".mainContentBanner-p p").html(data[0].nameProject)
             $(".mainContentBanner-img img").attr('src', data[0].imageBanner);
             console.log(data);
+        }).then(() => {
+                $(".gallery").click(function () {
+                    $(".layout").css('display', 'block')
+                    $(".layout-option").css('display', 'flex')
+                    $(".contain-item-image").css('display', 'flex')
+                    let idImage = $(this).attr('data-id-image');
+                    let zIndex = $(this).attr('z-index');
+                    $(".image-detail").attr('src', `https://drive.google.com/uc?id=` + idImage + ``);
+                    $(".image-detail").attr('z-index', zIndex);
+
+
+                    getProjectByIdImage(idImage);
+                })
+            })
+        $(".layout").click(function () {
+            $(this).hide();
+            $('.contain-item-image').hide()
+            $(".layout-option").hide();
         })
+        function getProjectByIdImage(idImage) {
+            $(".lds-ellipsis").hide(500);
+            $(".image-detail").attr('src', `https://drive.google.com/uc?id=` + idImage + ``);
+            $.ajax({
+                url: '/findProjectByName',
+                type: 'POST',
+                data: { idImage: idImage },
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                console.log(data);
+                $(".inf-project").html('')
+                $(".img-relative-project").html('')
+                let html = '';
+                let arr_img = '';
+                let linkDetail = '';
+                $(".inf-image-a").html('')
+                $(".inf-project").html('')
+                $(".img-relative-project").html('')
+                if (data != "") {
+                    data.map((item) => {
+                        linkDetail += ` <a target="_blank" href="detailproject/` + item._id + `" id="a-link-detail">Xem thêm</a>`;
+
+                        html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
+                                    <p class="descriptProject"><strong>Mô tả dự án</strong>: `+ item.descriptionProject + `</p>
+                                    <p class="cateProject"><strong>Dự án này thuộc danh mục</strong>: `+ item.cateProject.nameProject + `</p>
+                                <p class="descriptCateProject"><strong>Mô tả danh mục này</strong>: `+ item.cateProject.descriptionProject + `</p>`;
+
+                        for (let i = 0; i < item.imageProject.length; i++) {
+                            arr_img += `<img src="` + item.imageProject[i].urlImage + `"/>`;
+                        }
+                    })
+                } else {
+                    html = ` <p class="nameProject">Dự án này chưa được công bố chi tiết</p>`;
+                }
+                $(".inf-image-a").html(linkDetail)
+                $(".inf-project").html(html)
+                $(".img-relative-project").html(arr_img)
+                console.log(123);
+            })
+        }
+        $(".btn-right").click(function () {
+            $(".inf-image-a").html('')
+            $(".inf-project").html('')
+            $(".img-relative-project").html('')
+            $(".image-detail").attr('src', '');
+            $(".lds-ellipsis").css('display', 'inline-block')
+
+            let zIndex = $(".image-detail").attr('z-index');
+            console.log(arrImage);
+            let index = arrImage.findIndex(object => {
+                return object.zIndex === zIndex;
+            });
+            for (let i = 0; i < arrImage.length; i++) {
+                if (zIndex == arrImage[i].zIndex) {
+
+                    if (arrImage[i + 1]) {
+                        $(".image-detail").attr('z-index', arrImage[i + 1].zIndex);
+                        let idNextProject = arrImage[i + 1].idImage;
+                        setTimeout(function () {
+                            getProjectByIdImage(idNextProject);
+                        }, 1000)
+                    } else {
+                        Swal.fire('Waiting for update !')
+                    }
+                }
+            }
+        })
+
+        $(".btn-left").click(function () {
+            let zIndex = $(".image-detail").attr('z-index');
+            $(".inf-image-a").html('')
+            $(".inf-project").html('')
+            $(".img-relative-project").html('')
+            $(".image-detail").attr('src', '');
+            $(".lds-ellipsis").css('display', 'inline-block')
+
+            console.log(arrImage);
+            let index = arrImage.findIndex(object => {
+                return object.zIndex === zIndex;
+            });
+            for (let i = 0; i < arrImage.length; i++) {
+                if (zIndex == arrImage[i].zIndex) {
+                    if (arrImage[i - 1]) {
+                        $(".image-detail").attr('z-index', arrImage[i - 1].zIndex);
+                        let idNextProject = arrImage[i - 1].idImage;
+                        setTimeout(function () {
+                            getProjectByIdImage(idNextProject);
+                        }, 1000)
+                    } else {
+                        Swal.fire('Waiting for update !')
+                    }
+                }
+            }
+        })
+
     })
 </script>
 <style>
@@ -117,16 +231,261 @@
         height: 100%;
         object-fit: cover;
     }
-     @media (max-width:1263px) {
-        .gallery{
+
+    @media (max-width:1263px) {
+        .gallery {
             display: block;
             padding: 0 10px;
         }
-        .gallery .item{
+
+        .gallery .item {
             padding-bottom: 10px;
         }
     }
+
+    /*layout*/
+    .btn-route {
+        background-color: rgb(133, 132, 132);
+    }
+
+    .btn-route:hover {
+        background-color: aliceblue;
+    }
+
+    .lds-ellipsis {
+        margin: auto;
+        display: none;
+        position: relative;
+        width: 80px;
+        height: 80px;
+    }
+
+    .lds-ellipsis div {
+        position: absolute;
+        top: 33px;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: #fff;
+        animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+
+    .lds-ellipsis div:nth-child(1) {
+        left: 8px;
+        animation: lds-ellipsis1 0.6s infinite;
+    }
+
+    .lds-ellipsis div:nth-child(2) {
+        left: 8px;
+        animation: lds-ellipsis2 0.6s infinite;
+    }
+
+    .lds-ellipsis div:nth-child(3) {
+        left: 32px;
+        animation: lds-ellipsis2 0.6s infinite;
+    }
+
+    .lds-ellipsis div:nth-child(4) {
+        left: 56px;
+        animation: lds-ellipsis3 0.6s infinite;
+    }
+
+    @keyframes lds-ellipsis1 {
+        0% {
+            transform: scale(0);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    @keyframes lds-ellipsis3 {
+        0% {
+            transform: scale(1);
+        }
+
+        100% {
+            transform: scale(0);
+        }
+    }
+
+    @keyframes lds-ellipsis2 {
+        0% {
+            transform: translate(0, 0);
+        }
+
+        100% {
+            transform: translate(24px, 0);
+        }
+    }
+
+    /*chưa làm responesive*/
+
+    .inf-project>p {
+        margin: 0 30px;
+    }
+
+    .inf-project>.nameProject {
+        margin-top: 20px;
+        font-size: 25px;
+        color: #bab6af;
+        font-weight: 800;
+
+    }
+
+    .inf-project>.descriptProject {
+        padding-top: 10px;
+        font-size: 15px;
+        color: #bab6af
+    }
+
+    .inf-project>.cateProject,
+    .descriptCateProject {
+        padding-top: 10px;
+        font-size: 15px;
+        color: #bab6af
+    }
+
+    .img-relative-project {
+        width: 100%;
+    }
+
+    .img-relative-project>img {
+        object-fit: cover;
+        width: 100%;
+        height: auto;
+    }
+
+    .contain-item-image {
+        width: 80%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #474747;
+        position: fixed;
+        z-index: 100;
+        left: 50%;
+        top: 50%;
+        display: none;
+        transform: translate(-50%, -50%);
+        flex-wrap: wrap;
+        align-items: center;
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        /* cho Internet Explorer, Edge */
+        scrollbar-width: none;
+        /* cho Firefox */
+        overflow-y: scroll;
+    }
+
+    .contain-item-image::-webkit-scrollbar {
+        display: none;
+        /* cho Chrome, Safari, and Opera */
+    }
+
+    .contain-item-image>.contain-image {
+        width: 100%;
+        min-height: 500px;
+        position: relative;
+        padding-bottom: 2px;
+        overflow: hidden;
+    }
+
+    .contain-item-image>.inf-image {
+        width: 100%;
+        background-color: #474747;
+        margin-bottom: 16px;
+    }
+
+    .contain-item-image>.contain-image>img {
+        object-fit: cover;
+        width: 100%;
+        height: auto;
+    }
+
+    .inf-image-a,
+    .inf-image-describe,
+    .inf-image-title {
+        margin: 15px 0 0 15px;
+    }
+
+    .inf-image-describe>p {
+        font-size: 17px;
+        color: #bab6af
+    }
+
+    .inf-image-title>p {
+        font-size: 30px;
+        color: #bab6af
+    }
+
+    .inf-image-a>a {
+        text-decoration: none;
+        color: #bab6af;
+        float: left;
+        padding-left: 15px;
+        font-size: 17px;
+    }
+
+    .inf-image-a>a:hover {
+        transition: 0.4s ease-in-out;
+        color: #f1f1f1;
+    }
+
+    .inf-image-logo {
+        width: 100%;
+    }
+
+    .inf-image-logo>img {
+        width: 100%;
+
+    }
 </style>
+<div class="layout"
+    style="position: absolute; width: 100%; height: 100%; position: fixed; top: 50%; transform: translate(-50%, -50%); left:  50%; background-color: rgb(40, 40, 40); opacity: 0.8; z-index: 99; display: none;">
+    <div class=""
+        style="display: flex;     justify-content: center; align-items: center; width: 30px; float: right; height: 30px; border-radius: 50px; background-color: #575757; margin-top: 5px; margin-right: 5px;">
+        <img src="icon-user-page/close.png" width="20px" height="20px" alt="">
+    </div>
+</div>
+<div class="layout-option"
+    style="position: absolute; align-items: center; justify-content: space-between; width: 100%; height: 100px; position: fixed; top: 50%; transform: translate(-50%, -50%); left:  50%; display: none; opacity: 0.8; z-index: 99;">
+    <div class="btn-route btn-left"
+        style="display: flex;     justify-content: center; align-items: center; width: 30px; margin-left: 20px; cursor: pointer; border-radius: 50%; height:30px; ">
+        <img style="width: 20px; height: 20px;" src="icon-user-page/left-arrow.png" alt="">
+    </div>
+    <div class="btn-route btn-right"
+        style="display: flex;     justify-content: center; align-items: center; width: 30px; margin-right: 20px; height: 30px;  cursor: pointer; border-radius: 50%; ">
+        <img style="width: 20px; height: 20px;" src="icon-user-page/right-arrow.png" alt="">
+
+    </div>
+
+</div>
+<div class="contain-item-image">
+    <div class="banner_image">
+        <img src="icon-user-page/439862103611663.611e372feff4d.png" style="width: 100%;" alt="">
+    </div>
+    <div class="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="inf-image">
+        <div class="inf-project">
+        </div>
+
+        {{!-- 1 chuỗi các ảnh --}}
+        <div class="inf-image-a">
+            {{!-- xem dự án cùng loại --}}
+        </div>
+    </div>
+    <div class="contain-image">
+        <div class="img-relative-project">
+        </div>
+        <img src="" alt="" class="image-detail">
+    </div>
+</div>
 <div class="mainContentBanner">
     <div class="mainContentBanner-p">
         <p>Beach Villa</p>
