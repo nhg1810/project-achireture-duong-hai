@@ -50,7 +50,7 @@
             encode: true,
         }).done(function (data) {
             let html = "";
-            $(".mainContentBanner-p p").html(data[0].nameProject)
+            $(".mainContentBanner-p h1").html(data[0].nameProject)
             $(".mainContentBanner-img img").attr('src', data[0].imageBanner);
         })
         $(".layout").click(function () {
@@ -187,8 +187,7 @@
         z-index: 2;
     }
 
-    .mainContentBanner .mainContentBanner-p>p {
-        font-size: 75px;
+    .mainContentBanner .mainContentBanner-p>h1 {
         color: #fff;
     }
 
@@ -224,6 +223,9 @@
 
         .gallery .item {
             padding-bottom: 10px;
+        }
+        .mainContentBanner-img{
+            min-height: 300px;
         }
     }
 
@@ -473,7 +475,7 @@
 </div>
 <div class="mainContentBanner">
     <div class="mainContentBanner-p">
-        <p>Beach Villa</p>
+        <h1>Beach Villa</h1>
     </div>
     <div class="mainContentBanner-img">
         <img src="../img/329562800_1504790936711340_5378388942636186252_n.jpg" alt="">

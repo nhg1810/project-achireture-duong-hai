@@ -17,8 +17,8 @@
             $(".textContent").html(infCompany.description)
             $(".img-review-company").attr('src', infCompany.imageReview)
             $(".email a").html('Email: ' + infCompany.emailCompany)
-            $(".Address a").html('Address: '+ infCompany.addressCompany)
-            $(".phoneNumber a").html('Phone: '+infCompany.phoneCompany)
+            $(".Address a").html('Address: ' + infCompany.addressCompany)
+            $(".phoneNumber a").html('Phone: ' + infCompany.phoneCompany)
             $(".logo-company").attr('src', infCompany.logoCompany)
         })
     })
@@ -91,6 +91,16 @@
     .mainContentMedia {
         padding-bottom: 50px;
     }
+
+    @media(max-width:1263px) {
+
+        .mainContentMedia,
+        .mainContentContact,
+        .mainContentAbout {
+            width: 100%;
+            padding-left: 10px;
+        }
+    }
 </style>
 <div class="mainContentAbout">
     <div class="textTitle">
@@ -104,7 +114,6 @@
             Loading
         </p>
     </div>
-    <img class="img-review-company" style="width: 70%; background-color: #949494; min-height: 300px; margin-top: 30px" src="" alt="Loading">
     <div class="hr">
         <hr size="0.7px" />
     </div>
