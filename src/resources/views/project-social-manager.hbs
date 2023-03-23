@@ -11,6 +11,8 @@
                 dataType: "json",
                 encode: true,
             }).done(function (data) {
+                let urlLogo = data[0].logo;
+                console.log(urlLogo)
                 let infSocialMedia = data[0].socialMedia;
                 console.log(infSocialMedia)
                 $(".link-fb").val(infSocialMedia.facebook);
@@ -20,6 +22,7 @@
                 $(".inf-email").val(infSocialMedia.email);
                 $(".inf-phone").val(infSocialMedia.phone);
                 $(".inf-sologan").val(infSocialMedia.sologanComoany);
+                $(".img-logo").attr('src', data[0].logo)
             })
         }
 
@@ -75,6 +78,20 @@
                         })
                     }
                 })
+            }
+        })
+
+        $(".btn-update-logo").click(function () {
+            let logo = $(".file-upload-logo").val()
+            if (logo == "") {
+
+                Swal.fire(
+                    'Chưa có sự thay đổi?',
+                    'Kiểm tra lại coi đã chọn logo mới chưa?',
+                    'question'
+                )
+            } else {
+                $("#form-upload-logo").submit();
             }
         })
     })
@@ -158,6 +175,33 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-success btn-save-inf-social">Cập nhật</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Cập nhật logo</h4>
+            <p class="card-description">
+                Logo công ty trên trang web
+            </p>
+            <form class="forms-sample" action="update-logo" enctype="multipart/form-data" id="form-upload-logo"
+                method="POST">
+                <div class="form-group">
+                    <label for="exampleInputName1">Logo hiện tại</label>
+                    <img src="" id="img-logo" class="img-logo" style="width: 80px; height: auto;" alt="">
+                </div>
+                <div class="form-group">
+                    <label>Upload logo</label>
+                    <div class="input-group col-xs-12">
+                        <input type="file" class="form-control file-upload-logo" name="logo-update"
+                            placeholder="Upload Image"
+                            onchange="document.getElementById('img-logo').src = window.URL.createObjectURL(this.files[0])" />
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary me-2 btn-update-logo">Cập nhật</button>
             </form>
         </div>
     </div>

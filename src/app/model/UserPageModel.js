@@ -35,6 +35,9 @@ const UserPage = new Schema({
         email: { type: String },
         phone: { type: String },
         sologanComoany: { type: String }
+    },
+    logo: {
+        type: String
     }
 })
 module.exports = mongoose.model('UserPage', UserPage)

@@ -4,6 +4,8 @@ const multer = require("multer");
 const process = require('process');
 const upload = multer({ dest: `${process.cwd()}` + `/src/public/img-personal` });
 const uploadBannerCate = multer({ dest: `${process.cwd()}` + `/src/public/banner-cate` });
+const uploadLogo = multer({ dest: `${process.cwd()}` + `/src/public/logo-company` });
+
 
 
 router.get('/project-manager', AdminController.projectManager);
@@ -11,7 +13,7 @@ router.get('/project-personnel-manager', AdminController.projectPersonnelManager
 router.get('/project-photo-manager', AdminController.projectPhotoManager);
 router.get('/mana-inf-home-user', AdminController.manaInfHomeUser);
 router.get('/infor-company', AdminController.inforCompany)
-router.get('/infor-project',AdminController.inforProject);
+router.get('/infor-project', AdminController.inforProject);
 
 //api data
 router.post('/store-category-project', AdminController.createCategoryProject)
@@ -26,7 +28,7 @@ router.get('/get-all-project', AdminController.getAllProject);
 router.get('/get-all-cate-project', AdminController.getAllCateProject);
 router.post('/get-project-by-name', AdminController.getProjectByName);
 router.post('/get-cate-project-by-name-cate', AdminController.getCateProjectByName);
-router.get('/inf-social',AdminController.socialMediaInf);
+router.get('/inf-social', AdminController.socialMediaInf);
 
 router.post('/get-project-by-id-cate', AdminController.getProjectByCate);
 router.post('/bulk-upload-design', AdminController.bulkUploadDesign);
@@ -51,17 +53,20 @@ router.post('/delete-personal', AdminController.delPersonalById);
 //get personal by roles
 router.post('/getPersonalByRole', AdminController.getPersonalByRule);
 //update banner cate
-router.post('/edit-banner-cate',uploadBannerCate.single("banner-cate-project"), AdminController.editBannerCate);
+router.post('/edit-banner-cate', uploadBannerCate.single("banner-cate-project"), AdminController.editBannerCate);
 //edit personal by roles(img avata update)
 router.post('/edit-personal-by-id', upload.single("vl_edit_avata"), AdminController.editPersonalById);
 //edit personal by roles(no img)
-router.post('/edit-personal-by-id-no-image',upload.none(), AdminController.editPersonalByIdNoAvata);
+router.post('/edit-personal-by-id-no-image', upload.none(), AdminController.editPersonalByIdNoAvata);
 //get all information of user page
 router.get('/all-inf-user-page', AdminController.getAllInformationUserPage);
 //update inf home page use
 router.post('/update-inf-home-page', AdminController.updateInfHomePge);
+//update logo
+router.post('/update-logo', uploadLogo.single('logo-update'), AdminController.updateLogo);
 // router.get('/create-inf', AdminController.createInf);
 router.get('/', AdminController.projectManager);
+
 
 
 

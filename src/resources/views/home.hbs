@@ -10,6 +10,23 @@
 
 <script>
     $(document).ready(function () {
+        //get all inf usser page
+        $.ajax({
+            url: '/get-all-inf-user-page',
+            type: 'GET',
+            dataType: "json",
+            encode: true,
+        }).done(function (data) {
+            let social = data[0].socialMedia;
+            let logo = data[0].logo;
+            $(".logo-img").attr('src', logo)
+            $(".link-bh").attr('href', social.behance)
+            $(".link-ins").attr('href', social.instagram)
+            $(".link-ytb").attr('href', social.youtube)
+            $(".inf-email").html('Email: ' + social.email)
+            $(".inf-sologan").html(social.sologanComoany)
+        })
+
         var arrImage = [];
         console.log(1);
         fetch("/get-all-inf-user-page").then(res => { return res.json() })
@@ -442,13 +459,14 @@
         <div class="iconMedia">
             <ul>
                 <li>
-                    <a href=""><img src="icon-user-page/icon1.png" alt="" /></a>
+                    <a class="link-bh" href="" class=""><img src="icon-user-page/icon1.png" alt=""
+                            style="width: 35px;" /></a>
                 </li>
                 <li>
-                    <a href=""><img src="icon-user-page/icon2.png" alt="" /></a>
+                    <a class="link-ins" href=""><img src="icon-user-page/icon2.png" alt="" style="width: 35px;" /></a>
                 </li>
                 <li>
-                    <a href=""><img src="icon-user-page/icon3.png" alt="" /></a>
+                    <a class="link-ytb" href=""><img src="icon-user-page/icon3.png" alt="" style="width: 35px;" /></a>
                 </li>
             </ul>
             <div class="hr">
