@@ -1,0 +1,164 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{!-- sweet alert --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        getInfSocial();
+        function getInfSocial() {
+            $.ajax({
+                url: 'all-inf-user-page',
+                type: 'GET',
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                let infSocialMedia = data[0].socialMedia;
+                console.log(infSocialMedia)
+                $(".link-fb").val(infSocialMedia.facebook);
+                $(".link-ytb").val(infSocialMedia.youtube);
+                $(".link-bh").val(infSocialMedia.behance);
+                $(".link-ins").val(infSocialMedia.instagram);
+                $(".inf-email").val(infSocialMedia.email);
+                $(".inf-phone").val(infSocialMedia.phone);
+                $(".inf-sologan").val(infSocialMedia.sologanComoany);
+            })
+        }
+
+
+        $(".btn-save-inf-social").click(function () {
+            let vlLinkFb = $(".link-fb").val();
+            let vlLinkYtb = $(".link-ytb").val();
+            let vlLinkBh = $(".link-bh").val();
+            let vlLinkIns = $(".link-ins").val();
+            let vlInfEmail = $(".inf-email").val();
+            let vlInfPhone = $(".inf-phone").val();
+            let vlInfSologan = $(".inf-sologan").val();
+            if (vlLinkFb == "" || vlLinkYtb == "" || vlLinkBh == "" || vlLinkIns == "" || vlInfEmail == "" ||
+                vlInfPhone == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Thông tin trong bảng có thể đang trống vui lòng kiểm tra lại!',
+                })
+            } else {
+                let formData = new FormData();
+
+                formData = {
+                    _id: '63fee9a39ddfe2c3942acb63',
+                    obj: {
+                        socialMedia: {
+                            facebook: vlLinkFb,
+                            youtube: vlLinkYtb,
+                            behance: vlLinkBh,
+                            instagram: vlLinkIns,
+                            email: vlInfEmail,
+                            phone: vlInfPhone,
+                            sologanComoany: vlInfSologan,
+                        }
+                    }
+                }
+                console.log(FormData)
+                $.ajax({
+                    url: 'update-inf-home-page',
+                    type: 'POST',
+                    data: formData,
+                    dataType: "json",
+                    encode: true,
+                }).done(function (data) {
+                    if (data == 'success') {
+                        getInfSocial();
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Cập nhật thành công !',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                })
+            }
+        })
+    })
+</script>
+
+<div class="col-12 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Quản lí đường dẫn các social Media</h4>
+            <form class="form-sample">
+                <p class="card-description">
+                    Đường dẫn này liên kết tới các Fanpage
+                </p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Page Facebook</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control link-fb" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Link Youtube</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control link-ytb" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <p class="card-description">
+                    Các thông tin khác
+                </p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Link Behance</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control link-bh" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Link Instagram</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control link-ins" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Email</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control inf-email" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Sologan</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control inf-sologan" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Số điện thoại</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control inf-phone" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-success btn-save-inf-social">Cập nhật</button>
+            </form>
+        </div>
+    </div>
+</div>

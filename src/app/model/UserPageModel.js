@@ -26,6 +26,15 @@ const UserPage = new Schema({
     project: {
         title: { type: String },
         content: { type: String }
+    },
+    socialMedia: {
+        facebook: { type: String },
+        youtube: { type: String },
+        behance: { type: String },
+        instagram: { type: String },
+        email: { type: String },
+        phone: { type: String },
+        sologanComoany: { type: String }
     }
 })
 module.exports = mongoose.model('UserPage', UserPage)

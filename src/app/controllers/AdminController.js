@@ -490,5 +490,8 @@ class AdminController {
             })
 
     }
+    async socialMediaInf(request, response, next) {
+        response.render('project-social-manager');
+    }
 }
 module.exports = new AdminController;

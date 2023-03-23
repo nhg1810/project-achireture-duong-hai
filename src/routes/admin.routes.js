@@ -26,6 +26,7 @@ router.get('/get-all-project', AdminController.getAllProject);
 router.get('/get-all-cate-project', AdminController.getAllCateProject);
 router.post('/get-project-by-name', AdminController.getProjectByName);
 router.post('/get-cate-project-by-name-cate', AdminController.getCateProjectByName);
+router.get('/inf-social',AdminController.socialMediaInf);
 
 router.post('/get-project-by-id-cate', AdminController.getProjectByCate);
 router.post('/bulk-upload-design', AdminController.bulkUploadDesign);
@@ -61,6 +62,7 @@ router.get('/all-inf-user-page', AdminController.getAllInformationUserPage);
 router.post('/update-inf-home-page', AdminController.updateInfHomePge);
 // router.get('/create-inf', AdminController.createInf);
 router.get('/', AdminController.projectManager);
+
 
 
 
