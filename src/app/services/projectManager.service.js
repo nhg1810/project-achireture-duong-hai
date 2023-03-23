@@ -220,6 +220,19 @@ class ProjectManagerService {
             return 'error';
         }
     }
+    //update inf home page by id and obj
+    async updateInfHomePageById(id, obj) {
+        try {
+            let data = await curdHelper.update({
+                model: 'userPage',
+                id: id,
+                obj: obj
+            });
+            return data;
+        } catch (error) {
+            return error;
+        }
+    }
 
     async upLoadFileDrive(namePhoto) {
         try {

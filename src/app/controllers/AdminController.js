@@ -490,5 +490,32 @@ class AdminController {
             })
 
     }
+    async socialMediaInf(request, response, next) {
+        response.render('project-social-manager');
+    }
+    async updateLogo(request, response, next) {
+        sharp(request.file.path)
+            .webp()
+            .toFile(`${process.cwd()}` + `/src/public/logo-company/` + request.file.filename + '.webp')
+            .then(async (data) => {
+                if (data) {
+                    let id = '63fee9a39ddfe2c3942acb63';
+                    let obj = {
+                        logo: `logo-company/` + request.file.filename + '.webp'
+
+                    };
+                    //save in db
+                    const res = await projectManagerService.updateInfHomePageById(id, obj);
+                    if (res == 'success') {
+                        response.redirect('/admin/inf-social');
+                    } else {
+                        console.log('res', res);
+                    }
+                }
+            })
+            .catch(function (err) {
+                console.log(err)
+            })
+    }
 }
 module.exports = new AdminController;

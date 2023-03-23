@@ -194,13 +194,16 @@
             .contain-logo {
                 display: block;
             }
-            footer{
+
+            footer {
                 display: block;
             }
-            footer>.ft-inf{
+
+            footer>.ft-inf {
                 width: 100%;
             }
-            .p1{
+
+            .p1 {
                 padding-left: 10px;
             }
         }
@@ -213,7 +216,6 @@
                 dataType: "json",
                 encode: true,
             }).done(function (data) {
-                console.log(data);
                 let html = "";
                 data.map((item) => {
                     html += ` <a href="/detail-cate-project/` + item._id + `">
@@ -222,6 +224,24 @@
                 })
                 $("#subNavProject").html(html);
             })
+
+            //get all inf usser page
+            $.ajax({
+                url: '/get-all-inf-user-page',
+                type: 'GET',
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                let social = data[0].socialMedia;
+                let logo = data[0].logo;
+                $(".logo-img").attr('src', logo)
+                $(".link-bh").attr('href', social.behance)
+                $(".link-ins").attr('href', social.instagram)
+                $(".link-ytb").attr('href', social.youtube)
+                $(".inf-email").html('Email: '+social.email)
+                $(".inf-sologan").html(social.sologanComoany)
+            })
+
         })
     </script>
 </head>
@@ -276,11 +296,11 @@
                 <footer>
                     <div class="ft-inf p1">
                         <div class="contain-logo">
-                            <img src="icon-user-page/KOMA Logo 01 - Gold Transparent.png" alt="">
-                            <h2>MURAD logo</h2>
+                            <img class ="logo-img" style="width: 70px;" src="" alt="">
+                            <h2>Logo Company</h2>
                         </div>
-                        <b>Lorem ipsum dolor sit amet</b>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur saepe magni at nisi
+                        <b class="inf-email">Email:  ipsum dolor sit amet</b>
+                        <p class="inf-sologan">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur saepe magni at nisi
                             tempora
                         </p>
                     </div>
@@ -303,13 +323,13 @@
                         <div class="iconMedia">
                             <ul>
                                 <li>
-                                    <a href=""><img src="icon-user-page/icon1.png" alt="" style="width: 35px;" /></a>
+                                    <a class="link-bh" href="" class=""><img src="icon-user-page/icon1.png" alt="" style="width: 35px;" /></a>
                                 </li>
                                 <li>
-                                    <a href=""><img src="icon-user-page/icon2.png" alt="" style="width: 35px;" /></a>
+                                    <a class="link-ins" href=""><img src="icon-user-page/icon2.png" alt="" style="width: 35px;" /></a>
                                 </li>
                                 <li>
-                                    <a href=""><img src="icon-user-page/icon3.png" alt="" style="width: 35px;" /></a>
+                                    <a class="link-ytb" href=""><img src="icon-user-page/icon3.png" alt="" style="width: 35px;" /></a>
                                 </li>
                             </ul>
                         </div>
