@@ -57,6 +57,10 @@
     color: rgb(107, 106, 104);
     transition: .6s;
   }
+  .categoryItem a{
+    text-decoration: none;
+    color: #bab6af;
+  }
 
   @media (max-width:1263px) {
 
@@ -124,12 +128,12 @@
           $(".mainContentCategories").append(`<div class="categoryItem ">
     <div class="categoryItemImage ">
 
-      <img src="`+ item.imageBanner + `" alt="" />
+      <a href="/detail-cate-project/`+ item._id + `"> <img src="` + item.imageBanner + `" alt="" /></a>
 
     </div>
     <div class="categoryItemText">
       <div class="categoryItemText-1">
-        <p>`+ item.nameProject + `</p>
+        <a href="/detail-cate-project/`+ item._id + `"><p>` + item.nameProject + `</p></a>
       </div>
       <div class="categoryItemText-2">
         <p>`+ item.descriptionProject + `</p>
@@ -143,7 +147,7 @@
           $(".mainContentCategories").append(` <div class="categoryItem">
     <div class="categoryItemText">
       <div class="categoryItemText-1">
-        <p>Beach Villa</p>
+        <a href="/detail-cate-project/`+ item._id + `"><p>` + item.nameProject + `</p></a>
       </div>
       <div class="categoryItemText-2">
         <p>`+ item.descriptionProject + `</p>
@@ -154,7 +158,7 @@
     </div>
 
     <div class="categoryItemImage ">
-      <img src="`+ item.imageBanner + `" alt="" />
+      <a href="/detail-cate-project/`+ item._id + `"> <img src="` + item.imageBanner + `" alt="" /></a>
     </div>
   </div>`);
         }
