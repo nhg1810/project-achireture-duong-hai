@@ -80,6 +80,9 @@
                     let zIndex = $(this).attr('z-index');
                     $(".image-detail").attr('src', `https://drive.google.com/uc?id=` + idImage + ``);
                     $(".image-detail").attr('z-index', zIndex);
+                    $("body").css({
+                      'height': '100%', 'overflow': 'hidden'
+                    })
 
 
                     getProjectByIdImage(idImage);
@@ -89,6 +92,9 @@
             $(this).hide();
             $('.contain-item-image').hide()
             $(".layout-option").hide();
+            $("body").css({
+                'height': '100%', 'overflow': 'auto'
+            })
         })
         function getProjectByIdImage(idImage) {
             $(".lds-ellipsis").hide(500);
@@ -119,7 +125,7 @@
                                 <p class="descriptCateProject"><strong>Mô tả danh mục này</strong>: `+ item.cateProject.descriptionProject + `</p>`;
 
                         for (let i = 0; i < item.imageProject.length; i++) {
-                            arr_img += `<img src="` + item.imageProject[i].urlImage + `"/>`;
+                            arr_img += `<img data-sizes="auto" class="lazyload" data-src="` + item.imageProject[i].urlImage + `"/>`;
                         }
                     })
                 } else {

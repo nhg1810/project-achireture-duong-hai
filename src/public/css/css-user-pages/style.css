@@ -29,6 +29,7 @@ body {
 
 /* HEADER */
 .header {
+
     width: 100%;
     position: fixed;
     z-index: 100;
@@ -44,10 +45,12 @@ body {
     width: 1200px;
     display: flex;
     margin: 0 auto;
+    align-items: center;
 }
 
 .logo {
     width: 10%;
+    display: flex;
 }
 
 .logo img {
@@ -57,19 +60,23 @@ body {
 
 .nav {
     width: 90%;
+    height: 100%;
 }
 
 .nav #navUl {
     display: flex;
     list-style: none;
+    align-items: center;
+    justify-content: space-evenly;
     height: 100%;
 }
 
 .nav>ul>li {
-    padding-top: 10px;
     margin-left: 21.2%;
     position: relative;
     height: 32px;
+    text-align: center;
+    line-height: 32px;
 }
 
 #navUl>li>a:hover {
@@ -304,9 +311,7 @@ body {
     border-radius: 5px;
 }
 @media (max-width:1263px) {
-    .header{
-        padding-top: 20px;
-    }
+    
     .nav {
         display: none;
     }
