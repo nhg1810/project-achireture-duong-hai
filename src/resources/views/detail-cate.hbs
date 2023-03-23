@@ -2,6 +2,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 {{!-- sweet alert --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.0/lazysizes.min.js" async=""></script>
 <script>
     $(document).ready(function () {
         let idCate = "{{data}}";
@@ -25,7 +28,7 @@
                 data.map((item) => {
                     html += `
                   <div class="item" data-id-project="`+ item._id + `">
-                        <img src="`+ item.imageProject[0].urlImage + `" alt="">
+                        <img data-sizes="auto" class="lazyload" data-src="`+ item.imageProject[0].urlImage + `" alt="">
                     </div>`;
                 })
             }
@@ -36,6 +39,9 @@
                 $(".contain-item-image").css('display', 'flex')
                 let idProject = $(this).attr('data-id-project');
                 $(".vl-id-detail-project").val(idProject)
+                $("body").css({
+                    'height': '100%', 'overflow': 'hidden'
+                })
                 getProjectByIdProject(idProject);
             })
 
@@ -57,6 +63,9 @@
             $(this).hide();
             $('.contain-item-image').hide()
             $(".layout-option").hide();
+            $("body").css({
+                'height': '100%', 'overflow': 'auto'
+            })
         })
 
         function getProjectByIdProject(idProject) {
@@ -112,7 +121,7 @@
                     } else {
                         $('.contain-item-image').hide()
                         $(".layout-option").hide();
-                         $(".layout").hide()
+                        $(".layout").hide()
                     }
                 }
             }
@@ -133,7 +142,7 @@
                     } else {
                         $('.contain-item-image').hide()
                         $(".layout-option").hide();
-                         $(".layout").hide()
+                        $(".layout").hide()
                     }
                 }
             }
@@ -224,7 +233,8 @@
         .gallery .item {
             padding-bottom: 10px;
         }
-        .mainContentBanner-img{
+
+        .mainContentBanner-img {
             min-height: 300px;
         }
     }
