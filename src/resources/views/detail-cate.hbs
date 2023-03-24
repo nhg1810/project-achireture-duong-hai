@@ -9,6 +9,7 @@
     $(document).ready(function () {
         let idCate = "{{data}}";
         var arrProject = [];
+        var arrDetailImage = []
         $.ajax({
             url: '/getProjectByCate',
             type: 'POST',
@@ -63,6 +64,9 @@
             $(this).hide();
             $('.contain-item-image').hide()
             $(".layout-option").hide();
+            $(".layout-option-detail-image").hide();
+            $(".contain-all-image-of-deisgn").hide();
+            $(".contain-detail-image").hide();
             $("body").css({
                 'height': '100%', 'overflow': 'auto'
             })
@@ -86,8 +90,11 @@
                 $(".inf-project").html('')
                 $(".img-relative-project").html('')
                 console.log('detail', data);
+                let html_gallery = '';
+
                 if (data != "") {
                     data.map((item) => {
+                        arrDetailImage = item.imageProject;
 
                         html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
                                     <p class="descriptProject"><strong>Mô tả dự án</strong>: `+ item.descriptionProject + `</p>
@@ -95,14 +102,42 @@
                                 <p class="descriptCateProject"><strong>Mô tả danh mục này</strong>: `+ item.cateProject.descriptionProject + `</p>`;
 
                         for (let i = 0; i < item.imageProject.length; i++) {
-                            arr_img += `<img src="` + item.imageProject[i].urlImage + `"/>`;
+                            arr_img += `<img  data-sizes="auto" class="lazyload image-detail-project" data-id ='` + item.imageProject[i].idImage + `' data-src="` + item.imageProject[i].urlImage + `"/>`;
                         }
                     })
                 } else {
                     html = ` <p class="nameProject">Dự án này chưa được công bố chi tiết</p>`;
                 }
+
+                arrDetailImage.map((item) => {
+                    html_gallery += ` <a href="javascript: value(0)" data-id-image = '` + item.idImage + `' class="item-gallery">
+                                <img src="https://drive.google.com/uc?id=` + item.idImage + `" alt="">
+                            </a>`;
+                })
+                $(".contain-all-image-of-deisgn").html(html_gallery);
+                $(".item-gallery").click(function () {
+                    let idItem = $(this).attr('data-id-image');
+                    let html_item_gallery = `<img class="dt-image" src = 'https://drive.google.com/uc?id=` + idItem + `' idImage = '` + idItem + `'style="width: auto; height: 100%; margin: auto; padding-top: 5px; padding-bottom: 5px"/>`;
+                    console.log(html_item_gallery);
+                    $(".contain-detail-image").html(html_item_gallery);
+                })
+
                 $(".inf-project").html(html)
                 $(".img-relative-project").html(arr_img)
+
+                $(".image-detail-project").click(function () {
+                    let idImage = $(this).attr('data-id');
+                    $("#id-detail-image").attr('data-id-image', idImage)
+                    let html = `<img class="dt-image"  src = 'https://drive.google.com/uc?id=` + idImage + `' idImage = '` + idImage + `'style="width: auto; height: 100%; margin: auto; padding-top: 5px; padding-bottom: 5px"/>`
+                    $(".contain-item-image").hide();
+                    $(".contain-detail-image").show();
+                    $(".contain-detail-image").html(html);
+                    $(".layout-option").hide()
+                    $(".layout-option-detail-image").css('display', 'flex');
+                    $(".contain-all-image-of-deisgn").css('display', 'flex');
+
+
+                })
             })
         }
 
@@ -351,6 +386,143 @@
         object-fit: cover;
         width: 100%;
         height: auto;
+        cursor: pointer;
+    }
+
+    .img-relative-project {
+        width: 100%;
+    }
+
+    .img-relative-project>img {
+        object-fit: cover;
+        width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    .contain-all-image-of-deisgn {
+        width: 80px;
+        height: 100%;
+        overflow: hidden;
+        background-color: rgb(80, 78, 78, 0.3);
+        position: fixed;
+        z-index: 100;
+        left: 15px;
+        top: 0;
+        display: none;
+        transform: translate(0, 0);
+        flex-wrap: nowrap;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        transition: 0.5;
+
+    }
+
+    .contain-all-image-of-deisgn:hover {
+        background-color: rgb(80, 78, 78, 0.7);
+    }
+
+    .contain-all-image-of-deisgn a {
+        margin-top: 3px;
+        padding: 2px;
+        display: block;
+        border-radius: 5px;
+        position: relative;
+        width: 80px;
+        min-height: 70px;
+        border: solid 2px #e9e9e9;
+    }
+
+    .contain-all-image-of-deisgn a img {
+        position: absolute;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        padding: 2%;
+    }
+
+    .contain-detail-image {
+        width: auto;
+        height: 100%;
+        overflow: hidden;
+        background-color: #474747;
+        position: fixed;
+        z-index: 100;
+        left: 50%;
+        top: 50%;
+        display: none;
+        transform: translate(-50%, -50%);
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .img-relative-project {
+        width: 100%;
+    }
+
+    .img-relative-project>img {
+        object-fit: cover;
+        width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    .contain-all-image-of-deisgn {
+        width: 80px;
+        height: 100%;
+        overflow: hidden;
+        background-color: rgb(80, 78, 78, 0.3);
+        position: fixed;
+        z-index: 100;
+        left: 15px;
+        top: 0;
+        display: none;
+        transform: translate(0, 0);
+        flex-wrap: nowrap;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        transition: 0.5;
+
+    }
+
+    .contain-all-image-of-deisgn:hover {
+        background-color: rgb(80, 78, 78, 0.7);
+    }
+
+    .contain-all-image-of-deisgn a {
+        margin-top: 3px;
+        padding: 2px;
+        display: block;
+        border-radius: 5px;
+        position: relative;
+        width: 80px;
+        min-height: 70px;
+        border: solid 2px #e9e9e9;
+    }
+
+    .contain-all-image-of-deisgn a img {
+        position: absolute;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        padding: 2%;
+    }
+
+    .contain-detail-image {
+        width: auto;
+        height: 100%;
+        overflow: hidden;
+        background-color: #474747;
+        position: fixed;
+        z-index: 100;
+        left: 50%;
+        top: 50%;
+        display: none;
+        transform: translate(-50%, -50%);
+        flex-wrap: wrap;
+        align-items: center;
     }
 
     .contain-item-image {
@@ -457,6 +629,16 @@
     </div>
 
 </div>
+<div class="contain-detail-image">
+
+</div>
+<div class="contain-all-image-of-deisgn">
+    <a href="javascript: value(0)">
+        <img src="" alt="">
+    </a>
+</div>
+
+
 <div class="contain-item-image">
     <div class="banner_image">
         <img src="icon-user-page/439862103611663.611e372feff4d.png" style="width: 100%;" alt="">
