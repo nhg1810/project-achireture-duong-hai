@@ -28,6 +28,7 @@
         })
 
         var arrImage = [];
+        var arrDetailImage = [];
         console.log(1);
         fetch("/get-all-inf-user-page").then(res => { return res.json() })
             .then((data) => {
@@ -73,6 +74,7 @@
                 console.log(dataHome);
             }).then(() => {
                 $(".gallery__image").click(function () {
+
                     $(".layout").css('display', 'block')
                     $(".layout-option").css('display', 'flex')
                     $(".contain-item-image").css('display', 'flex')
@@ -81,22 +83,29 @@
                     $(".image-detail").attr('src', `https://drive.google.com/uc?id=` + idImage + ``);
                     $(".image-detail").attr('z-index', zIndex);
                     $("body").css({
-                      'height': '100%', 'overflow': 'hidden'
+                        'height': '100%', 'overflow': 'hidden'
                     })
 
 
                     getProjectByIdImage(idImage);
+
                 })
             })
         $(".layout").click(function () {
             $(this).hide();
             $('.contain-item-image').hide()
             $(".layout-option").hide();
+            $(".contain-detail-image").hide();
+            $(".layout-option-detail-image").hide();
+
             $("body").css({
                 'height': '100%', 'overflow': 'auto'
             })
         })
         function getProjectByIdImage(idImage) {
+            $(".inf-project").html('')
+            $(".img-relative-project").html('')
+            $(".inf-image-a").html('')
             $(".lds-ellipsis").hide(500);
             $(".image-detail").attr('src', `https://drive.google.com/uc?id=` + idImage + ``);
             $.ajax({
@@ -107,25 +116,20 @@
                 encode: true,
             }).done(function (data) {
                 console.log(data);
-                $(".inf-project").html('')
-                $(".img-relative-project").html('')
+
                 let html = '';
                 let arr_img = '';
                 let linkDetail = '';
-                $(".inf-image-a").html('')
-                $(".inf-project").html('')
-                $(".img-relative-project").html('')
                 if (data != "") {
                     data.map((item) => {
+                        arrDetailImage = item.imageProject;
                         linkDetail += ` <a target="_blank" href="detail-cate-project/` + item.cateProject._id + `" id="a-link-detail">Xem thêm</a>`;
-
                         html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
                                     <p class="descriptProject"><strong>Mô tả dự án</strong>: `+ item.descriptionProject + `</p>
                                     <p class="cateProject"><strong>Dự án này thuộc danh mục</strong>: `+ item.cateProject.nameProject + `</p>
                                 <p class="descriptCateProject"><strong>Mô tả danh mục này</strong>: `+ item.cateProject.descriptionProject + `</p>`;
-
                         for (let i = 0; i < item.imageProject.length; i++) {
-                            arr_img += `<img data-sizes="auto" class="lazyload" data-src="` + item.imageProject[i].urlImage + `"/>`;
+                            arr_img += `<img data-sizes="auto" class="lazyload image-detail-project" data-id ='` + item.imageProject[i].idImage + `' data-src="` + item.imageProject[i].urlImage + `"/>`;
                         }
                     })
                 } else {
@@ -133,10 +137,46 @@
                 }
                 $(".inf-image-a").html(linkDetail)
                 $(".inf-project").html(html)
+
+
                 $(".img-relative-project").html(arr_img)
+
+                $(".image-detail-project").click(function () {
+                    let idImage = $(this).attr('data-id');
+                    let html = `<img class="dt-image" src = 'https://drive.google.com/uc?id=` + idImage + `' idImage = '` + idImage + `'style="width: auto; height: 100%; margin: auto; padding-top: 5px; padding-bottom: 5px"/>`
+                    $(".contain-item-image").hide();
+                    $(".contain-detail-image").show();
+                    $(".contain-detail-image").html(html);
+                    $(".layout-option").hide()
+                    $(".layout-option-detail-image").css('display', 'flex');
+
+                    $(".btn-right-detail").click(function () {
+                        let idDetailImage = $(".dt-image").attr('idImage');
+                        for (let i = 0; i < arrDetailImage.length; i++) {
+                            if (arrDetailImage[i].idImage = idDetailImage) {
+                                if (arrDetailImage[i + 1]) {
+                                    let html = `<img class="dt-image" src = 'https://drive.google.com/uc?id=`
+                                        + arrDetailImage[i + 1].idImage + `' idImage = '` + arrDetailImage[i + 1].idImage +
+                                        `'style="width: auto; height: 100%; margin: auto; padding-top: 5px; padding-bottom: 5px"/>`;
+
+                                    $(".contain-detail-image").html(html);
+
+                                }
+                                break;
+                            }
+                        }
+                    })
+
+                    $(".btn-left-detail").click(function () {
+                        let idDetailImage = $(".dt-image").attr('idImage');
+                    })
+
+                })
                 console.log(123);
             })
         }
+
+
 
         $(".btn-right").click(function () {
             $(".inf-image-a").html('')
@@ -314,10 +354,26 @@
         object-fit: cover;
         width: 100%;
         height: auto;
+        cursor: pointer;
+    }
+
+    .contain-detail-image {
+        width: auto;
+        height: 100%;
+        overflow: hidden;
+        background-color: #474747;
+        position: fixed;
+        z-index: 100;
+        left: 50%;
+        top: 50%;
+        display: none;
+        transform: translate(-50%, -50%);
+        flex-wrap: wrap;
+        align-items: center;
     }
 
     .contain-item-image {
-        width: 80%;
+        width: 70%;
         height: 100%;
         overflow: hidden;
         background-color: #474747;
@@ -409,7 +465,7 @@
     </div>
 </div>
 <div class="layout-option"
-    style="position: absolute; align-items: center; justify-content: space-between; width: 100%; height: 100px; position: fixed; top: 50%; transform: translate(-50%, -50%); left:  50%; display: none; opacity: 0.8; z-index: 200;">
+    style="position: absolute; align-items: center; justify-content: space-between; width: 100%; height: 100px; position: fixed; top: 50%; transform: translate(-50%, -50%); left:  50%; display: none; opacity: 0.8; z-index: 99;">
     <div class="btn-route btn-left"
         style="display: flex;     justify-content: center; align-items: center; width: 30px; margin-left: 20px; cursor: pointer; border-radius: 50%; height:30px; ">
         <img style="width: 15px; height: 15px;" src="icon-user-page/left-arrow.png" alt="">
@@ -417,8 +473,24 @@
     <div class="btn-route btn-right"
         style="display: flex;     justify-content: center; align-items: center; width: 30px; margin-right: 20px; height: 30px;  cursor: pointer; border-radius: 50%; ">
         <img style="width: 15px; height: 15px;" src="icon-user-page/right-arrow.png" alt="">
-
     </div>
+
+</div>
+
+<div class="layout-option-detail-image"
+    style="position: absolute; align-items: center; justify-content: space-between; width: 100%; height: 100px; position: fixed; top: 50%; transform: translate(-50%, -50%); left:  50%; display: none; opacity: 0.8; z-index: 99;">
+    <div class="btn-route btn-left-detail"
+        style="display: flex;     justify-content: center; align-items: center; width: 30px; margin-left: 20px; cursor: pointer; border-radius: 50%; height:30px; ">
+        <img style="width: 15px; height: 15px;" src="icon-user-page/left-arrow.png" alt="">
+    </div>
+    <div class="btn-route btn-right-detail"
+        style="display: flex;     justify-content: center; align-items: center; width: 30px; margin-right: 20px; height: 30px;  cursor: pointer; border-radius: 50%; ">
+        <img style="width: 15px; height: 15px;" src="icon-user-page/right-arrow.png" alt="">
+    </div>
+
+</div>
+
+<div class="contain-detail-image">
 
 </div>
 <div class="contain-item-image">
