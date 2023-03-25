@@ -185,7 +185,6 @@ body {
 }
 
 .gallery__column {
-    margin-top: -3.8%;
     width: 100%;
     display: flex;
 }
@@ -207,7 +206,7 @@ body {
 
 .gallery__thumb {
     width: fit-content;
-    height: 84%;
+    height: 100%;
 }
 
 .gallery__image {
@@ -215,7 +214,7 @@ body {
     display: block;
     width: 100%;
     transition: .3s;
-    object-fit: scale-down;
+    object-fit: cover;
 
 }
 
