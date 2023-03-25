@@ -517,5 +517,15 @@ class AdminController {
                 console.log(err)
             })
     }
+    async deleteFileDrive(request, response, next) {
+        response.setHeader("Content-Type", "text/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        const res = await projectManagerService.deleteFileDrive(request);
+        if (res == 204) {
+            response.json(res);
+        } else {
+            response.json('error');
+        }
+    }
 }
 module.exports = new AdminController;

@@ -64,5 +64,15 @@ class GoogleHelper {
             throw err;
         }
     }
+    async deleteFile(fileId) {
+        try {
+            const response = await drive.files.delete({
+                fileId: fileId
+            })
+            return response.status;
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
 module.exports = new GoogleHelper();

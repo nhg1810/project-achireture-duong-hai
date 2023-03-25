@@ -371,5 +371,16 @@ class ProjectManagerService {
             return 'error';
         }
     }
+    async deleteFileDrive(request) {
+        if (request) {
+            try {
+                let data = await googleDriverHelper.deleteFile(request.body.fileId);
+                return data;
+            } catch (error) {
+                return error;
+            }
+        }
+
+    }
 }
 module.exports = new ProjectManagerService();

@@ -65,6 +65,8 @@ router.post('/update-inf-home-page', AdminController.updateInfHomePge);
 //update logo
 router.post('/update-logo', uploadLogo.single('logo-update'), AdminController.updateLogo);
 // router.get('/create-inf', AdminController.createInf);
+//delete file in driver
+router.post('/delete-image-project-drive', AdminController.deleteFileDrive)
 router.get('/', AdminController.projectManager);
 
 
