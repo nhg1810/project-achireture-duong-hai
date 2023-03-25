@@ -185,13 +185,14 @@ body {
 }
 
 .gallery__column {
+    margin-top: -3.8%;
     width: 100%;
     display: flex;
 }
 
 .gallery__link {
-    height: 400px;
-    margin: 2px;
+    height: auto;
+    margin: 1px;
     overflow: hidden;
 }
 
@@ -206,7 +207,7 @@ body {
 
 .gallery__thumb {
     width: fit-content;
-    height: 100%;
+    height: 84%;
 }
 
 .gallery__image {
@@ -339,13 +340,5 @@ body {
     .mainContentText {
         width: 100%;
         padding-left: 10px;
-    }
-
-    .gallery {
-        display: block;
-    }
-
-    .gallery__column {
-        width: 100%;
     }
 }

@@ -38,20 +38,14 @@
                 $(".textContent p").html(dataHome.blog.content)
                 let html_cl_1 = ``;
                 let draft_html = ``;
+                let variable_br = 1;
+                let numberColumn = 1;
                 arrImage = dataHome.images;
                 arrImage.map((item) => {
+
                     draft_html += `<a href="javascrip:void(0)" class="gallery__link">
                 <figure class="gallery__thumb" style="">
-                    <img style="min-height: 300px; background-color: #3d3d3d" z-index = '`+ item.zIndex + `'  data-sizes="auto" data-src="https://drive.google.com/uc?id=` + item.idImage + `" data-id-image="` + item.idImage + `"
-                        alt="Loading..." class="gallery__image lazyload" />
-                    <figcaption class="gallery__caption">
-                        
-                    </figcaption>
-                </figure>
-            </a>
-            <a href="javascrip:void(0)" class="gallery__link">
-                <figure class="gallery__thumb" style="">
-                    <img style="min-height: 300px; background-color: #3d3d3d" z-index = '`+ item.zIndex + `'  data-sizes="auto" data-src="https://drive.google.com/uc?id=` + item.idImage + `" data-id-image="` + item.idImage + `"
+                    <img style="background-color: #3d3d3d" z-index = '`+ item.zIndex + `'  data-sizes="auto" data-src="https://drive.google.com/uc?id=` + item.idImage + `" data-id-image="` + item.idImage + `"
                         alt="Loading..." class="gallery__image lazyload" />
                     <figcaption class="gallery__caption">
                         
@@ -59,9 +53,18 @@
                 </figure>
             </a>
             `
+                    variable_br++;
+                    if (variable_br > 5) {
+                        $(".gallery__column_" + numberColumn + "").html(draft_html);
+
+                        variable_br = 1;
+                        numberColumn++;
+                        draft_html = "";
+                    }
+                    console.log(variable_br)
+
                 })
 
-                $(".gallery__column_1").html(draft_html);
 
 
 
@@ -585,7 +588,63 @@
         <div class="gallery__column gallery__column_1 ">
 
         </div>
+        <div class="gallery__column gallery__column_2 ">
 
+        </div>
+        <div class="gallery__column gallery__column_3 ">
+
+        </div>
+        <div class="gallery__column gallery__column_4 ">
+
+        </div>
+        <div class="gallery__column gallery__column_5 ">
+
+        </div>
+        <div class="gallery__column gallery__column_6 ">
+
+        </div>
+        <div class="gallery__column gallery__column_7 ">
+
+        </div>
+        <div class="gallery__column gallery__column_8 ">
+
+        </div>
+        <div class="gallery__column gallery__column_9 ">
+
+        </div>
+        <div class="gallery__column gallery__column_10 ">
+
+        </div>
+        <div class="gallery__column gallery__column_11 ">
+
+        </div>
+        <div class="gallery__column gallery__column_12 ">
+
+        </div>
+        <div class="gallery__column gallery__column_13 ">
+
+        </div>
+        <div class="gallery__column gallery__column_14 ">
+
+        </div>
+        <div class="gallery__column gallery__column_15 ">
+
+        </div>
+        <div class="gallery__column gallery__column_16 ">
+
+        </div>
+        <div class="gallery__column gallery__column_17 ">
+
+        </div>
+        <div class="gallery__column gallery__column_18 ">
+
+        </div>
+        <div class="gallery__column gallery__column_19 ">
+
+        </div>
+        <div class="gallery__column gallery__column_20 ">
+
+        </div>
     </div>
 </div>
 <script>
