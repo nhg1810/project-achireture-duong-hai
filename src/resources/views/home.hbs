@@ -36,20 +36,11 @@
                 let dataHome = data[0].home[0];
                 $(".textTitle p").html(dataHome.blog.title)
                 $(".textContent p").html(dataHome.blog.content)
-
-                arrImage = data[0].home[0].images;
-                let minColumn = Math.floor((arrImage.length + 1) / 3);
-                console.log("minColumn", minColumn)
-
-                $(".gallery__column_1")
                 let html_cl_1 = ``;
-                let html_cl_2 = ``;
-                let html_cl_3 = ``;
-                let count = 1;
-                arrImage.sort((a, b) => {
-                    return a.zIndex - b.zIndex;
-                }).map((item) => {
-                    let draft_html = `<a href="javascrip:void(0)" class="gallery__link">
+                let draft_html = ``;
+                arrImage = dataHome.images;
+                arrImage.map((item) => {
+                    draft_html += `<a href="javascrip:void(0)" class="gallery__link">
                 <figure class="gallery__thumb" style="">
                     <img style="min-height: 300px; background-color: #3d3d3d" z-index = '`+ item.zIndex + `'  data-sizes="auto" data-src="https://drive.google.com/uc?id=` + item.idImage + `" data-id-image="` + item.idImage + `"
                         alt="Loading..." class="gallery__image lazyload" />
@@ -57,21 +48,24 @@
                         
                     </figcaption>
                 </figure>
-            </a>`
-                    if (count <= minColumn) {
-                        html_cl_1 += draft_html;
-                    } else if (count > minColumn && count <= minColumn * 2) {
-                        html_cl_2 += draft_html;
-                    } else {
-                        html_cl_3 += draft_html;
-                    }
-
-                    count++;
+            </a>
+            <a href="javascrip:void(0)" class="gallery__link">
+                <figure class="gallery__thumb" style="">
+                    <img style="min-height: 300px; background-color: #3d3d3d" z-index = '`+ item.zIndex + `'  data-sizes="auto" data-src="https://drive.google.com/uc?id=` + item.idImage + `" data-id-image="` + item.idImage + `"
+                        alt="Loading..." class="gallery__image lazyload" />
+                    <figcaption class="gallery__caption">
+                        
+                    </figcaption>
+                </figure>
+            </a>
+            `
                 })
-                $(".gallery__column_1").html(html_cl_1);
-                $(".gallery__column_2").html(html_cl_2);
-                $(".gallery__column_3").html(html_cl_3);
-                console.log(dataHome);
+
+                $(".gallery__column_1").html(draft_html);
+
+
+
+
             }).then(() => {
                 $(".gallery__image").click(function () {
 
@@ -589,12 +583,6 @@
     <div class="gallery">
 
         <div class="gallery__column gallery__column_1 ">
-
-        </div>
-        <div class="gallery__column gallery__column_2">
-
-        </div>
-        <div class="gallery__column gallery__column_3">
 
         </div>
 

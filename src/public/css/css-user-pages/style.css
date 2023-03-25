@@ -177,6 +177,7 @@ body {
     margin: auto;
     background-color: #323232;
     flex-wrap: wrap;
+    align-content: flex-start;
 }
 
 .gallery:hover .gallery__image {
@@ -186,8 +187,6 @@ body {
 .gallery__column {
     width: 100%;
     display: flex;
-    flex-direction: column;
-    width: 33.33333333%;
 }
 
 .gallery__link {
@@ -206,13 +205,17 @@ body {
 }
 
 .gallery__thumb {
-    position: relative;
+    width: fit-content;
+    height: 100%;
 }
 
 .gallery__image {
+    height: 100%;
     display: block;
     width: 100%;
     transition: .3s;
+    object-fit: scale-down;
+
 }
 
 
