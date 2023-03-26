@@ -25,6 +25,7 @@
             function drag() {
                 let boxes = document.querySelectorAll('.item-preview');
                 boxes.forEach((box) => {
+
                     box.addEventListener('dragover', function (item) {
                         item.preventDefault()
                     })
@@ -36,21 +37,28 @@
 
                         // move dragged element to the selected drop target
                         if (event.target.className === "item-preview drop-area") {
-                            console.log(target)
                             if (target != null) {
                                 target.parentNode.removeChild(target);
                                 event.target.appendChild(target);
+
                                 $(".target").addClass('cancel-drop');
                                 Swal.fire('Vị trí này đã được thêm ảnh, nếu muốn thay đổi vui lòng xoá ảnh tại vị trí hiện tại !!! ');
                                 target = null;
                                 $(this).removeClass('drop-area')
-                                $(".image-design[data-id-image = " + idImage + " ]").html(` <img  class = ' lazyload target target-` + idImage + `'  
+                                let idIndex = $(this).attr('index-location');
+
+                      
+
+                                $(".image-design[data-id-image = " + idImage + " ]").html(` 
+                                  
+                                
+                                <img  class = ' lazyload target target-` + idImage + `'  
                                 data-src="https://drive.google.com/uc?id=` + idImage + `" 
                                 style=" filter: grayscale(100%);" data-id-image="` + idImage + `"   alt=""> `)
                                 $(".image-design[data-id-image = " + idImage + " ]").removeClass('target-drop');
-                                $(".image-design[data-id-image = " + idImage + " ]").attr('data-id-image', '0')
+                                $(".image-design[data-id-image = " + idImage + " ]").attr('data-id-image', '0');
+
                                 $(box).attr('data-id-image', idImage)
-                                let idIndex = $(this).attr('index-location');
 
                                 arr_index_design.push({
                                     idImage: idImage,
@@ -83,16 +91,22 @@
                 arr_index_design = infHome.images;
             })
             .then(() => {
-                console.log(arr_index_design);
                 let html = '';
-                arr_index_design.map((item) => {
-                    $(".item-preview[index-location =  " + item.zIndex + "] ").html(`<img class="lazyload target target-` + item.idImage + ` cancel-drop" 
+                arr_index_design.sort((a, b) => {
+                    return a.zIndex - b.zIndex;
+                }).map((item) => {
+                    $(".item-preview[index-location =  " + item.zIndex + "] ").html(`
+                    <button style='position: absolute; right: 0px' type="" class=" btn-add-right btn btn-success btn-sm "  index-location = '`+ item.zIndex + `' data-id-image='` + item.idImage + `'  style="margin-bottom: 30px;">+ ></button>
+                    <button style='' type="" class=" btn-null-item btn btn-warning btn-sm " index-location = '`+ item.zIndex + `' data-id-image='` + item.idImage + `' style="margin-bottom: 30px;"> - </button>
+
+                    <img class="lazyload target target-` + item.idImage + ` cancel-drop" 
                     data-src="https://drive.google.com/uc?id=`+ item.idImage + `"
                      data-id-image="`+ item.idImage + `" alt="">`);
                     $(".item-preview[index-location =  " + item.zIndex + "] ").removeClass('drop-area');
                     $(".item-preview[index-location =  " + item.zIndex + "] ").attr('data-id-image', item.idImage);
-                    clickItemPreview();
                 })
+                clickItemPreview();
+
             }).then(() => {
                 //load all design from drive
                 fetch("/admin/all-image-project")
@@ -133,18 +147,52 @@
 
         clickItemPreview();
         function clickItemPreview() {
-            $(".item-preview").click(function () {
+            $(".btn-add-right").click(function () {
                 let idImage = $(this).attr('data-id-image')
+                let indexLocation = $(this).attr('index-location');
+
+                for (let i = 0; i < arr_index_design.length; i++) {
+                    console.log('s', parseInt(arr_index_design[i].zIndex))
+                    if (indexLocation < parseInt(arr_index_design[i].zIndex)) {
+                        arr_index_design[i].zIndex = parseInt(arr_index_design[i].zIndex) + 1;
+                    }
+
+
+                    arr_index_design.map((item) => {
+                        $(".item-preview[index-location =  " + item.zIndex + "] ").html(`
+                                            <button style='position: absolute; right: 0px' type="" class=" btn-add-right btn btn-success btn-sm "  index-location = '`+ item.zIndex + `' data-id-image='` + item.idImage + `'  style="margin-bottom: 30px;">+ ></button>
+                    <button style='' type="" class=" btn-null-item btn btn-warning btn-sm " index-location = '`+ item.zIndex + `' data-id-image='` + item.idImage + `' style="margin-bottom: 30px;"> - </button>
+                    <img class="lazyload target target-` + item.idImage + ` cancel-drop" 
+                    data-src="https://drive.google.com/uc?id=`+ item.idImage + `"
+                     data-id-image="`+ item.idImage + `" alt="">`);
+                        $(".item-preview[index-location =  " + item.zIndex + "] ").removeClass('drop-area');
+                        $(".item-preview[index-location =  " + item.zIndex + "] ").attr('data-id-image', item.idImage);
+                    })
+
+                    if (parseInt(indexLocation) == parseInt(arr_index_design[i].zIndex)) {
+                        $(".item-preview[index-location =  " + arr_index_design[i + 1].zIndex + "] ").html(arr_index_design[i].zIndex);
+                        $('.item-preview[index-location =  ' + arr_index_design[i + 1].zIndex + ']').addClass('drop-area');
+                        console.log('bên cạnh r', arr_index_design[i + 1].zIndex)
+                    }
+                    clickItemPreview();
+                }
+
+                console.log(arr_index_design)
+            })
+            $(".btn-null-item").click(function () {
+                let idImage = $(this).attr('data-id-image')
+                let indexLocation = $(this).attr('index-location');
                 if (idImage) {
                     Swal.fire('Vị trí này đã được trống ')
                     let target = "";
-                    $(this).html('');
-                    $(this).addClass('drop-area');
+                    $('.item-preview[index-location =  ' + indexLocation + ']').html('');
+                    $('.item-preview[index-location =  ' + indexLocation + ']').addClass('drop-area');
                     $(".image-design-" + idImage + " ").attr('data-id-image', idImage)
                     $(".image-design[data-id-image = " + idImage + " ]").addClass('target-drop');
                     $(`.target-` + idImage + ``).css('filter', 'grayscale(0%)')
                     chooseTarget(target)
                 }
+                //xoá phần tử đó khỏi mảng
                 for (let i = 0; i < arr_index_design.length; i++) {
                     if (arr_index_design[i].idImage === idImage) {
                         arr_index_design.splice(i, 1);
@@ -225,9 +273,10 @@
 
     .contain-preview>.item-preview {
         text-align: center;
-        width: 30%;
+        width: 19%;
         min-height: 200px;
         border: solid 5px white;
+        position: relative;
     }
 
     .contain-preview>.item-preview>img {
@@ -369,7 +418,8 @@
                                     Các thông tin liên quan khác
                                 </p>
                                 <p>
-                                    Ví dụ như Facebook, Youtube,Tiktok, ..., nên điền đầy đủ để có thể tiếp cận khách hàng
+                                    Ví dụ như Facebook, Youtube,Tiktok, ..., nên điền đầy đủ để có thể tiếp cận khách
+                                    hàng
                                 </p>
                             </address>
                         </div>
@@ -381,11 +431,13 @@
                         Chỉ có <code>Admin</code> mới có thể sử dụng quyền này.
                     </p>
                     <p class="lead">
-                        Trước khi muốn thêm một ảnh nào đó vào giao diện trang chủ, hãy kiểm tra xem ảnh đó đã nằm trong kho 
+                        Trước khi muốn thêm một ảnh nào đó vào giao diện trang chủ, hãy kiểm tra xem ảnh đó đã nằm trong
+                        kho
                         drive hay chưa, kiểm tra <a href="project-photo-manager">Tại đây !</a>
                     </p>
                     <p>- Các ảnh đã chọn thì sẽ hiện màu ĐEN TRẮNG(và ảnh này không thể chọn được)</p>
-                    <p>- Click chọn ảnh ở bảng bên phải sao cho ảnh đó có viền MÀU XANH, sau đó kéo ảnh vừa chọn sang khu vực trống bên trái</p>
+                    <p>- Click chọn ảnh ở bảng bên phải sao cho ảnh đó có viền MÀU XANH, sau đó kéo ảnh vừa chọn sang
+                        khu vực trống bên trái</p>
                     <p>- Chỉ thêm được ảnh khi khu vực đó đang trống, chưa có ảnh nào trong vị trí đó.</p>
                     <p>- Muốn làm tróng một vị tri nào đó ở khu vực bên trái, thì chỉ cần click chuột vào vị trí đó.</p>
                 </div>
@@ -395,27 +447,107 @@
         <p>Tất cả hình ảnh được lưu tại google drive đã được cấp</p>
         <div class="col-md-8 grid-margin stretch-card">
             <div class="contain-preview">
-                <div class="item-preview drop-area" index-location="1">1</div>
-                <div class="item-preview drop-area" index-location="8">8</div>
-                <div class="item-preview drop-area" index-location="15">15</div>
+                <div class="item-preview drop-area" index-location="1">1
+                </div>
                 <div class="item-preview drop-area" index-location="2">2</div>
-                <div class="item-preview drop-area" index-location="9">9</div>
-                <div class="item-preview drop-area" index-location="16">16</div>
                 <div class="item-preview drop-area" index-location="3">3</div>
-                <div class="item-preview drop-area" index-location="10">10</div>
-                <div class="item-preview drop-area" index-location="17">17</div>
                 <div class="item-preview drop-area" index-location="4">4</div>
-                <div class="item-preview drop-area" index-location="11">11</div>
-                <div class="item-preview drop-area" index-location="18">18</div>
                 <div class="item-preview drop-area" index-location="5">5</div>
-                <div class="item-preview drop-area" index-location="12">12</div>
-                <div class="item-preview drop-area" index-location="19">19</div>
                 <div class="item-preview drop-area" index-location="6">6</div>
-                <div class="item-preview drop-area" index-location="13">13</div>
-                <div class="item-preview drop-area" index-location="20">20</div>
                 <div class="item-preview drop-area" index-location="7">7</div>
+                <div class="item-preview drop-area" index-location="8">8</div>
+                <div class="item-preview drop-area" index-location="9">9</div>
+                <div class="item-preview drop-area" index-location="10" 10></div>
+                <div class="item-preview drop-area" index-location="11">11</div>
+                <div class="item-preview drop-area" index-location="12">12</div>
+                <div class="item-preview drop-area" index-location="13">13</div>
                 <div class="item-preview drop-area" index-location="14">14</div>
-                <div class="item-preview drop-area" index-location="21">21 </div>
+                <div class="item-preview drop-area" index-location="15">15</div>
+                <div class="item-preview drop-area" index-location="16">16</div>
+                <div class="item-preview drop-area" index-location="17">17</div>
+                <div class="item-preview drop-area" index-location="18">18</div>
+                <div class="item-preview drop-area" index-location="19">19</div>
+                <div class="item-preview drop-area" index-location="20">20</div>
+                <div class="item-preview drop-area" index-location="21">21</div>
+                <div class="item-preview drop-area" index-location="22">22</div>
+                <div class="item-preview drop-area" index-location="23">23</div>
+                <div class="item-preview drop-area" index-location="24">24</div>
+                <div class="item-preview drop-area" index-location="25"></div>
+                <div class="item-preview drop-area" index-location="26"></div>
+                <div class="item-preview drop-area" index-location="27"></div>
+                <div class="item-preview drop-area" index-location="28"></div>
+                <div class="item-preview drop-area" index-location="29"></div>
+                <div class="item-preview drop-area" index-location="30"></div>
+                <div class="item-preview drop-area" index-location="31"></div>
+                <div class="item-preview drop-area" index-location="32"></div>
+                <div class="item-preview drop-area" index-location="33"></div>
+                <div class="item-preview drop-area" index-location="34"></div>
+                <div class="item-preview drop-area" index-location="35"></div>
+                <div class="item-preview drop-area" index-location="36"></div>
+                <div class="item-preview drop-area" index-location="37"></div>
+                <div class="item-preview drop-area" index-location="38"></div>
+                <div class="item-preview drop-area" index-location="39"></div>
+                <div class="item-preview drop-area" index-location="40"></div>
+                <div class="item-preview drop-area" index-location="41"></div>
+                <div class="item-preview drop-area" index-location="42"></div>
+                <div class="item-preview drop-area" index-location="43"></div>
+                <div class="item-preview drop-area" index-location="44"></div>
+                <div class="item-preview drop-area" index-location="45"></div>
+                <div class="item-preview drop-area" index-location="46"></div>
+                <div class="item-preview drop-area" index-location="47"></div>
+                <div class="item-preview drop-area" index-location="48"></div>
+                <div class="item-preview drop-area" index-location="49"></div>
+                <div class="item-preview drop-area" index-location="50"></div>
+                <div class="item-preview drop-area" index-location="51"></div>
+                <div class="item-preview drop-area" index-location="52"></div>
+                <div class="item-preview drop-area" index-location="53"></div>
+                <div class="item-preview drop-area" index-location="54"></div>
+                <div class="item-preview drop-area" index-location="55"></div>
+                <div class="item-preview drop-area" index-location="56"></div>
+                <div class="item-preview drop-area" index-location="57"></div>
+                <div class="item-preview drop-area" index-location="58"></div>
+                <div class="item-preview drop-area" index-location="59"></div>
+                <div class="item-preview drop-area" index-location="60"></div>
+                <div class="item-preview drop-area" index-location="61"></div>
+                <div class="item-preview drop-area" index-location="62"></div>
+                <div class="item-preview drop-area" index-location="63"></div>
+                <div class="item-preview drop-area" index-location="64"></div>
+                <div class="item-preview drop-area" index-location="65"></div>
+                <div class="item-preview drop-area" index-location="66"></div>
+                <div class="item-preview drop-area" index-location="67"></div>
+                <div class="item-preview drop-area" index-location="68"></div>
+                <div class="item-preview drop-area" index-location="69"></div>
+                <div class="item-preview drop-area" index-location="70"></div>
+                <div class="item-preview drop-area" index-location="71"></div>
+                <div class="item-preview drop-area" index-location="72"></div>
+                <div class="item-preview drop-area" index-location="73"></div>
+                <div class="item-preview drop-area" index-location="74"></div>
+                <div class="item-preview drop-area" index-location="75"></div>
+                <div class="item-preview drop-area" index-location="76"></div>
+                <div class="item-preview drop-area" index-location="77"></div>
+                <div class="item-preview drop-area" index-location="78"></div>
+                <div class="item-preview drop-area" index-location="79"></div>
+                <div class="item-preview drop-area" index-location="80"></div>
+                <div class="item-preview drop-area" index-location="81"></div>
+                <div class="item-preview drop-area" index-location="82"></div>
+                <div class="item-preview drop-area" index-location="83"></div>
+                <div class="item-preview drop-area" index-location="84"></div>
+                <div class="item-preview drop-area" index-location="85"></div>
+                <div class="item-preview drop-area" index-location="86"></div>
+                <div class="item-preview drop-area" index-location="87"></div>
+                <div class="item-preview drop-area" index-location="88"></div>
+                <div class="item-preview drop-area" index-location="89"></div>
+                <div class="item-preview drop-area" index-location="90"></div>
+                <div class="item-preview drop-area" index-location="91"></div>
+                <div class="item-preview drop-area" index-location="92"></div>
+                <div class="item-preview drop-area" index-location="93"></div>
+                <div class="item-preview drop-area" index-location="94"></div>
+                <div class="item-preview drop-area" index-location="95"></div>
+                <div class="item-preview drop-area" index-location="96"></div>
+                <div class="item-preview drop-area" index-location="97"></div>
+                <div class="item-preview drop-area" index-location="98"></div>
+                <div class="item-preview drop-area" index-location="99"></div>
+                <div class="item-preview drop-area" index-location="100"></div>
             </div>
         </div>
         <div class="col-md-4 grid-margin stretch-card">

@@ -41,7 +41,9 @@
                 let variable_br = 1;
                 let numberColumn = 1;
                 arrImage = dataHome.images;
-                arrImage.map((item) => {
+                arrImage.sort((a, b) => {
+                    return a.zIndex - b.zIndex;
+                }).map((item) => {
 
                     draft_html += `<a href="javascrip:void(0)" class="gallery__link">
                 <figure class="gallery__thumb" style="">
