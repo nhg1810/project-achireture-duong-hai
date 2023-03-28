@@ -47,7 +47,7 @@
                                 $(this).removeClass('drop-area')
                                 let idIndex = $(this).attr('index-location');
 
-                      
+
 
                                 $(".image-design[data-id-image = " + idImage + " ]").html(` 
                                   
@@ -65,6 +65,55 @@
                                     zIndex: idIndex
                                 })
                                 console.log(arr_index_design);
+
+                            }
+                        } else if (event.target.className === "item-preview first-drop-area") {
+                            if (target != null) {
+                                target.parentNode.removeChild(target);
+                                event.target.appendChild(target);
+
+                                $(".target").addClass('cancel-drop');
+                                Swal.fire('Vị trí này đã được thêm ảnh, nếu muốn thay đổi vui lòng xoá ảnh tại vị trí hiện tại !!! ');
+                                target = null;
+                                $(this).removeClass('drop-area')
+                                let idIndex = $(this).attr('index-location');
+
+
+
+                                $(".image-design[data-id-image = " + idImage + " ]").html(` 
+                                  
+                                
+                                <img  class = ' lazyload target target-` + idImage + `'  
+                                data-src="https://drive.google.com/uc?id=` + idImage + `" 
+                                style=" filter: grayscale(100%);" data-id-image="` + idImage + `"   alt=""> `)
+
+                                $(".image-design[data-id-image = " + idImage + " ]").removeClass('target-drop');
+                                $(".image-design[data-id-image = " + idImage + " ]").attr('data-id-image', '0');
+
+                                for (let i = 0; i < arr_index_design.length; i++) {
+                                    arr_index_design[i].zIndex = parseInt(arr_index_design[i].zIndex) + 1;
+                                }
+                                arr_index_design.push({
+                                    idImage: idImage,
+                                    zIndex: 1
+                                })
+                                console.log(arr_index_design);
+
+                                arr_index_design.sort((a, b) => {
+                                    return a.zIndex - b.zIndex;
+                                }).map((item) => {
+                                    $(".item-preview[index-location =  " + item.zIndex + "] ").html(`
+                    <button style='position: absolute; right: 0px' type="" class=" btn-add-right btn btn-success btn-sm "  index-location = '`+ item.zIndex + `' data-id-image='` + item.idImage + `'  style="margin-bottom: 30px;">+ ></button>
+                    <button style='' type="" class=" btn-null-item btn btn-warning btn-sm " index-location = '`+ item.zIndex + `' data-id-image='` + item.idImage + `' style="margin-bottom: 30px;"> - </button>
+
+                    <img class="lazyload target target-` + item.idImage + ` cancel-drop" 
+                    data-src="https://drive.google.com/uc?id=`+ item.idImage + `"
+                     data-id-image="`+ item.idImage + `" alt="">`);
+                                    $(".item-preview[index-location =  " + item.zIndex + "] ").removeClass('drop-area');
+                                    $(".item-preview[index-location =  " + item.zIndex + "] ").attr('data-id-image', item.idImage);
+                                })
+                                $(".first-drop-area").html('1')
+                                clickItemPreview();
 
                             }
                         }
@@ -105,6 +154,7 @@
                     $(".item-preview[index-location =  " + item.zIndex + "] ").removeClass('drop-area');
                     $(".item-preview[index-location =  " + item.zIndex + "] ").attr('data-id-image', item.idImage);
                 })
+
                 clickItemPreview();
 
             }).then(() => {
@@ -201,9 +251,30 @@
                 console.log("123", arr_index_design);
             })
         }
+        $(".btn-scale-item").click(function () {
+            for (let i = 0; i < arr_index_design.length; i++) {
+                arr_index_design[i].zIndex = i + 1;
+            }
+            $(".item-preview").html('');
+            arr_index_design.sort((a, b) => {
+                return a.zIndex - b.zIndex;
+            }).map((item) => {
+                $(".item-preview[index-location =  " + item.zIndex + "] ").html(`
+                    <button style='position: absolute; right: 0px' type="" class=" btn-add-right btn btn-success btn-sm "  index-location = '`+ item.zIndex + `' data-id-image='` + item.idImage + `'  style="margin-bottom: 30px;">+ ></button>
+                    <button style='' type="" class=" btn-null-item btn btn-warning btn-sm " index-location = '`+ item.zIndex + `' data-id-image='` + item.idImage + `' style="margin-bottom: 30px;"> - </button>
 
+                    <img class="lazyload target target-` + item.idImage + ` cancel-drop" 
+                    data-src="https://drive.google.com/uc?id=`+ item.idImage + `"
+                     data-id-image="`+ item.idImage + `" alt="">`);
+                $(".item-preview[index-location =  " + item.zIndex + "] ").removeClass('drop-area');
+                $(".item-preview[index-location =  " + item.zIndex + "] ").attr('data-id-image', item.idImage);
+            })
+            clickItemPreview();
+
+
+            console.log(arr_index_design);
+        })
         $(".btn-update-inf-home").click(function () {
-
             let vlUpdateBtnHome = $(".name-btn-home-page").val();
             let vlUpdateTitleBlogHome = $(".title-blog-home").val();
             let vlUpdateContentBlogHome = $(".content-blog-home").val();
@@ -445,7 +516,22 @@
         </div>
         <p>Bố cục sắp xếp ảnh trang chủ </p>
         <p>Tất cả hình ảnh được lưu tại google drive đã được cấp</p>
-        <div class="col-md-8 grid-margin stretch-card">
+        <p>Khi bấm nút Gom Lại, các ô trống sẽ biến mất, chèn vào ảnh tiếp theo của nó</p>
+        <p>Mỗi hàng phải có đủ 5 ảnh mới hiện ra ngoài trang chủ</p>
+        <p>Muốn chỉnh sửa ảnh tại vị trí thứ nhất, kéo ảnh vào ô MÀU VÀNG</p>
+
+
+        <div class="template-demo">
+            <a href="" class="btn btn-secondary btn-rounded btn-fw">Reload</a>
+            <button type="button" class="btn btn-success btn-rounded btn-fw btn-scale-item">Gom lại</button>
+            <button type="button" class="btn btn-success btn-rounded btn-update-inf-home">Lưu thay
+                đổi</button>
+        </div>
+        <div class="col-md-8 grid-margin stretch-card" style="position: relative;">
+            <div class="item-preview first-drop-area"
+                style="width: 200px; height: 200px; text-align: center; line-height: 200px; background-color: bisque ;position: absolute; left: -200px; overflow: auto; z-index: 100;"
+                index-location="0">Vị trí ảnh thứ nhất(Kéo vào để chỉnh sửa)
+            </div>
             <div class="contain-preview">
                 <div class="item-preview drop-area" index-location="1">1
                 </div>
