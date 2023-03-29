@@ -1,16 +1,19 @@
 <style>
   /* mainContentCategories */
   .mainContentCategories {
+    display: grid;
+    grid-template-columns: 32% 32% 32%;
+    column-gap: 20px;
+    row-gap: 20px;
     padding-top: 20px;
-    width: 1200px;
     margin: auto;
+    width: 1200px;
     color: #bab6af;
   }
 
   .categoryItem {
     width: 100%;
-    height: 350px;
-    display: flex;
+    height: 300px;
     background-color: #444444;
     margin-bottom: 30px;
     position: relative;
@@ -18,12 +21,12 @@
   }
 
   .categoryItemImage {
-    width: 50%;
+    width: 100%;
     overflow: hidden;
     height: 100%;
   }
 
-  .categoryItemImage  a img {
+  .categoryItemImage a img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -32,37 +35,15 @@
   }
 
   .categoryItemText {
-    width: 50%;
-    height: 100%;
-    margin-left: 30px;
-    margin-right: 30px;
-    margin-top: 20px;
+    width: 100%;
+    margin-top: 10px;
+
   }
 
   .categoryItemText-1 {
-    font-size: 33px;
+    font-size: 17px;
   }
-
-  .categoryItemText-2 {
-    padding-top: 15px;
-    font-size: 19px;
-  }
-
-  .categoryItemBtn {
-    padding-top: 30px;
-  }
-
-  .categoryItemBtn>a {
-    font-size: 23px;
-    text-decoration: none;
-    color: #bab6af;
-  }
-
-  .categoryItemBtn>a:hover {
-    color: rgb(107, 106, 104);
-    transition: .6s;
-  }
-  .categoryItem a{
+  .categoryItem a {
     text-decoration: none;
     color: #bab6af;
   }
@@ -130,7 +111,7 @@
       let html = "";
       let i = 0;
       data.map((item) => {
-          $(".mainContentCategories").append(`<div class="categoryItem ">
+        $(".mainContentCategories").append(`<div class="categoryItem ">
     <div class="categoryItemImage ">
 
       <a href="/detail-cate-project/`+ item._id + `"> <img src="` + item.imageBanner + `" alt="" /></a>
@@ -139,12 +120,6 @@
     <div class="categoryItemText">
       <div class="categoryItemText-1">
         <a href="/detail-cate-project/`+ item._id + `"><p>` + item.nameProject + `</p></a>
-      </div>
-      <div class="categoryItemText-2">
-        <p>`+ item.descriptionProject + `</p>
-      </div>
-      <div class="categoryItemBtn">
-        <a href="/detail-cate-project/`+ item._id + `">Show All</a>
       </div>
     </div>
   </div>`);
@@ -191,13 +166,16 @@
     <div class="iconMedia">
       <ul>
         <li>
-          <a class="link-bh" href="" class=""><img src="icon-user-page/icon1.png" alt="" /></a>
+          <a target="_blank" class="link-bh" href="" class=""><img src="icon-user-page/icon1.png" alt=""
+              style="width: 35px;" /></a>
         </li>
         <li>
-          <a class="link-ins" href=""><img src="icon-user-page/icon2.png" alt="" /></a>
+          <a target="_blank" class="link-ins" href=""><img src="icon-user-page/icon2.png" alt=""
+              style="width: 35px;" /></a>
         </li>
         <li>
-          <a class="link-ytb" href=""><img src="icon-user-page/icon3.png" alt="" /></a>
+          <a target="_blank" class="link-ytb" href=""><img src="icon-user-page/icon3.png" alt=""
+              style="width: 35px;" /></a>
         </li>
       </ul>
     </div>

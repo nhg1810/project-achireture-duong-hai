@@ -126,7 +126,7 @@ body {
 /* MAINCONTENT */
 .mainContent {
     position: absolute;
-    top: 80px;
+    top: 60px;
     width: 100%;
     height: auto;
 }
@@ -138,14 +138,14 @@ body {
 }
 
 .textTitle p {
-    font-size: 30px;
+    font-size: 25px;
 }
 
 .textMedia,
 .textContent {
     font-size: 15px;
     width: 99%;
-    padding-top: 40px;
+    padding-top: 10px;
 }
 
 .iconMedia ul {
