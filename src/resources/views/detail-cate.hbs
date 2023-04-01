@@ -21,9 +21,9 @@
             console.log(data);
             let html = "";
             if (data == "") {
-                html += `  <div class="item">
-                    <p>Chưa có dự án nào thuộc loại dự án này !</p>
-                    </div>`;
+                html += `  
+                    <p style="color:#f7f4d7e5;font-size:17px; margin: auto ; text-align:center;"> Wating for update this category!</p>
+                `;
             } else {
 
                 data.map((item) => {
@@ -97,16 +97,16 @@
                         arrDetailImage = item.imageProject;
 
                         html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
-                                    <p class="descriptProject"><strong>Mô tả dự án</strong>: `+ item.descriptionProject + `</p>
-                                    <p class="cateProject"><strong>Dự án này thuộc danh mục</strong>: `+ item.cateProject.nameProject + `</p>
-                                <p class="descriptCateProject"><strong>Mô tả danh mục này</strong>: `+ item.cateProject.descriptionProject + `</p>`;
+                                    <p class="descriptProject"><strong>Description project: </strong>: `+ item.descriptionProject + `</p>
+                                    <p class="cateProject"><strong>Category project: </strong>: `+ item.cateProject.nameProject + `</p>
+                                <p class="descriptCateProject"><strong>Description category: </strong>: `+ item.cateProject.descriptionProject + `</p>`;
 
                         for (let i = 0; i < item.imageProject.length; i++) {
                             arr_img += `<img  data-sizes="auto" class="lazyload image-detail-project" data-id ='` + item.imageProject[i].idImage + `' data-src="` + item.imageProject[i].urlImage + `"/>`;
                         }
                     })
                 } else {
-                    html = ` <p class="nameProject">Dự án này chưa được công bố chi tiết</p>`;
+                    html = ` <p class="nameProject">Wating for update this project !</p>`;
                 }
 
                 arrDetailImage.map((item) => {
@@ -258,7 +258,6 @@
         height: 100%;
         object-fit: cover;
     }
-
     @media (max-width:1263px) {
         .gallery {
             display: block;

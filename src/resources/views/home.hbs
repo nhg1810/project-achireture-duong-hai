@@ -1,3 +1,6 @@
+<head>
+    <title>Home</title>
+</head>
 {{!-- js for this page --}}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 {{!-- sweet alert --}}
@@ -23,6 +26,7 @@
             $(".link-bh").attr('href', social.behance)
             $(".link-ins").attr('href', social.instagram)
             $(".link-ytb").attr('href', social.youtube)
+            $(".link-fb").attr('href', social.facebook)
             $(".inf-email").html('Email: ' + social.email)
             $(".inf-sologan").html(social.sologanComoany)
         })
@@ -125,17 +129,17 @@
                     data.map((item) => {
                         $(".image-detail").attr('src', ``);
                         arrDetailImage = item.imageProject;
-                        linkDetail += ` <a target="_blank" href="detail-cate-project/` + item.cateProject._id + `" id="a-link-detail">Xem thêm</a>`;
+                        linkDetail += ` <a target="_blank" href="detail-cate-project/` + item.cateProject._id + `" id="a-link-detail">Read more</a>`;
                         html += ` <p class="nameProject">` + item.nameProject.trim() + `</p>
-                                    <p class="descriptProject"><strong>Mô tả dự án</strong>: `+ item.descriptionProject + `</p>
-                                    <p class="cateProject"><strong>Dự án này thuộc danh mục</strong>: `+ item.cateProject.nameProject + `</p>
-                                <p class="descriptCateProject"><strong>Mô tả danh mục này</strong>: `+ item.cateProject.descriptionProject + `</p>`;
+                                    <p class="descriptProject"><strong>Description project: </strong>: `+ item.descriptionProject + `</p>
+                                    <p class="cateProject"><strong>Category project</strong>: `+ item.cateProject.nameProject + `</p>
+                                <p class="descriptCateProject"><strong>Description category</strong>: `+ item.cateProject.descriptionProject + `</p>`;
                         for (let i = 0; i < item.imageProject.length; i++) {
                             arr_img += `<img data-sizes="auto" class="lazyload image-detail-project" data-id ='` + item.imageProject[i].idImage + `' data-src="` + item.imageProject[i].urlImage + `"/>`;
                         }
                     })
                 } else {
-                    html = ` <p class="nameProject">Dự án này chưa được công bố chi tiết</p>`;
+                    html = ` <p class="nameProject">Waiting for update...</p>`;
                 }
                 arrDetailImage.map((item) => {
                     html_gallery += ` <a href="javascript: value(0)" data-id-image = '` + item.idImage + `' class="item-gallery">
@@ -561,8 +565,8 @@
     <div class="media">
         <div class="textMedia">
             <p>
-                See more completed projects on our Behance, Instagram, and
-                Youtube :
+                See more completed projects on our Behance, Instagram,
+                Youtube, and Facebook:
             </p>
         </div>
         <div class="iconMedia">
@@ -575,6 +579,9 @@
                 </li>
                 <li>
                     <a target="_blank" class="link-ytb" href=""><img src="icon-user-page/icon3.png" alt="" style="width: 35px;" /></a>
+                </li>
+                <li>
+                    <a target="_blank" class="link-fb" href=""><i class="fa-brands fa-square-facebook" style="color: #787879;font-size: 32px;"></i></a>
                 </li>
             </ul>
         </div>
