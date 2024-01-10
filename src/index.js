@@ -22,7 +22,7 @@ const hbs = require('express-handlebars');
 const { extname } = require('path');
 
 //port
-const port = 3000
+const port = process.env.PORT || 3000
 
 //debug logger
 app.use(morgan('combined'));
