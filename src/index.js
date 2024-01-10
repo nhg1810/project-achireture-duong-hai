@@ -10,10 +10,10 @@ const app = express();
 //dotenv
 require('dotenv').config();
 
-app.use('/admin',express.static(path.join(__dirname, '/public/')))
-app.use('/google',express.static(path.join(__dirname, '/public/')))
-app.use('/detailproject',express.static(path.join(__dirname, '/public/')))
-app.use('/detail-cate-project',express.static(path.join(__dirname, '/public/')))
+app.use('/admin', express.static(path.join(__dirname, '/public/')))
+app.use('/google', express.static(path.join(__dirname, '/public/')))
+app.use('/detailproject', express.static(path.join(__dirname, '/public/')))
+app.use('/detail-cate-project', express.static(path.join(__dirname, '/public/')))
 
 
 app.use(express.static(path.join(__dirname, '/public/')))
@@ -40,8 +40,13 @@ app.use(express.json());
 //body parser
 app.use(express.urlencoded({
   extends: true
-})) 
- 
+}))
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParser.json())
+
 app.set('view engine', 'hbs');
 app.set('views', './src/resources/views')
 

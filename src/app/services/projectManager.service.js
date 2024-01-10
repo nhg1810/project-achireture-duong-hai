@@ -243,6 +243,7 @@ class ProjectManagerService {
         }
 
     }
+    
     async upLoadLogo(namePhoto, idFolder) {
         try {
             let data = await googleDriverHelper.uploadFileDrive(idFolder, namePhoto);
